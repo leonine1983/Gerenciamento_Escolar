@@ -1,4 +1,4 @@
-from RH.models import Contrato
+from rh.models import Contrato
 from django import forms
 
 

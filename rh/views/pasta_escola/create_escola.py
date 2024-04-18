@@ -1,11 +1,11 @@
-from RH.models import Contrato
+from rh.models import Contrato
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView
 from .forms import Contrato_form
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import redirect
-from Gestao_Escolar.models import Escola
+from gestao_escolar.models import Escola
 
 
 class Escola_createView(LoginRequiredMixin, SuccessMessageMixin, CreateView):

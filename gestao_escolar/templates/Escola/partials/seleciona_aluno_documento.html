@@ -1,0 +1,234 @@
+
+<!-- Bootstrap Datepicker CSS -->
+<!-- Modal -->
+<div class="modal fade" id="modal_escola" style='background:#000'  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    
+    <div class="modal-dialog w-100">
+    <div class="modal-content bg-secondary-subtle ">
+        <div class="modal-header">
+        <h4 class="modal-title  fs-6"><span class="text-uppercase ml-5 fs-3 "><i class="fa-sharp fa-solid fa-people fs-5"></i> {{titulo_page}}</span></h4>        
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        
+        </div>
+        <div class="modal-body shadow-sm bg-light-subtle">
+          <div style="background-image: radial-gradient(circle at 50% -20.71%, #edf3ff 0, #b5c9f2 50%, #79a1e2 100%); margin:-1rem" class="mb-3 p-2">
+              <i class="fa-regular fa-face-grin-squint"></i> Olá, <span class="text-capitalize ">{{request.user.first_name}} {{request.user.last_name}}!!</span>            
+              <span class="m-0">Por favor, utilize os campos abaixo para registrar um aluno no sistema:</span>                
+          </div>
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true"><i class="fa-sharp fa-solid fa-people fs-5"></i> Dados de documentação do aluno. </button>
+              </li>              
+            </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+              <div class='p-2 fs-6 border-danger-subtle border-right d-flex text-light' style= 'box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset; background-color:rgb(116, 145, 140)'>
+                <div class=" p-1 mr-4 "><i class="fa-thin fa-tally "></i> Atenção!! Não feche essa página sem ter preenchido todas a informações obrigatórias do aluno.</div>              
+                  <!-- Exibir a paginação -->
+                             
+                </div>
+              </div>
+              <div class="form-group ">
+                {% block script_head %}
+                {% load django_bootstrap5 %}
+                <style>
+                  .form-group div p{margin-bottom: -0.5rem;}
+                </style>
+                {% endblock script_head %}  
+
+                <form method="post"class='m-3' >
+                  {{ form.non_field_errors }}
+                  {% csrf_token %}
+                  <div class="form-group p-4" style='background-color: rgb(248, 242, 242);'>
+                  <span>Informações Básicas</span>
+                    <div class="border p-3 row row-cols-3 rounded-3 bg-light-subtle mb-5">
+                      <div class="col">                            
+                        <p class="p-0">Selecione o Aluno*:</p>
+                        {{form.aluno}}
+                      </div>  
+                    </div>
+
+                    <span class=" mt-2">Dados do RG*</span>
+                    <div class="border p-3 row row-cols-4 rounded-3 bg-light-subtle mb-5">                          
+                      <div class="col-5">
+                        <p>N° RG:*</p>
+                        {{form.RG}}
+                      </div>
+                      <div class="col-2">
+                        <p>Data de Emissão*:</p>
+                        {{form.RG_emissao}}
+                      </div>
+                      <div class="col-2">
+                        <p>UF*:</p>
+                        {{form.RG_UF}}
+                      </div>
+                      <div class="col-2">
+                        <p>Órgão Emissor*:</p>
+                        {{form.orgao_emissor}}
+                      </div>
+                    </div>
+
+                    <span class=" mt-2">Situação Financeira*</span>
+                    <div class="border p-3 row row-cols-4 rounded-3 bg-light-subtle mb-5">                          
+                      <div class="col-5">
+                        <p>Renda Familiar (Soma de todos os valores que compõem a renda mensal da familia):* <i class="fa-duotone fa-piggy-bank"></i></p>
+                        {{form.renda_familiar}}
+                      </div>
+                      <div class="col-2">
+                        <p>Situação Familiar:</p>
+                        {{form.situacao_familiar}}
+                      </div>                      
+                    </div>
+
+                    <span class=" mt-2">Dados de conexão*</span>
+                    <div class="border p-3 row row-cols-4 rounded-3 bg-light-subtle mb-5">                          
+                      <div class="col">
+                        <p>CPF do aluno: </p>
+                        {{form.CPF}}
+                      </div>
+                      <div class="col">
+                        <p><i class="fa-solid fa-user"></i> Login de acesso do aluno*:</p>
+                        {{form.login_aluno}}
+                      </div>  
+                      <div class="col">
+                        <p><i class="fa-solid fa-key"></i> Senha do aluno*:</p>
+                        {{form.senha}}
+                      </div>                     
+                    </div>
+
+                    <span class=" mt-2">Outros documentos*</span>
+                    <div class="border p-3 row row-cols-4 rounded-3 bg-light-subtle mb-5">                          
+                      <div class="col">
+                        <p>Cartão Nacional da Saúde (CNS): </p>
+                        {{form.cartao_nacional_saude_cns}}
+                      </div>
+                      <div class="col">
+                         NIS*:</p>
+                        {{form.nis}}
+                      </div>  
+                      <div class="col">
+                        INEP*:</p>
+                        {{form.inep}}
+                      </div>                     
+                    </div>
+
+                    <span class=" mt-2">CERTIDÃO DE NASCIMENTO*</span>
+                    <div class="border p-3 row row-cols-4 rounded-3 bg-light-subtle mb-5">                          
+                      <div class="col">
+                        <p>Estado Civil: </p>
+                        {{form.estado_civil}}
+                      </div>
+                      <div class="col">
+                         Tipo de Certidão*:</p>
+                        {{form.tipo_certidao}}
+                      </div>  
+                      <div class="col">
+                        N° da Certidão*:</p>
+                        {{form.numero_certidao}}
+                      </div>                        
+                      <div class="col">
+                        Livro*:</p>
+                        {{form.livro}}
+                      </div> 
+                      <div class="col">
+                        Folha*:</p>
+                        {{form.folha}}
+                      </div> 
+                      <div class="col">
+                        Termo*:</p>
+                        {{form.termo}}
+                      </div> 
+                      <div class="col">
+                        Emissão*:</p>
+                        {{form.emissao}}
+                      </div> 
+                      <div class="col">
+                        Distrito*:</p>
+                        {{form.distrito_certidao}}
+                      </div> 
+                      <div class="col">
+                        Comarca*:</p>
+                        {{form.comarca}}
+                      </div> 
+                      <div class="col">
+                        Cartorio UF*:</p>
+                        {{form.cartorio_uf}}
+                      </div> 
+                      <div class="col">
+                        Cartório:</p>
+                        {{form.cartorio}}
+                      </div>
+                      <div class="col">
+                        Justificativa para a falta de documentos:</p>
+                        {{form.justificativa_falta_document}}
+                      </div> 
+                      <div class="col">
+                        Local Diferenciado:</p>
+                        {{form.local_diferenciado}}
+                      </div>                      
+                    </div>
+
+                    <span class=" mt-2">Falecimento do Aluno / Veio a óbito</span>
+                    <div class="border p-3 row row-cols-4 rounded-3 bg-light-subtle mb-5">                          
+                      <div class="col">
+                        <p>Óbito: </p>
+                        {{form.obito}}
+                      </div>
+                      <div class="col">
+                         Data do Óbito:</p>
+                        {{form.data_obito}}
+                      </div> 
+                      
+                                          
+                    </div>
+                  
+                  </div> 
+                  <button class="btn btn-sm btn-primary p-1 w-100" type="submit">Salvar registro do aluno <i class="fa-sharp fa-solid fa-people fs-5"></i></button>
+              </form> 
+
+            </div> 
+            </div>
+          </div>
+        </div>        
+    </div>
+    </div>
+</div>       
+
+
+
+{% load static %}
+
+<!-- Mascara para formularios-->
+<script src="{% static 'global/js/jquery.mask.min.js' %}"></script>
+<script>
+
+    $(document).ready(function(){
+        $("#id_RG").mask("000.000.000-00")
+    })
+    $(document).ready(function(){
+        $("#id_RG_emissao").mask("00/00/0000 ")
+    })
+    $(document).ready(function(){
+        $("#id_data_obito").mask("00/00/0000")
+    })
+    
+</script>
+<!--FIM Mascara para formularios-->
+
+
+
+<script>
+  // Adicione um ouvinte de evento de mudança ao <select>
+document.getElementById("mySelect").addEventListener("change", function() {
+  // Remove a classe 'selected' de todas as opções
+  var options = this.getElementsByTagName("option");
+  for (var i = 0; i < options.length; i++) {
+    options[i].classList.remove("selected");
+  }
+
+  // Adiciona a classe 'selected' à opção selecionada
+  var selectedOption = this.options[this.selectedIndex];
+  selectedOption.classList.add("selected");
+});
+
+</script>

@@ -1,4 +1,4 @@
-from RH.models import Ano
+from rh.models import Ano
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import UpdateView

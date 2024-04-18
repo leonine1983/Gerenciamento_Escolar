@@ -1,4 +1,4 @@
-from RH.models import Pessoas
+from rh.models import Pessoas
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import DeleteView

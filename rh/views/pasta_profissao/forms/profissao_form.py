@@ -1,4 +1,4 @@
-from RH.models import Profissao
+from rh.models import Profissao
 from django import forms
 
 

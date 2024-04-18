@@ -1,7 +1,7 @@
-from RH.models import Contrato
+from rh.models import Contrato
 from django import forms
 from ckeditor.fields import RichTextField
-from RH.models import Ano, Texto_Contrato, Pessoas
+from rh.models import Ano, Texto_Contrato, Pessoas
 
 
 

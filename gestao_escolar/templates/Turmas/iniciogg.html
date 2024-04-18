@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exibir Registros</title>
+    <!-- Incluir os arquivos CSS do Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Registros</h1>
+
+        <h2>Ano Letivo</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Ano</th>
+                    <th>Data de Início</th>
+                    <th>Data de Fim</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ano_letivo in anos_letivos %}
+                <tr>
+                    <td>{{ ano_letivo.ano }}</td>
+                    <td>{{ ano_letivo.data_inicio }}</td>
+                    <td>{{ ano_letivo.data_fim }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Profissionais</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Cargo</th>
+                    <th>Área de Especialização</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for profissional in profissionais %}
+                <tr>
+                    <td>{{ profissional.nome }}</td>
+                    <td>{{ profissional.cargo }}</td>
+                    <td>{{ profissional.area_especializacao }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Escolas</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome da Escola</th>
+                    <th>Endereço</th>
+                    <th>Diretor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for escola in escolas %}
+                <tr>
+                    <td>{{ escola.nome }}</td>
+                    <td>{{ escola.endereco }}</td>
+                    <td>{{ escola.diretor.nome }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Alunos</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Idade</th>
+                    <th>Ano de Ingresso</th>
+                    <th>Endereço</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for aluno in alunos %}
+                <tr>
+                    <td>{{ aluno.nome }}</td>
+                    <td>{{ aluno.idade }}</td>
+                    <td>{{ aluno.ano_ingresso }}</td>
+                    <td>{{ aluno.endereco }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Turmas</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Número</th>
+                    <th>Ano Letivo</th>
+                    <th>Disciplinas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for turma in turmas %}
+                <tr>
+                    <td>{{ turma.numero }}</td>
+                    <td>{{ turma.ano_letivo.ano }}</td>
+                    <td>
+                        {% for disciplina in turma.disciplinas.all %}
+                        {{ disciplina.nome }}
+                        {% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Disciplinas</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for disciplina in disciplinas %}
+                <tr>
+                    <td>{{ disciplina.nome }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Turma Disciplina</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Turma</th>
+                    <th>Disciplina</th>
+                    <th>Professor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for turma_disciplina in turmas_disciplinas %}
+                <tr>
+                    <td>{{ turma_disciplina.turma.numero }}</td>
+                    <td>{{ turma_disciplina.disciplina.nome }}</td>
+                    <td>{{ turma_disciplina.professor.nome }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Matrículas</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Aluno</th>
+                    <th>Turma</th>
+                    <th>Data de Matrícula</th>
+                    <th>Status de Matrícula</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for matricula in matriculas %}
+                <tr>
+                    <td>{{ matricula.aluno.nome }}</td>
+                    <td>{{ matricula.turma.numero }}</td>
+                    <td>{{ matricula.data_matricula }}</td>
+                    <td>{{ matricula.status_matricula }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Atividades</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Disciplina</th>
+                    <th>Avaliativa</th>
+                    <th>Pontuação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for atividade in atividades %}
+                <tr>
+                    <td>{{ atividade.disciplina.nome }}</td>
+                    <td>{{ atividade.avaliativa }}</td>
+                    <td>{{ atividade.pontuacao }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Perguntas Abertas</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Atividade</th>
+                    <th>Pergunta</th>
+                    <th>Resposta</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pergunta_aberta in perguntas_abertas %}
+                <tr>
+                    <td>{{ pergunta_aberta.atividade.disciplina.nome }}</td>
+                    <td>{{ pergunta_aberta.pergunta }}</td>
+                    <td>{{ pergunta_aberta.resposta }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Perguntas de Múltipla Escolha</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Atividade</th>
+                    <th>Pergunta</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pergunta_multipla_escolha in perguntas_multipla_escolha %}
+                <tr>
+                    <td>{{ pergunta_multipla_escolha.atividade.disciplina.nome }}</td>
+                    <td>{{ pergunta_multipla_escolha.pergunta }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Opções de Múltipla Escolha</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Pergunta</th>
+                    <th>Opção</th>
+                    <th>Correta</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for opcao_multipla_escolha in opcoes_multipla_escolha %}
+                <tr>
+                    <td>{{ opcao_multipla_escolha.pergunta.pergunta }}</td>
+                    <td>{{ opcao_multipla_escolha.opcao }}</td>
+                    <td>{{ opcao_multipla_escolha.correta }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Notas</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Aluno</th>
+                    <th>Atividade</th>
+                    <th>Acertos</th>
+                    <th>Trimestre</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for nota in notas %}
+                <tr>
+                    <td>{{ nota.aluno.nome }}</td>
+                    <td>{{ nota.atividade.disciplina.nome }}</td>
+                    <td>{{ nota.acertos }}</td>
+                    <td>{{ nota.trimestre.numero }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Trimestres</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Número</th>
+                    <th>Ano Letivo</th>
+                    <th>Soma Notas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trimestre in trimestres %}
+                <tr>
+                    <td>{{ trimestre.numero }}</td>
+                    <td>{{ trimestre.ano_letivo.ano }}</td>
+                    <td>{{ trimestre.soma_notas }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Atividades Reutilizadas</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Atividade</th>
+                    <th>Ano Letivo</th>
+                    <th>Turma</th>
+                    <th>Escola</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for atividade_reutilizada in atividades_reutilizadas %}
+                <tr>
+                    <td>{{ atividade_reutilizada.atividade.disciplina.nome }}</td>
+                    <td>{{ atividade_reutilizada.ano_letivo.ano }}</td>
+                    <td>{{ atividade_reutilizada.turma.numero }}</td>
+                    <td>{{ atividade_reutilizada.escola.nome }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Incluir os arquivos JavaScript do Bootstrap -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

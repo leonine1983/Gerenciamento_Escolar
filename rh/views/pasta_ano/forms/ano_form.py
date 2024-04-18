@@ -1,4 +1,4 @@
-from RH.models import Ano
+from rh.models import Ano
 from django import forms
 
 

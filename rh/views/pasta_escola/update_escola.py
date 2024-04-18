@@ -1,10 +1,10 @@
-from RH.models import Contrato
+from rh.models import Contrato
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import UpdateView
 from .forms import Contrato_form
 from django.urls import reverse_lazy
-from Gestao_Escolar.models import Escola
+from gestao_escolar.models import Escola
 
 
 class Escola_updateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):

@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class GestaoEscolarConfig(AppConfig):
+class TurmasConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'gestao_escolar'
+    name = 'Gestao_Escolar'

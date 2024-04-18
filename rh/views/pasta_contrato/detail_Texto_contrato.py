@@ -1,4 +1,4 @@
-from RH.models import Contrato, Pessoas
+from rh.models import Contrato, Pessoas
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import DetailView
@@ -11,7 +11,6 @@ from django.contrib.humanize.templatetags.humanize import naturaltime
 from datetime import date
 
 
-from RH.models import Contrato
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import DetailView

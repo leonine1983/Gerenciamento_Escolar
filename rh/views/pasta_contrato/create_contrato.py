@@ -1,4 +1,4 @@
-from RH.models import Contrato
+from rh.models import Contrato
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView

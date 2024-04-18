@@ -1,0 +1,272 @@
+{% extends 'Geral_Gestao_Escola/template.html' %}
+{% load static %}
+{% block script_head %}
+ {% include 'Geral_Gestao_Escola/links_modal.html' %}
+<script src="{% static 'select2/js/select2.full.min.js' %}"></script>
+<style>
+    #id_aluno_matricula{
+        display: none;
+    }
+    
+    /* Seletor de classe para o ícone do seletor de datas */
+    .datepicker-input[type="date"]::before {
+        font-family: 'Font Awesome 5 Free';
+        content: "f073\f073"; /* Código do ícone do calendário do Font Awesome */
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+        
+    /* Estilizar a caixa de seleção quando ela estiver com foco */
+    select[name="deficiencia_aluno"] option:checked {
+      background-color: blue; /* Substitua "blue" pela cor desejada */
+      color: white; /* Substitua "white" pela cor do texto desejada */
+    }
+    input[type=checkbox]{
+      scale: 2;
+      margin-bottom: 2rem!important;
+      border-radius: 1rem!important;
+      border: #79a1e2 solid 1rem;
+      padding: 1rem;
+    }
+    .border-verde-desgastado{
+        border-color: rgb(116, 145, 140)!important;
+    }
+    .fs-7{
+        font-size: 1rem !important;
+    }
+    .bg-secondary-subtle{
+        background-color: #666;
+    }
+
+    .modal-content{        
+        width: 95vw!important;
+        height: 95vh!important;
+    }
+    .modal-dialog{
+        margin-left: 2.5%!important;
+    }
+    .modal-body{
+        height: 10rem!important;
+    } 
+    .bg-neutral_light{background-color: rgb(183,200,185);}
+    .bg-pale_green{background-color: rgb(212,236,216);}
+    tr { vertical-align: middle !important; text-align: center !important;}
+    
+</style>
+{% endblock script_head %} 
+
+{% block main %}
+
+<div class="shadow-sm p-3 mb-3 bg-skin w-100">
+    <div class='bg-silver p-4 h5' style='margin:-1.8rem -1rem 0 -1rem'>
+        <span class="text-uppercase">
+            <i class="fa-solid fa-school-flag"></i> {{request.session.escola_nome}}
+        </span>
+        <span class="mr-5 ml-5">|</span> 
+        <span class="fs-6">
+            <i class="fa-solid fa-calendar-days"></i> Ano Letivo: {{request.session.anoLetivo_nome}}
+        </span>
+    </div>
+
+    {% if not update  %}
+        <!-- informações-->
+        <div class=" rounded-top-2  bg-body-tertiary " style='margin:-1.4rem 0rem 1rem 0rem !important'>
+            <div class='mb-2'>
+                {% include 'Geral_Gestao_Escola/navbars/index.html' %}    
+            </div>
+            <div class='mt-1 row w-100 bg-black ml-1 gap-3'>
+                <div class="card text-center col">
+                    <div class="card-header bg-info text-light text-uppercase">
+                    Turmas 
+                    </div>
+                    <div class="card-body">
+                    <h5 class="card-title">Para dar continuidade, vamos precisar que você escolha uma escola que mais lhe agrada. 😊</h5>
+                    <button class="btn btn-primary" onclick="location.reload()">Selecionar Escola</button>        
+                    </div>
+                    <div class="card-footer text-muted">
+                    <p>Data e horário do acesso: {{ now }}</p>
+                    </div>
+                </div>  
+                
+                <div class="card text-center col">
+                    <div class="card-header bg-danger text-light text-uppercase">
+                    ATENÇÃO {{request.user.first_name}} {{request.user.last_name}}<i class="fa-solid fa-exclamation"></i><i class="fa-solid fa-exclamation"></i>
+                    </div>
+                    <div class="card-body">
+                    <h5 class="card-title">Para dar continuidade, vamos precisar que você escolha uma escola que mais lhe agrada. 😊</h5>
+                    <button class="btn btn-primary" onclick="location.reload()">Selecionar Escola</button>        
+                    </div>
+                    <div class="card-footer text-muted">
+                    <p>Data e horário do acesso: {{ now }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    {% else %}
+    <div class="p-2">&nbsp;</div>
+    <div class="p-2 pl-1  {{btn_bg}} w-75 m-auto  ">{{svg|safe}} {{titulo_page}} <span class="pl-1 text-uppercase">{{ object }}</span></div>    
+    <form class="shadow shadow-sm p-3 overflow-scroll row w-75 m-auto" method="post"class='m-3 p-3 row row-cols-3' >
+        {{ form.non_field_errors }}
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group col-2 ">
+        {{ field.label_tag }}
+        {{ field }}
+        {{ field.errors }}
+        </div>
+        {% endfor %}   
+        <div class="m-auto w-75 row"> 
+            <a class="btn btn-sm btn-secondary col m-3 p-4 text-decoration-none link-light" href="{% url 'Gestao_Escolar:GE_Escola_inicio' %}" type="submit">Cancelar</a>
+            <button class="btn btn-sm btn-primary {{btn_bg}} col m-3 link-light" type="submit">{{button}} <span class="text-capitalize">{{object}}</span></button>
+        </div> 
+    </form> 
+    {% endif %}
+        
+        <!-- End informações-->    
+    {% if  conteudo_page == 'Nome das Escolas' %}
+        {% include 'Escola/partials/seleciona_escola.html' %}
+    {% endif %}
+    {% if  conteudo_page == 'Ano Letivo' %}
+        {% include 'Escola/partials/seleciona_anoLetivo.html' %}
+    {% endif %}
+    <!--Ao Inicio o Sistema-->
+    {% if  conteudo_page == 'info_escola' %}
+        {{contexto}}
+    {% endif %}
+    {% if  conteudo_page == 'Criar Turmas' %}
+        {% include 'Escola/partials/seleciona_turma.html' %}
+    {% endif %}
+    {% if  conteudo_page == 'Registrar Alunos' %}
+        {% include 'Escola/partials/seleciona_aluno.html' %}
+    {% endif %}   
+    {% if  conteudo_page == 'Registrar Alunos Documento' %}
+        {% include 'Escola/partials/seleciona_aluno_documento.html' %}
+    {% endif %}
+    {% if  conteudo_page == 'Todas as matriculas' %}
+        {% include 'Escola/partials/seleciona_matricula_turmas.html' %}
+    {% endif %}  
+    {% if  conteudo_page == 'Matricular Aluno' %}
+        {% include 'Escola/partials/seleciona_matricular_aluno.html' %}
+    {% endif %} 
+    {% if  conteudo_page == 'Remaneja Aluno' %}
+        {% include 'Escola/partials/seleciona_matricular_remanejamento.html' %}
+    {% endif %} 
+    {% if  conteudo_page == 'Professores' %}
+        {% include 'Escola/partials/seleciona_professores.html' %}
+    {% endif %} 
+    {% if  conteudo_page == 'Professores-Pessoas' %}
+        {% include 'Escola/partials/partials_professores/seleciona_pessoas.html' %}
+    {% endif %} 
+    {% if  conteudo_page == 'Professores-Pessoas-Vinculo' %}
+        {% include 'Escola/partials/partials_professores/seleciona_pessoas-vinculo.html' %}
+    {% endif %} 
+    {% if  conteudo_page == 'seleciona_pessoas-vinculo_contrato' %}
+        {% include 'Escola/partials/partials_professores/seleciona_pessoas-vinculo_contrato.html' %}
+    {% endif %} 
+    {% if  conteudo_page == 'Criar Disciplina' %}
+        {% include 'Escola/partials/seleciona_disciplinas.html' %}
+    {% endif %} 
+    {% if  conteudo_page == 'Grades' %}
+        {% include 'Escola/partials/seleciona_grades.html' %}
+    {% endif %} 
+    {% if  conteudo_page == 'QR_code' %}
+        {% include 'Escola/partials/seleciona_qrCode.html' %}
+    {% endif %} 
+    {% if  conteudo_page == 'Turmas Escolha' %}
+        {% include 'Escola/partials/seleciona_Turma_retorno_aluno.html' %}
+    {% endif %} 
+    {% if  conteudo_page == 'Todas as turmas-grade' %}
+        {% include 'Escola/partials/seleciona_grade_turma.html' %}
+    {% endif %} 
+    {% if  conteudo_page == 'cargos/funcionarios' %}
+        {% include 'Escola/partials/selecionar_cargos_funcionarios.html' %}
+    {% endif %}    
+    {% if  conteudo_page == 'Gestão Turmas' %}
+        {% include 'Escola/partials/gestao_turmas/gestao_.html' %}
+    {% endif %}  
+   
+    
+
+
+    
+    <!--Ferramentas-->
+    {% if  conteudo_page == 'imagem-docx' %}
+    {% include 'Escola/partials/seleciona_image_to_word.html' %}
+    {% endif %} 
+
+
+    <!--Condicionais de verificação de existencia de registros-->    
+    
+    {% if 'escola_id' not in request.session %}
+        {% include 'Escola/partials/seleciona_escola.html' %}
+
+        
+    {% endif %}
+    {% if not condicional_aluno.exists %}
+        {% include 'Escola/partials/verifica_sem_registros/n_aluno.html' %}
+    {% endif %}
+
+    {% if not condicional_professor.exists %}
+        {% include 'Escola/partials/verifica_sem_registros/n_professor.html' %}
+    {% endif %}
+
+    {% if not condicional_turma.exists %}    
+        {% include 'Escola/partials/verifica_sem_registros/n_turma.html' %}
+    {% endif %}  
+
+    {% if messages %}
+        {% include 'Escola/partials/mensagens.html' %}        
+    {% endif %}
+    
+</div>
+
+{% block script_footer %}
+<script>
+    $(document).ready(function(){
+        $('#modal_escola').modal("show");
+
+        // Adiciona um evento de clique ao botão de fechar
+        $('.close, .modal').click(function(e) {
+            if (e.target === this) {
+                $('#modal_escola').modal('hide');
+                window.location.href = "{% url 'Gestao_Escolar:GE_Escola_inicio' %}";
+            }
+        });
+    });
+</script>
+
+<script>
+    // Small using Bootstrap 5 classes
+$("#form-select-sm").select2({
+    theme: "bootstrap-5",
+    dropdownParent: $("#form-select-sm").parent(), // Required for dropdown styling
+});
+</script>
+
+<script>
+var datepickers = [].slice.call(document.querySelectorAll('[data-datepicker]'))
+var datepickersList = datepickers.map(function (el) {
+    return new Datepicker(el, {
+        buttonClass: 'btn'
+    });
+});
+</script>
+<!--Esconde e exibe detalhes-->
+<script>
+    function toggleDetails(button) {
+        var details = button.nextElementSibling;
+        if (details.style.display === "none" || details.style.display === "") {
+            details.style.display = "block";
+            button.innerHTML = "Fechar";
+        } else {
+            details.style.display = "none";
+            button.innerHTML = "Leia mais...";
+        }
+    }
+</script>
+{% endblock script_footer %} 
+{% endblock main %}

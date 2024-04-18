@@ -1,3 +1,27 @@
 from django.contrib import admin
+from .models import *
 
 # Register your models here.
+admin.site.register(AnoLetivo)
+admin.site.register(Cargo)
+admin.site.register(Profissionais)
+admin.site.register(Etnia)
+admin.site.register(Alunos)
+admin.site.register(Alunos_Documentacao)
+admin.site.register(Compatibilidade_EducaCenso)
+admin.site.register(GrauEscolar)
+admin.site.register(Serie_Escolar)
+admin.site.register(Turmas)
+admin.site.register(Disciplina)
+admin.site.register(TurmaDisciplina)
+#admin.site.register(Professores)
+admin.site.register(Matriculas)
+admin.site.register(Trimestral_Notas_Aluno)
+#admin.site.register(Atividade)
+#admin.site.register(PerguntasAbertas)
+#admin.site.register(PerguntasMultiplaEscolha)
+#admin.site.register(OpcaoMultiplaEscolha)
+#admin.site.register(PerguntaObjetiva)
+#admin.site.register(Notas)
+admin.site.register(Trimestre)
+#admin.site.register(AtividadeReutilizada)

@@ -1,15 +1,15 @@
-from RH.models import Profissao
+from rh.models import Profissao
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView
-from .forms import Profissao_form
+#from forms.profissao_form import Profissao_form
 from django.urls import reverse_lazy
 
 
 class Profissao_createView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Profissao
-    #fields = '__all__'
-    form_class = Profissao_form
+    fields = '__all__'
+    #form_class = Profissao_form
     template_name = 'rh/inicio.html'
     success_url = reverse_lazy('RH:Profissao_listaView')
     success_message = 'Profissão criado com sucesso!!'

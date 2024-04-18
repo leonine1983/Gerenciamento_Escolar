@@ -1,6 +1,6 @@
 
 from django import forms
-from RH.models import Ano, Texto_Contrato, Pessoas, Contrato, Profissao, Escola, Salario
+from rh.models import Ano, Texto_Contrato, Pessoas, Contrato, Profissao, Escola, Salario
 
 # widget personalizado que usa as classes (form-control, border, p-3, pb-3 e bg-transparent) para ser atribuido ao campo 'tempo_meses' 
 
