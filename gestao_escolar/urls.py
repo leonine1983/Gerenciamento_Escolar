@@ -31,7 +31,7 @@ urlpatterns = [
     path('gestao_escolar/Alunos/documentos<int:pk>', Update_Alunos_Document.as_view(), name="GE_alunos_update_document"),
     path('gestao_escolar/Alunos/atualiza/<int:pk>', Update_Alunos.as_view(), name="GE_Escola_alunos_update"),    
     path('gestao_escolar/Alunos/delete/<int:pk>', Delete_Alunos.as_view(), name="GE_Escola_alunos_delete"),
-    path('autocomplete/', autocomplete.Select2ListView.as_view(), name='autocomplete_aluno'),
+    #path('autocomplete/', autocomplete.Select2ListView.as_view(), name='autocomplete_aluno'),
    
 
     # Matriculas

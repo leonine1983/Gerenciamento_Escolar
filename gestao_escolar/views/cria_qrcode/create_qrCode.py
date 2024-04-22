@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from qr_code.qrcode.utils import QRCodeOptions
+#from qr_code.qrcode.utils import QRCodeOptions
 
 
 
