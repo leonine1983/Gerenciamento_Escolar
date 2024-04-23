@@ -9,8 +9,8 @@ from django.urls import reverse_lazy
 
 class Fornecedor_DeleteView(DeleteView):
     model = Fornecedor
-    template_name = 'Controle_Estoque/fornecedores/fornecedores_cadastro.html'
-    success_url =  reverse_lazy('Controle_Estoque:fornecedor_listaView')
+    template_name = 'controle_estoque/fornecedores/fornecedores_cadastro.html'
+    success_url =  reverse_lazy('controle_estoque:fornecedor_listaView')
 
     def get_context_data(self, **kwargs):
         dados = Fornecedor.objects.filter(pk=self.kwargs['pk'])

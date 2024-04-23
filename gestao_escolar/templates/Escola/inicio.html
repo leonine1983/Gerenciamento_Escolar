@@ -1,7 +1,7 @@
-{% extends 'Geral_Gestao_Escola/template.html' %}
+{% extends 'gestao_escolar/template.html' %}
 {% load static %}
 {% block script_head %}
- {% include 'Geral_Gestao_Escola/links_modal.html' %}
+ {% include 'gestao_escolar/links_modal.html' %}
 <script src="{% static 'select2/js/select2.full.min.js' %}"></script>
 <style>
     #id_aluno_matricula{
@@ -75,7 +75,7 @@
         <!-- informações-->
         <div class=" rounded-top-2  bg-body-tertiary " style='margin:-1.4rem 0rem 1rem 0rem !important'>
             <div class='mb-2'>
-                {% include 'Geral_Gestao_Escola/navbars/index.html' %}    
+                {% include 'gestao_escolar/navbars/index.html' %}    
             </div>
             <div class='mt-1 row w-100 bg-black ml-1 gap-3'>
                 <div class="card text-center col">

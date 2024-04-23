@@ -4,7 +4,7 @@ from django.views.generic import ListView
 
 class Categoria_ListView(ListView):
     model = Categoria_alimentos
-    template_name = 'Controle_Estoque/alimentos/Exibe.html'
+    template_name = 'controle_estoque/alimentos/Exibe.html'
  
 
     def get_context_data(self, **kwargs):

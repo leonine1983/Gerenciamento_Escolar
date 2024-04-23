@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from Gestao_Escolar.models import *
+from gestao_escolar.models import *
 from django.views.generic import ListView, TemplateView
-from Gestao_Escolar.models import Escola, AnoLetivo, Alunos, Turmas
+from gestao_escolar.models import Escola, AnoLetivo, Alunos, Turmas
 from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required

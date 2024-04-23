@@ -10,8 +10,8 @@ from django.urls import reverse_lazy
 class MovimentoEstoque_Entrada_CreateView(CreateView):
     model = Movimentacao_Estoque
     form_class = Movimento_Entrada_Form
-    template_name = 'Controle_Estoque/movimentacao_estoque/movi_cadastro.html'
-    success_url =  reverse_lazy('Controle_Estoque:movi_estoque_listaView')
+    template_name = 'controle_estoque/movimentacao_estoque/movi_cadastro.html'
+    success_url =  reverse_lazy('controle_estoque:movi_estoque_listaView')
 
     def get_context_data(self, **kwargs):
         alimentos_estoque = Alimentos.objects.all()

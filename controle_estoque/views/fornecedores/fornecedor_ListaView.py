@@ -8,7 +8,7 @@ from django.views.generic import ListView
 
 class Fornecedor_ListView(ListView):
     model = Fornecedor
-    template_name = 'Controle_Estoque/fornecedores/fornecedores_lista.html'
+    template_name = 'controle_estoque/fornecedores/fornecedores_lista.html'
 
 
     def get_context_data(self, **kwargs):        

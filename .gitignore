@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 
 
@@ -12,6 +13,41 @@ __pycache__/
 # Distribution / packaging
 .Python
 build/
+=======
+settings.py
+
+# Django #
+*.pot
+*.pyc
+__pycache__
+#db.sqlite3
+#media
+
+# Backup files #
+*.bak
+
+# If you are using PyCharm #
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/dictionaries
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.xml
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/gradle.xml
+.idea/**/libraries
+*.iws /out/
+
+# Python #
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python build/
+>>>>>>> 72c7cadddc454f0653891d98a8e0c7bc223b5aec
 develop-eggs/
 dist/
 downloads/
@@ -23,6 +59,7 @@ parts/
 sdist/
 var/
 wheels/
+<<<<<<< HEAD
 share/python-wheels/
 *.egg-info/
 .installed.cfg
@@ -32,6 +69,11 @@ MANIFEST
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
+=======
+*.egg-info/
+.installed.cfg
+*.egg
+>>>>>>> 72c7cadddc454f0653891d98a8e0c7bc223b5aec
 *.manifest
 *.spec
 

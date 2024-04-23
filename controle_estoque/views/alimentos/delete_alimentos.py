@@ -6,8 +6,8 @@ from django.urls import reverse_lazy
 
 class Alimentos_DeleteView(DeleteView):
     model = Alimentos
-    template_name = 'Controle_Estoque/alimentos/alimentos_cadastro.html'
-    success_url = reverse_lazy ('Controle_Estoque:alimento_lista')
+    template_name = 'controle_estoque/alimentos/alimentos_cadastro.html'
+    success_url = reverse_lazy ('controle_estoque:alimento_lista')
 
     def get_context_data(self, **kwargs):
         delete = Alimentos.objects.filter(pk = self.kwargs['pk'])

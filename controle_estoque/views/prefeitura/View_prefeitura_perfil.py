@@ -3,7 +3,7 @@ from django.views.generic import ListView
 
 class Prefeitura_View (ListView):
     model = Prefeitura
-    template_name = 'Controle_Estoque/prefeitura/prefeitura_view.html'
+    template_name = 'controle_estoque/prefeitura/prefeitura_view.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)        

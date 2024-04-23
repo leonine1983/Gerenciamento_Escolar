@@ -21,7 +21,7 @@ class Meu_filtro(django_filters.FilterSet):
 
 class MovimentoEstoque_ListView(ListView):
     model = Movimentacao_Estoque
-    template_name = 'Controle_Estoque/movimentacao_estoque/movi_lista.html'
+    template_name = 'controle_estoque/movimentacao_estoque/movi_lista.html'
     paginate_by = 10    
     filterset_class = Meu_filtro
 

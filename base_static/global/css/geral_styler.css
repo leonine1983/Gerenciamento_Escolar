@@ -1,0 +1,10 @@
+.b-example-divider-modify{
+    width: 0.5rem !important;
+}
+.b-example-divider-heigth{
+    height: 0.5rem !important;
+}
+input, select{
+    background-color: rgb(245, 242, 233) !important;
+}
+
