@@ -78,16 +78,16 @@
                 {% include 'gestao_escolar/navbars/index.html' %}    
             </div>
             <div class='mt-1 row w-100 bg-black ml-1 gap-3'>
-                <div class="card text-center col">
+                <div class="card text-left col">
                     <div class="card-header bg-info text-light text-uppercase">
                     Turmas 
                     </div>
                     <div class="card-body">
-                    <h5 class="card-title">Para dar continuidade, vamos precisar que você escolha uma escola que mais lhe agrada. 😊</h5>
-                    <button class="btn btn-primary" onclick="location.reload()">Selecionar Escola</button>        
-                    </div>
-                    <div class="card-footer text-muted">
-                    <p>Data e horário do acesso: {{ now }}</p>
+                        {% for t  in turmas %}
+                            <ul>
+                                <li>{{t.nome}} | {{t.turno}} | {% if t.turma_multiserie  %} Multiseriada {% else %} Normal {% endif %}</li>                                                           
+                            </ul>
+                        {% endfor %}
                     </div>
                 </div>  
                 
@@ -202,9 +202,7 @@
     <!--Condicionais de verificação de existencia de registros-->    
     
     {% if 'escola_id' not in request.session %}
-        {% include 'Escola/partials/seleciona_escola.html' %}
-
-        
+        {% include 'Escola/partials/seleciona_escola.html' %}        
     {% endif %}
     {% if not condicional_aluno.exists %}
         {% include 'Escola/partials/verifica_sem_registros/n_aluno.html' %}

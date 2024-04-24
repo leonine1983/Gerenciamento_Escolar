@@ -65,7 +65,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                #'Gestao_Escolar.context_processors.verifica_sessoes',
+                #'gestao_escolar.context_processors.verifica_sessoes',
+                'gestao_escolar.context_processors.list_turmas',
                 'controle_estoque.msg_context_processors.message_user_contexto',                
                 'rh.msg_context_processors.message_user_contexto'
                 
