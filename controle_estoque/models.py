@@ -162,7 +162,6 @@ para as escolas ou instituições beneficiárias. Ela envolve a definição dos 
 a escola beneficiária e as retiradas de merenda relacionadas."""
 class ProgramacaoSaidaEstoque(models.Model):
     movimentacoes_estoque = models.ManyToManyField(Movimentacao_Estoque)
-    escola_beneficiaria = models.ForeignKey(Escolas_model, on_delete=models.CASCADE)   
     data_agendamento = models.DateField(auto_created=False) 
     situacao = models.BooleanField(verbose_name='Enviado', null=True)
 
