@@ -10,4 +10,5 @@ from .matriculas import *
 from .remanejamento import *
 from .professores import *
 from .cria_qrcode import *
+from .impressos import *
 #from .ferramentas import *

@@ -73,6 +73,11 @@ urlpatterns = [
     path('gestao_escolar/Gestao_Turmas/', Create_Notas.as_view(), name="NotasAluno_all_create"),  
     path('gestao_escolar/Gestao_Turmas/turma/<int:pk>', Create_Notas_pk.as_view(), name="NotasAluno_one_create"),  
 
+    
+    # IMPRESSOS
+    path('turmas/impressao', Imprime_Turmas.as_view(), name='imprime_list_turmas'),
+
+
     # Ferramentas
     # path('image-to-doc/', Image_to_doc, name='image_to_doc'),
 
