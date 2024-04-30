@@ -203,9 +203,13 @@
     {% if  conteudo_page == 'Gestão Turmas' %}
         {% include 'Escola/partials/gestao_turmas/gestao_.html' %}
     {% endif %}  
+    <!--Impressos-->
+    {% if  conteudo_page == "imprime_turma" %}
+        {% include 'Escola/partials/impressos/impresso_turmas.html' %}
+    {% endif %}  
    
     
-
+   
 
     
     <!--Ferramentas-->
