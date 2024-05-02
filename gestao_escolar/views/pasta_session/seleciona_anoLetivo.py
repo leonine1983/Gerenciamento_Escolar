@@ -8,10 +8,11 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def seleciona_anoLetivo_session(request, pk):
     ano = AnoLetivo.objects.get(id=pk)  # Obtendo o objeto AnoLetivo pelo ID
+    print(f'ano é {ano}')
     if ano:
         request.session['anoLetivo_id'] = ano.id  # Armazenando apenas o ID
         
-        request.session['anoLetivo_nome'] = str(ano.ano) # Armazenando apenas o nome do ano, por exemplo
+        request.session['anoLetivo_nome'] = str(ano.ano) # Armazenando apenas o nome do ano, por exemplo    
         
 
 

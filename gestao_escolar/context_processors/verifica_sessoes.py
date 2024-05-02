@@ -2,6 +2,8 @@ from django.shortcuts import redirect
 from django.urls import reverse
 
 
+from django.shortcuts import redirect, reverse
+
 # Define um decorador chamado verifica_sessoes, que aceita uma função de visualização (view_func) como argumento
 def verifica_sessoes(view_func):
     # Define uma função interna chamada wrapper que recebe request e quaisquer argumentos adicionais

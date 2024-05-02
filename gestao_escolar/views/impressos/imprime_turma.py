@@ -20,4 +20,5 @@ class Imprime_Turmas (LoginRequiredMixin, SuccessMessageMixin, ListView):
         context ['list_escola'] = escolas
         context ['conteudo_page'] = "imprime_turma"
         
+        
         return context

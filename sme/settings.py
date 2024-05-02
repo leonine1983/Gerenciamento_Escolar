@@ -67,7 +67,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 #'gestao_escolar.context_processors.verifica_sessoes',
-                #'gestao_escolar.context_processors.list_turmas',
+                'gestao_escolar.context_processors.list_turmas',
                 'controle_estoque.msg_context_processors.message_user_contexto',                
                 'rh.msg_context_processors.message_user_contexto'
                 
@@ -185,3 +185,4 @@ CSRF_COOKIE_SECURE = False
 
 # 3º Define o tempo de sessão para 1 hora (3600 segundos)
 #SESSION_COOKIE_AGE = 3600
+LOGIN_URL = 'admin_acessos:login_create'

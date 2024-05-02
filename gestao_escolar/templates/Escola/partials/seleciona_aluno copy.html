@@ -129,7 +129,135 @@
                       {{ form.non_field_errors }}
                       {% csrf_token %}
                       <div class="form-group p-4" style='background-color: rgb(248, 242, 242);'>
-                        {{form.as_div}}        
+                        <span>Informações Básicas</span>
+                        <div class="border p-3 row row-cols-3 rounded-3 bg-light-subtle mb-5">
+                          <div class="col-5">                            
+                            <p class="p-0">Nome Completo do Aluno*:</p>
+                            {{form.nome_completo}}
+                          </div>
+                          <div class="col">
+                            <p>Nome Social:</p>
+                            {{form.nome_completo}}
+                          </div>
+                          <div class="col">
+                            <p>Data de Nascimento*:</p>
+                            {{form.data_nascimento}}
+                          </div>
+                          <div class="col">
+                            <p>Gênero Sexual*:</p>
+                            {{form.sexo}}
+                          </div>
+                          <div class="col">
+                            <p>Etnia do aluno*:</p>
+                            {{form.etnia}}
+                          </div>
+                          <div class="col">
+                            <p>Etnia do aluno*:</p>
+                            {{form.etnia}}
+                          </div>
+                          <div class="col">
+                            <p>Telefone do Aluno*:</p>
+                            {{form.tel_celular_aluno}}
+                          </div>
+                          <div class="col">
+                            <p>Email do aluno*:</p>
+                            {{form.email}}
+                          </div>
+                        </div>
+                        <span class=" mt-4">Dados de parentesco</span>
+                        <div class="border p-3 row row-cols-2 rounded-3 bg-light-subtle mb-5">                          
+                          <div class="col">
+                            <p>Nome da mãe*:</p>
+                            {{form.nome_mae}}
+                          </div>
+                          <div class="col">
+                            <p>Número do celular da mãe*:</p>
+                            {{form.tel_celular_mae}}
+                          </div>
+                          <div class="col">
+                            <p>Nome do pai:</p>
+                            {{form.nome_pai}}
+                          </div>
+                          <div class="col">
+                            <p>Número do celular do pai:</p>
+                            {{form.tel_celular_pai}}
+                          </div>
+                        </div>
+
+                        <span class=" mt-4">Documentação</span>
+                        <div class="border p-3 row row-cols-2 rounded-3 bg-light-subtle mb-5">                          
+                          <div class="col">
+                            <p>Naturalidade (cidade onde o aluno nasceu)*:</p>
+                            {{form.naturalidade}}
+                          </div>
+                          <div class="col">
+                            <p>País onde o aluno nasceu*:</p>
+                            {{form.nacionalidade}}
+                          </div>                          
+                        </div>
+
+                        <span class=" mt-4">Se extrangeiro</span>
+                        <div class="border p-3 row row-cols-2 rounded-3 bg-light-subtle mb-5">                          
+                          <div class="col">
+                            <p>País de origem:</p>
+                            {{form.pais_origem}}
+                          </div>
+                          <div class="col">
+                            <p>Data de entrada no Brasil:</p>
+                            {{form.data_entrada_no_pais}}
+                          </div> 
+                          <div class="col">
+                            <p>Documento de extangeiro (passaporte):</p>
+                            {{form.documento_estrangeiro}}
+                          </div>                          
+                        </div>
+
+                        <span class=" mt-4">Informações de Extras</span>
+                        <div class="border p-3 row row-cols-6 rounded-3 bg-light-subtle mb-5">                          
+                          <div class="col">
+                            <p>Deficiência Física?:</p>
+                            {{form.deficiencia_aluno}}
+                          </div>
+                          <div class="col">
+                            <p>Tipo sanguíneo:</p>
+                            {{form.tipo_sanguineo}}
+                          </div> 
+                          <div class="col text-center ">
+                            <p class="mb-3">Síndrome de Donw:</p>
+                            {{form.sindrome_de_Down}}
+                          </div>  
+                          <div class="col text-center mb-3">
+                            <p>Vacina contra a Covid 19:</p>
+                            {{form.vacina_covid_19}}
+                          </div>    
+                          <div class="col text-center">
+                            <p>Quantidade de doses (Se tomou a vacina contra a covid19):</p>
+                            {{form.dose_vacina_covid_19}}
+                          </div>   
+                          <div class="col text-center">
+                            <p>Necessita Educação Especial?</p>
+                            {{form.necessita_edu_especial}}
+                          </div>                    
+                        </div>
+
+                        <span class=" mt-4">Outros</span>
+                        <div class="border p-3 row row-cols-4 rounded-3 bg-light-subtle mb-5">                          
+                          <div class="col mb-3">
+                            <p class="mb-3">Beneficiário do Bolsa Família:</p>
+                            {{form.beneficiario_aux_Brasil}}
+                          </div>
+                          <div class="col">
+                            <p class="mb-3">Quilombola:</p>
+                            {{form.quilombola}}
+                          </div> 
+                          <div class="col text-center ">
+                            <p class="mb-3">Síndrome de Donw:</p>
+                            {{form.sindrome_de_Down}}
+                          </div>  
+                          <div class="col text-center">
+                            <p class="mb-3">Irmão Gêmeo:</p>
+                            {{form.irmao_gemeo}}
+                          </div>           
                         </div>
                       </div> 
                       <button class="btn btn-sm btn-primary p-1 w-100" type="submit">Criar registro do aluno <i class="fa-sharp fa-solid fa-people fs-5"></i></button>

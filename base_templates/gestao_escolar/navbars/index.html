@@ -25,8 +25,11 @@
             <i class="fa-solid fa-print"></i> Relatórios
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Quantidade de Turmas</a></li>
+            <li>                      
+              <a class="dropdown-item" href='{% url "Gestao_Escolar:imprime_list_turmas" %}'>Relação de Turmas</a>
+            </li>
           </ul>
+         
         </li>
       </ul>
     </div>

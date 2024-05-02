@@ -386,11 +386,11 @@ turno = {
 
 class Turmas(models.Model):
     nome = models.CharField(max_length=10)
+    descritivo_turma = models.CharField(max_length=10, default='única')
     escola = models.ForeignKey(Escola, on_delete=models.CASCADE)
     ano_letivo = models.ForeignKey(AnoLetivo, on_delete=models.CASCADE)
     serie =  models.ForeignKey(Serie_Escolar, on_delete=models.CASCADE)
-    turno = models.CharField(choices=turno, null=False, default=1, max_length=12)
-    
+    turno = models.CharField(choices=turno, null=False, default=1, max_length=12)    
     quantidade_vagas = models.CharField(max_length=2, default=36)
     turma_multiserie = models.BooleanField(null=True, default=False)
 
