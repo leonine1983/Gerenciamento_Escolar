@@ -23,12 +23,19 @@ class Alunos_form(forms.ModelForm):
 
     nome_completo = forms.CharField(
         label='Nome Completo (Igual ao do RG):',
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
+        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 text-info col m-2 rounded-1'}),
+    )
+    data_nascimento = forms.DateField(
+        label='Data de Nascimento:',
+        widget=forms.DateInput(attrs={'class': 'form-control border border-info p-3 pb-3  text-info col2 m-2 rounded-1', 'type': 'date'}),        
+    )
+    nome_mae = forms.CharField(        
+        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 text-info col m-2 rounded-1'}),
     )
 
     class Meta:
         model = Alunos
-        fields = ['nome_completo']
+        fields = ['nome_completo', 'data_nascimento', 'nome_mae']
 
 
 choice_estado_civil = {

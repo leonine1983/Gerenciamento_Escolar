@@ -38,7 +38,8 @@ class Create_Alunos(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         aluno_query = self.get_queryset()                
         context['Alunos'] = aluno_query
         context['now'] = datetime.now()
-        context['conteudo_page'] = 'Registrar Alunos'              
+        context['conteudo_page'] = 'Registrar Alunos'       
+        context['bottom'] = 'Avançar'          
         context['page_ajuda'] = "<div class='m-2'><b>Nessa área, definimos todos os dados para a celebração do contrato com o profissional."     
         return context   
     """
