@@ -6,8 +6,8 @@ from django.urls import reverse_lazy
 class Prefeitura_Update (UpdateView):
     model = Prefeitura
     fields = ['instituto', 'endereco', 'pessoa_publica', 'nutricionista1', 'cfn1', 'nutricionista2', 'cfn2']
-    template_name = 'Controle_Estoque/prefeitura/prefeitura_cadastro.html'
-    success_url = reverse_lazy('Controle_Estoque:prefeitura_view')
+    template_name = 'controle_estoque/prefeitura/prefeitura_cadastro.html'
+    success_url = reverse_lazy('controle_estoque:prefeitura_view')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)        

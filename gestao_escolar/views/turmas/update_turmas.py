@@ -7,9 +7,11 @@ from django.urls import reverse_lazy
 from .turmas_form import Turma_form
 
 
-class Update_Turmas(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+class UpdateTurmas(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Turmas
+    #form_class = Alunos_form
     form_class = Turma_form
+    #fields = ['nome']
     template_name = 'Escola/inicio.html'
     success_message = "Atualizado com sucesso"
     success_url = reverse_lazy('Gestao_Escolar:GE_Escola_inicio')
@@ -24,9 +26,8 @@ class Update_Turmas(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         context['button'] = "Atualizar cadastro da"
         context['Alunos'] = Turmas.objects.all()
         context['now'] = datetime.now()
-        context['update'] = "update"
-        
-        context['conteudo_page'] = 'Atualização do cadastro do aluno'      
+        context['update'] = "update"        
+        context['conteudo_page'] = 'Criar Turmas'     
         
         context['page_ajuda'] = "<div class='m-2'><b>Nessa área, definimos todos os dados para a celebração do contrato com o profissional. </b>\
             <hr>\
@@ -52,15 +53,3 @@ class Update_Turmas(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
                 </div>"            
         
         return context
-
-
-   
-
-    def form_valid(self, form):
-        # Calcular a idade
-        data_nascimento = form.cleaned_data['data_nascimento']
-        ano_atual = date.today().year
-        idade = ano_atual - data_nascimento.year - ((ano_atual, data_nascimento.month, data_nascimento.day) < (ano_atual, date.today().month, date.today().day))
-        form.instance.idade = idade
-        print(f'Essa é a idade do aluno: {idade}')
-        return super().form_valid(form)

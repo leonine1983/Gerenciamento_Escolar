@@ -8,7 +8,7 @@ from django.views.generic import DetailView
 
 class ProgramaEstoque_Ver_detailView(DetailView):
     model = ProgramacaoSaidaEstoque
-    template_name = 'Controle_Estoque/programa_estoque/program_lista.html'
+    template_name = 'controle_estoque/programa_estoque/program_lista.html'
     context_object_name = 'programacao'
 
 

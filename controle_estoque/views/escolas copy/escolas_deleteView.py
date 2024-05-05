@@ -1,4 +1,4 @@
-from Controle_Estoque.models import Escolas_model
+from controle_estoque.models import Escolas_model
 from django.views.generic import DeleteView
 from django.utils.safestring import mark_safe
 from django.urls import reverse_lazy
@@ -8,8 +8,8 @@ from django.urls import reverse_lazy
 
 class Escolas_DeleteView(DeleteView):
     model = Escolas_model
-    template_name = 'Controle_Estoque/escolas/escola_cadastro.html'
-    success_url =  reverse_lazy('Controle_Estoque:escola_lista')
+    template_name = 'controle_estoque/escolas/escola_cadastro.html'
+    success_url =  reverse_lazy('controle_estoque:escola_lista')
 
     def get_context_data(self, **kwargs):
         dados = Escolas_model.objects.filter(pk=self.kwargs['pk'])

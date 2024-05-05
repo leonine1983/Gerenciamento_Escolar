@@ -10,6 +10,13 @@ class Forms_alimento(forms.ModelForm):
         widgets = {            
             'prefeitura': forms.Select(attrs={'disabled':True}),
             'prefeitura': HiddenInput(),
+            'nome': forms.TextInput(attrs={'class':'form-control'}),
+            'categoria_alimento': forms.Select(attrs={'class':'form-control'}),
+            'quantidade_disponivel': forms.NumberInput(attrs={'class':'form-control'}),            
+            'unidade': forms.TextInput(attrs={'class':'form-control'}),
+            
+            
         }
+
 
 

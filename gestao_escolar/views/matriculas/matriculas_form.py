@@ -85,7 +85,6 @@ class Matricula_form(forms.ModelForm):
                 self.fields['serie_multiseriada'].widget = forms.Select(attrs={'class': 'border border-info p-2 pb-1 bg-transparent text-info col m-2 rounded-1'})
                 self.fields['serie_multiseriada'].queryset = Serie_Escolar.objects.all()
             else:
-                print(f'essa e a turma {n.turma_multiserie}')
                 self.fields['serie_multiseriada'].widget = forms.HiddenInput()
                 self.fields['serie_multiseriada'].label = ""
     

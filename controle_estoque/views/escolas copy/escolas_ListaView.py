@@ -1,5 +1,5 @@
-from Controle_Estoque.models import Escolas_model
-from Controle_Estoque.form import FornecedorForm
+from controle_estoque.models import Escolas_model
+from controle_estoque.form import FornecedorForm
 from django.utils.safestring import mark_safe
 from django.views.generic import ListView
 
@@ -8,7 +8,7 @@ from django.views.generic import ListView
 
 class Escolas_ListView(ListView):
     model = Escolas_model
-    template_name = 'Controle_Estoque/escolas/escola_lista.html'
+    template_name = 'controle_estoque/escolas/escola_lista.html'
 
 
     def get_context_data(self, **kwargs):        

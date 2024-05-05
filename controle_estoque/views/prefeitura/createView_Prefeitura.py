@@ -5,5 +5,5 @@ from django.urls import reverse_lazy
 class Prefeitura_Create (CreateView):
     model = Prefeitura
     fields = '__all__'
-    template_name = 'Controle_Estoque/prefeitura/prefeitura_cadastro.html'
-    success_url = reverse_lazy('Controle_Estoque:prefeitura_view')
+    template_name = 'controle_estoque/prefeitura/prefeitura_cadastro.html'
+    success_url = reverse_lazy('controle_estoque:prefeitura_view')

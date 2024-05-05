@@ -9,8 +9,8 @@ from django.urls import reverse_lazy
 
 class ProgramaEstoque_DeleteView(DeleteView):
     model = ProgramacaoSaidaEstoque
-    template_name = 'Controle_Estoque/programa_estoque/program_cadastro.html'
-    success_url =  reverse_lazy('Controle_Estoque:program_estoque_listaView')
+    template_name = 'controle_estoque/programa_estoque/program_cadastro.html'
+    success_url =  reverse_lazy('controle_estoque:program_estoque_listaView')
 
     def get_context_data(self, **kwargs):
         dados = ProgramacaoSaidaEstoque.objects.filter(pk=self.kwargs['pk'])

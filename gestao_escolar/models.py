@@ -131,7 +131,7 @@ class Alunos(models.Model):
     #sexo = models.ForeignKey(Sexo, on_delete= models.CASCADE, verbose_name='Gênero sexual do aluno*')
     data_nascimento = models.DateField(verbose_name='Data de Nascimento*')    
     idade = models.IntegerField(null=True, blank=True)
-    etnia = models.ForeignKey(Etnia, on_delete=models.CASCADE, verbose_name='Etnia do aluno*:')
+    etnia = models.ForeignKey(Etnia, null=True, on_delete=models.CASCADE, verbose_name='Etnia do aluno*:')
     #aluno_inativo = models.BooleanField(default=False, null=True)
     tel_celular_aluno = models.CharField(max_length=30, null=False, default='Celular 01', verbose_name='Nº de telefone do aluno*')    
     email = models.EmailField(max_length=200, null=False, verbose_name='Email*')
@@ -153,6 +153,8 @@ class Alunos(models.Model):
     irmao_gemeo = models.BooleanField(default=False, null=True, verbose_name='Selecione se o aluno possui irmão(s) gêmeos')
     vacina_covid_19 = models.BooleanField(default=False, null=True,verbose_name='Selecione se o aluno tomou vacina contra a covid 19' )
     dose_vacina_covid_19 = models.IntegerField(null=True, blank=True, verbose_name='Preencha se o aluno tomou alguma dose da covid 19' )
+    res_cadastro = models.CharField(max_length=120, null=True, default='Quem criou o cadastro')    
+    res_atualiza_cadastro = models.CharField(max_length=120, null=True, default='Quem atualizou')    
 
     def __str__(self):
         return self.nome_completo 
@@ -386,11 +388,11 @@ turno = {
 
 class Turmas(models.Model):
     nome = models.CharField(max_length=10)
+    descritivo_turma = models.CharField(max_length=10, default='única')
     escola = models.ForeignKey(Escola, on_delete=models.CASCADE)
     ano_letivo = models.ForeignKey(AnoLetivo, on_delete=models.CASCADE)
     serie =  models.ForeignKey(Serie_Escolar, on_delete=models.CASCADE)
-    turno = models.CharField(choices=turno, null=False, default=1, max_length=12)
-    
+    turno = models.CharField(choices=turno, null=False, default=1, max_length=12)    
     quantidade_vagas = models.CharField(max_length=2, default=36)
     turma_multiserie = models.BooleanField(null=True, default=False)
 

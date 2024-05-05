@@ -10,8 +10,8 @@ from django.urls import reverse_lazy
 class ProgramaEstoque_CreateView(CreateView):
     model = ProgramacaoSaidaEstoque
     form_class = Program_saida_form
-    template_name = 'Controle_Estoque/programa_estoque/program_cadastro.html'
-    success_url =  reverse_lazy('Controle_Estoque:program_estoque_listaView')
+    template_name = 'controle_estoque/programa_estoque/program_cadastro.html'
+    success_url =  reverse_lazy('controle_estoque:program_estoque_listaView')
     
 
     def get_context_data(self, **kwargs):

@@ -8,7 +8,7 @@ from django.views.generic import ListView
 
 class ProgramaEstoque_ListView(ListView):
     model = ProgramacaoSaidaEstoque
-    template_name = 'Controle_Estoque/programa_estoque/program_lista.html'
+    template_name = 'controle_estoque/programa_estoque/program_lista.html'
 
 
     def get_context_data(self, **kwargs):

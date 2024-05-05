@@ -1,9 +1,11 @@
 
 from django import forms
+from django.utils.safestring import mark_safe
 import random
 from rh.models import Uf_Unidade_Federativa, Sexo
 from gestao_escolar.models import (Alunos, Alunos_Documentacao, Etnia, Nacionalidade,
                                      Pais_origem, Deficiencia_aluno)
+
                                      
 
 choices = {
@@ -22,129 +24,21 @@ choices = {
 class Alunos_form(forms.ModelForm):
 
     nome_completo = forms.CharField(
-        label='Nome Social (Se possuir):',
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-    )
-
-    nome_social = forms.CharField(
-        label='Nome Social (Se possuir):',
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    )   
-
-
-    idade = forms.CharField(
-        label='Nome Social (Se possuir):',
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    )
-    sexo = forms.ModelChoiceField(
-        label='Sexo:',
-        queryset=Sexo.objects.all(),
-        widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1 bg-transparent text-info col m-2 rounded-1'}),
+        label='Nome Completo (Igual ao do RG):',
+        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 text-info col m-2 rounded-1'}),
     )
     data_nascimento = forms.DateField(
         label='Data de Nascimento:',
-        widget=forms.DateInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col2 m-2 rounded-1', 'type': 'date'}),        
+        widget=forms.DateInput(attrs={'class': 'form-control border border-info p-3 pb-3  text-info col2 m-2 rounded-1', 'type': 'date'}),        
     )
-    etnia = forms.ModelChoiceField(
-        queryset=Etnia.objects.all(),
-        widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1 bg-transparent text-info col m-2 rounded-1'}),
-    )
-    tel_celular_aluno = forms.CharField(        
-        widget=forms.TextInput(attrs={'class': 'form-control  border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=True
-    )
-    email = forms.CharField(        
-        widget=forms.EmailInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    )
-    nome_mae = forms.CharField(        
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-    )
-    tel_celular_mae = forms.CharField(        
-        widget=forms.TextInput(attrs={'class': 'form-control  border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    )
-    nome_pai = forms.CharField(        
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    )
-    
-    tel_celular_pai = forms.CharField(        
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    )
-    naturalidade = forms.CharField(        
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-    )
-    nacionalidade = forms.ModelChoiceField(
-        queryset=Nacionalidade.objects.all(),
-        widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1 bg-transparent text-info col m-2 rounded-1'}),
-    )
-    pais_origem = forms.ModelChoiceField(
-        queryset=Pais_origem.objects.all(),
-        widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    )
-    data_entrada_no_pais = forms.DateField(
-        widget=forms.DateInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col2 m-2 rounded-1', 'type': 'date'}),      
-        required=False  
-    )
-    documento_estrangeiro = forms.CharField(        
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    )
-    deficiencia_aluno = forms.ModelChoiceField(
-        queryset=Deficiencia_aluno.objects.all(),
-        widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1 bg-transparent text-info col m-2 rounded-1'}),
-    )
-    tipo_sanguineo = forms.ChoiceField(
-    choices=choices,
-    widget=forms.Select(attrs={'class': ' border border-info p-2 pb-1 bg-transparent text-info col m-2 rounded-1'}),
-    required=False
+    nome_mae = forms.CharField(      
+        label=mark_safe('<i class="fa-solid fa-user-tie-hair"></i> Mãe'),
+        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 text-info col m-2 rounded-1'}),
     )
 
-    beneficiario_aux_Brasil = forms.BooleanField(   
-    label='Selecione se o aluno é beneficiário do Bolsa Família/Aux. Brasil',
-    widget = forms.CheckboxInput(attrs={'class': 'border border-info p-1 pb-1 bg-transparent text-info col m-2 rounded-1'}),
-    required=False        
-    )
-
-    necessita_edu_especial = forms.BooleanField(   
-    label='Selecione se o aluno é beneficiário do Bolsa Família/Aux. Brasil',
-    widget = forms.CheckboxInput(attrs={'class': 'border border-info p-1 pb-1 bg-transparent text-info col m-2 rounded-1'}),
-    required=False        
-    )
-    
-    sindrome_de_Down = forms.BooleanField(   
-    label='Selecione se o aluno é beneficiário do Bolsa Família/Aux. Brasil',
-    widget = forms.CheckboxInput(attrs={'class': 'border border-info p-1 pb-1 bg-transparent text-info col m-2 rounded-1'}),
-    required=False        
-    )
-    quilombola = forms.BooleanField(   
-    label='Selecione se o aluno é beneficiário do Bolsa Família/Aux. Brasil',
-    widget = forms.CheckboxInput(attrs={'class': 'border border-info p-1 pb-1 bg-transparent text-info col m-2 rounded-1'}),
-    required=False        
-    )
-    irmao_gemeo  = forms.BooleanField(   
-    label='Selecione se o aluno é beneficiário do Bolsa Família/Aux. Brasil',
-    widget = forms.CheckboxInput(attrs={'class': 'border border-info p-1 pb-1 bg-transparent text-info col m-2 rounded-1'}),
-    required=False        
-    )
-    vacina_covid_19  = forms.BooleanField(   
-        label='Selecione se o aluno é beneficiário do Bolsa Família/Aux. Brasil',
-        widget = forms.CheckboxInput(attrs={'class': 'border border-info p-1 pb-1 bg-transparent text-info col m-2 rounded-1'}),
-        required=False        
-    )
-    dose_vacina_covid_19 = forms.IntegerField(        
-        widget=forms.NumberInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    ) 
     class Meta:
         model = Alunos
-        fields = '__all__'
-        exclude = ['idade', 'aluno_inativo']
+        fields = ['nome_completo', 'data_nascimento', 'nome_mae']
 
 
 choice_estado_civil = {

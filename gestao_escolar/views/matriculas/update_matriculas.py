@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from .matriculas_form import Turma_form
 
 
-class Update_Turmas(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+class Update_Matricula(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Turmas
     #form_class = Alunos_form
     form_class = Turma_form

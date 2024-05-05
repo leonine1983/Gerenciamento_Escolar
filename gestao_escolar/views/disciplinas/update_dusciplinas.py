@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from .disciplina_form import Diciplina_form
 
 
-class Update_Turmas(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+class UpdateDisciplinas(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Disciplina
     # fields = ['nome']
     form_class = Diciplina_form

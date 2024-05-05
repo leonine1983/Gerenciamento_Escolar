@@ -1,6 +1,8 @@
 
 
 from pathlib import Path
+from django.contrib.messages import constants
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -15,7 +17,7 @@ SECRET_KEY = 'django-insecure-u7afypyeioy$6!z7+0_n9nhoj^zd4l=1$i5tewe7%v4llfr#9^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -31,7 +33,11 @@ INSTALLED_APPS = [
     'controle_estoque',
     'gestao_escolar',
     'rh',
-    'admin_acessos'
+    'admin_acessos',
+
+    'ckeditor',
+   
+
 
 ]
 
@@ -50,7 +56,9 @@ ROOT_URLCONF = 'sme.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'base_templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -58,10 +66,16 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                #'gestao_escolar.context_processors.verifica_sessoes',
+                'gestao_escolar.context_processors.list_turmas',
+                'controle_estoque.msg_context_processors.message_user_contexto',                
+                'rh.msg_context_processors.message_user_contexto'
+                
             ],
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'sme.wsgi.application'
 
@@ -99,9 +113,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
@@ -112,8 +126,63 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    BASE_DIR / 'base_static',
+    BASE_DIR / 'media'
+]
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Adicione o tipo MIME correto para arquivos JS
+
+import mimetypes
+mimetypes.add_type("text/javascript", ".js", True)
+
+
+# Security settings
+X_FRAME_OPTIONS = 'DENY'
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+
+# Message settings
+MESSAGE_TAGS = {
+    constants.DEBUG: 'alert-secondary',
+    constants.INFO: 'alert-info',
+    constants.SUCCESS: 'alert-success',
+    constants.WARNING: 'alert-warning',
+    constants.ERROR: 'alert-danger',
+}
+
+# DEFINIÇÕES DE SEGURANÇA PARA SESSÕES. 
+
+# 1º define o mecanismo de armazenamento de sessão para 'django.contrib.sessions.backends.cache' ou
+# o 'django.contrib.sessions.backends.db' conforme a preferência. Foi escolhido armazenamento em cache
+SESSION_ENGINE =   'django.contrib.sessions.backends.cache'
+
+# 2º define a chave de assinatura da sessão
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Strict'
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+
+# 3º Define o tempo de sessão para 1 hora (3600 segundos)
+#SESSION_COOKIE_AGE = 3600
+LOGIN_URL = 'admin_acessos:login_create'

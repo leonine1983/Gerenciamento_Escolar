@@ -1,7 +1,7 @@
-{% extends 'Geral_Gestao_Escola/template.html' %}
+{% extends 'gestao_escolar/template.html' %}
 {% load static %}
 {% block script_head %}
- {% include 'Geral_Gestao_Escola/links_modal.html' %}
+ {% include 'gestao_escolar/links_modal.html' %}
 <script src="{% static 'select2/js/select2.full.min.js' %}"></script>
 <style>
     #id_aluno_matricula{
@@ -37,20 +37,35 @@
     .fs-7{
         font-size: 1rem !important;
     }
+    .fs-8{
+        font-size: 0.8rem !important;
+    }
     .bg-secondary-subtle{
         background-color: #666;
     }
 
     .modal-content{        
-        width: 95vw!important;
-        height: 95vh!important;
+        width: 90vw!important;
+        min-height: 90vh!important;
     }
     .modal-dialog{
         margin-left: 2.5%!important;
     }
     .modal-body{
-        height: 10rem!important;
+        min-height: 10rem!important;
+        width: 90%;
+        margin: 2% auto;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+        border-bottom-left-radius: 1em;
+        border-bottom-right-radius: 1em;
     } 
+    .modal_windows_title{
+        margin:-2rem -1rem -1rem -1rem;
+        box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px; 
+        background:#009BFF;
+        color:#fff;
+        border-top-left-radius: 1em;
+    border-top-right-radius: 1em;}
     .bg-neutral_light{background-color: rgb(183,200,185);}
     .bg-pale_green{background-color: rgb(212,236,216);}
     tr { vertical-align: middle !important; text-align: center !important;}
@@ -75,19 +90,21 @@
         <!-- informações-->
         <div class=" rounded-top-2  bg-body-tertiary " style='margin:-1.4rem 0rem 1rem 0rem !important'>
             <div class='mb-2'>
-                {% include 'Geral_Gestao_Escola/navbars/index.html' %}    
+                {% include 'gestao_escolar/navbars/index.html' %}    
             </div>
-            <div class='mt-1 row w-100 bg-black ml-1 gap-3'>
-                <div class="card text-center col">
+            <div class='mt-1 row w-100  ml-1 gap-3'>
+                <div class="card text-left col">
                     <div class="card-header bg-info text-light text-uppercase">
                     Turmas 
                     </div>
                     <div class="card-body">
-                    <h5 class="card-title">Para dar continuidade, vamos precisar que você escolha uma escola que mais lhe agrada. 😊</h5>
-                    <button class="btn btn-primary" onclick="location.reload()">Selecionar Escola</button>        
-                    </div>
-                    <div class="card-footer text-muted">
-                    <p>Data e horário do acesso: {{ now }}</p>
+                        {% for t  in turmas %}
+                            <ul class='list-group'>
+                                <li class='list-group-item border'>
+                                    <span class="text-capitalize fw-bold"> {{t.nome}} {{t.descritivo_turma}}</span></span> | {{t.turno}} | {% if t.turma_multiserie  %} Multiseriada {% else %} Normal {% endif %} | {{t.quantidade_vagas}} vagas
+                                </li>                                                           
+                            </ul>
+                        {% endfor %}
                     </div>
                 </div>  
                 
@@ -188,9 +205,13 @@
     {% if  conteudo_page == 'Gestão Turmas' %}
         {% include 'Escola/partials/gestao_turmas/gestao_.html' %}
     {% endif %}  
+    <!--Impressos-->
+    {% if  conteudo_page == "imprime_turma" %}
+        {% include 'Escola/partials/impressos/impresso_turmas.html' %}
+    {% endif %}  
    
     
-
+   
 
     
     <!--Ferramentas-->
@@ -202,9 +223,7 @@
     <!--Condicionais de verificação de existencia de registros-->    
     
     {% if 'escola_id' not in request.session %}
-        {% include 'Escola/partials/seleciona_escola.html' %}
-
-        
+        {% include 'Escola/partials/seleciona_escola.html' %}        
     {% endif %}
     {% if not condicional_aluno.exists %}
         {% include 'Escola/partials/verifica_sem_registros/n_aluno.html' %}

@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from .disciplina_grade_form import Diciplina_Grade_form
 
 
-class Update_Turmas(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+class Update_Disciplinas(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Disciplina
     # fields = ['nome']
     form_class = Diciplina_Grade_form

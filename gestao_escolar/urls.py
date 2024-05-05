@@ -22,7 +22,7 @@ urlpatterns = [
     # Turmas
     path('gestao_escolar/Turmas/', Create_turmas.as_view(), name="GE_Escola_turmas"),
     path('gestao_escolar/Turmas/all', ListView_Escola.as_view(), name="GE_Escola_turmas_lista"),
-    path('gestao_escolar/Turmas/atualiza/<int:pk>', Update_Turmas.as_view(), name="GE_Escola_Turmas_update"),    
+    path('gestao_escolar/Turmas/atualiza/<int:pk>', UpdateTurmas.as_view(), name="GE_Escola_Turmas_update"),    
     path('gestao_escolar/Turmas/delete/<int:pk>', Delete_Turmas.as_view(), name="GE_Escola_Turmas_delete"),
 
     # Alunos
@@ -42,7 +42,7 @@ urlpatterns = [
     # Matriculas retorno aluno
     path('gestao_escolar/Matricula/create/aluno/<int:pk>', Create_Matriculas_Retorno_alunos.as_view(), name="GE_Escola_Matricula_create_aluno"), 
    
-    path('gestao_escolar/Matricula/atualiza/<int:pk>', Update_Turmas.as_view(), name="GE_Escola_Matricula_update"),    
+    path('gestao_escolar/Matricula/atualiza/<int:pk>', Update_Matricula.as_view(), name="GE_Escola_Matricula_update"),    
     path('gestao_escolar/Matricula/delete/<int:pk>', Delete_Turmas.as_view(), name="GE_Escola_Matricula_delete"),
 
     # Remanejamento
@@ -72,6 +72,11 @@ urlpatterns = [
     # Gestão de Turmas
     path('gestao_escolar/Gestao_Turmas/', Create_Notas.as_view(), name="NotasAluno_all_create"),  
     path('gestao_escolar/Gestao_Turmas/turma/<int:pk>', Create_Notas_pk.as_view(), name="NotasAluno_one_create"),  
+
+    
+    # IMPRESSOS
+    path('turmas/impressao', Imprime_Turmas.as_view(), name='imprime_list_turmas'),
+
 
     # Ferramentas
     # path('image-to-doc/', Image_to_doc, name='image_to_doc'),
