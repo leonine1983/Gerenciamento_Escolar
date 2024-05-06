@@ -7,6 +7,7 @@ from datetime import datetime, date
 from django.urls import reverse_lazy
 from .alunos_form import *
 from django.db.models import Q
+from django.shortcuts import redirect
 
 
 class Create_Alunos(LoginRequiredMixin, SuccessMessageMixin, CreateView):
@@ -45,6 +46,8 @@ class Create_Alunos(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         context['now'] = datetime.now()    
         context['bottom'] = 'Avançar'          
         context['page_ajuda'] = "<div class='m-2'><b>Nessa área, definimos todos os dados para a celebração do contrato com o profissional."     
+     
+      
         return context   
     """
     def form_valid(self, form):
@@ -59,9 +62,11 @@ class Create_Alunos(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         # Verifica se já existe um aluno com o mesmo nome
         nome_completo = form.cleaned_data['nome_completo']
-        if Alunos.objects.filter(nome_completo__iexact=nome_completo).exists():
-            # Se o aluno já existe, mostra uma mensagem de erro
-            return HttpResponseBadRequest("Já existe um aluno com este nome. Por favor, verifique o nome do aluno e tente novamente.")
+        nome_mae = form.cleaned_data['nome_mae']
+        #if Alunos.objects.filter(nome_completo__iexact=nome_completo).exists():
+        if Alunos.objects.filter(nome_completo__icontains=nome_completo, nome_mae__icontains = nome_mae).exists():
+            return redirect('Gestao_Escolar:alunos_encontred', nome_completo=nome_completo, nome_mae=nome_mae)
+
         
         # Calcular a idade
         data_nascimento = form.cleaned_data['data_nascimento']

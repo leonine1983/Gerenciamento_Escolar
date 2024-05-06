@@ -129,7 +129,7 @@ class Alunos(models.Model):
     nome_completo = models.CharField(max_length=120, null=False, default='Nome completo do aluno', verbose_name='Nome completo do aluno*')    
     nome_social = models.CharField(max_length=30, null=True, blank=True, default='')
     #sexo = models.ForeignKey(Sexo, on_delete= models.CASCADE, verbose_name='Gênero sexual do aluno*')
-    data_nascimento = models.DateField(verbose_name='Data de Nascimento*')    
+    data_nascimento = models.DateField(verbose_name='Data de Nascimento*', null=True)    
     idade = models.IntegerField(null=True, blank=True)
     etnia = models.ForeignKey(Etnia, null=True, on_delete=models.CASCADE, verbose_name='Etnia do aluno*:')
     #aluno_inativo = models.BooleanField(default=False, null=True)

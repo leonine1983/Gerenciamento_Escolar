@@ -1,22 +1,36 @@
-class Alunos_form(forms.ModelForm):
 
-    nome_completo = forms.CharField(
-        label='Nome Social (Se possuir):',
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-    )
+from django import forms
+from django.utils.safestring import mark_safe
+from rh.models import Sexo
+from gestao_escolar.models import (Alunos, Etnia, Nacionalidade,
+                                     Pais_origem, Deficiencia_aluno)
+
+
+choices = {
+    ('1','A+'),
+    ('2','A-'),
+    ('3','B+'),
+    ('4','B-'),
+    ('5','AB+'),
+    ('6','AB-'),
+    ('7','O+'),
+    ('8','O-'),    
+    ('0','Não informado')
+}
+
+
+class Alunos_form_etapa2(forms.ModelForm):
 
     nome_social = forms.CharField(
         label='Nome Social (Se possuir):',
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
         required=False
     )   
-
-
-    idade = forms.CharField(
-        label='Nome Social (Se possuir):',
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
+    data_nascimento = forms.DateField(
+        label='Data de Nascimento:',
+        widget=forms.DateInput(attrs={'class': 'form-control border border-info p-3 pb-3  text-info col2 m-2 rounded-1', 'type': 'date'}),        
     )
+    
     sexo = forms.ModelChoiceField(
         label='Sexo:',
         queryset=Sexo.objects.all(),
@@ -27,7 +41,8 @@ class Alunos_form(forms.ModelForm):
         queryset=Etnia.objects.all(),
         widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1 bg-transparent text-info col m-2 rounded-1'}),
     )
-    tel_celular_aluno = forms.CharField(        
+    tel_celular_aluno = forms.CharField(   
+        label=mark_safe('<i class="fa-brands fa-whatsapp text-success"></i> Telefone celular do aluno'),   
         widget=forms.TextInput(attrs={'class': 'form-control  border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
         required=True
     )
@@ -36,7 +51,8 @@ class Alunos_form(forms.ModelForm):
         required=False
     )
    
-    tel_celular_mae = forms.CharField(        
+    tel_celular_mae = forms.CharField(  
+        label=mark_safe('<i class="fa-brands fa-whatsapp text-success"></i> Telefone celular da mãe'),      
         widget=forms.TextInput(attrs={'class': 'form-control  border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
         required=False
     )
@@ -45,13 +61,15 @@ class Alunos_form(forms.ModelForm):
         required=False
     )
     
-    tel_celular_pai = forms.CharField(        
+    tel_celular_pai = forms.CharField(      
+        label=mark_safe('<i class="fa-brands fa-whatsapp text-success"></i> Telefone celular do pai'),    
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
         required=False
     )
     naturalidade = forms.CharField(        
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
     )
+    """
     nacionalidade = forms.ModelChoiceField(
         queryset=Nacionalidade.objects.all(),
         widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1 bg-transparent text-info col m-2 rounded-1'}),
@@ -115,7 +133,13 @@ class Alunos_form(forms.ModelForm):
         widget=forms.NumberInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
         required=False
     ) 
+    """
     class Meta:
         model = Alunos
         fields = '__all__'
-        exclude = ['idade', 'aluno_inativo']
+        exclude = ['idade', 
+                   'aluno_inativo', 'nome_completo',  
+                       'nacionalidade', 'pais_origem', 'data_entrada_no_pais', 
+                       'documento_estrangeiro', 'deficiencia_aluno', 'tipo_sanguineo', 
+                       'beneficiario_aux_Brasil', 'necessita_edu_especial', 'sindrome_de_Down', 
+                       'quilombola', 'irmao_gemeo', 'vacina_covid_19', 'dose_vacina_covid_19', 'res_cadastro', 'res_atualiza_cadastro' ]
