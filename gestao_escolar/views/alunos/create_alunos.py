@@ -34,11 +34,15 @@ class Create_Alunos(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def get_context_data(self, **kwargs):        
         context = super().get_context_data(**kwargs)        
-        context['titulo_page'] = 'Alunos'  
+        context['titulo_page'] = 'Alunos'          
+        context['conteudo_page'] = 'Registrar Alunos'   
+        context['sub_Info_page'] = 'Antes de procedermos com o cadastro do aluno,\
+              é imprescindível realizar uma verificação para confirmar se ele já está\
+                  registrado no sistema. Essa medida visa evitar duplicatas e garantir a\
+                      integridade dos dados.' 
         aluno_query = self.get_queryset()                
         context['Alunos'] = aluno_query
-        context['now'] = datetime.now()
-        context['conteudo_page'] = 'Registrar Alunos'       
+        context['now'] = datetime.now()    
         context['bottom'] = 'Avançar'          
         context['page_ajuda'] = "<div class='m-2'><b>Nessa área, definimos todos os dados para a celebração do contrato com o profissional."     
         return context   
