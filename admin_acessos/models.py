@@ -41,4 +41,3 @@ def set_registro_teste(sender, **kwargs):
                     assunto="Olá!",
                     messagem="Bem vindo ao nosso sistema!",
                 )
-

@@ -28,23 +28,22 @@
                 <li class="nav-item bg-secondary-subtle" role="presentation">
                   <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Criar cadastro do aluno <i class="fa-sharp fa-solid fa-plus"></i> </button>
                 </li>  
-              </ul> 
-            <div  class='p-2 fs-6 border-danger-subtle border-right d-flex text-light' style= 'box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset; background-color:rgb(116, 145, 140)'>
-              <div  class="  mr-4  fs-5 d-flex  w-100">             
-                <div class="mt-0 mb-0" style='margin:auto;  width:90%; '>
-                  <form action="?" method="GET" class="form-inline">
-                      {% csrf_token %}            
-                      <div class="search-wrapper" style='margin:1rem auto 1rem auto;  width:110%; '>
-                        <input type="text" class="search-input rounded-3 m-0 mr-2 ml-2" placeholder="Buscar por aluno" name="busca-aluno" style='margin:1rem auto 1rem auto;  width:90%; ' >
-                        <button class="search-button" type="submit"  style='height: 10rem importamt;border-radius: 1rem;'><i class="fa-regular fa-user-magnifying-glass"></i></button>
-                      </div>
-                    </form> 
-                </div>             
-              
-              </div>              
-              </div> 
+              </ul>            
               <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">  
+                  <div  class='p-2 fs-6 border-danger-subtle border-right d-flex text-light' style= 'box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset; background-color:rgb(116, 145, 140)'>
+                    <div  class="  mr-4  fs-5 d-flex  w-100">             
+                      <div class="mt-0 mb-0" style='margin:auto;  width:90%; '>
+                        <form action="?" method="GET" class="form-inline">
+                          {% csrf_token %}            
+                          <div class="search-wrapper" style='margin:1rem auto 1rem auto;  width:110%; '>
+                            <input type="text" class="search-input rounded-3 m-0 mr-2 ml-2" placeholder="Buscar por aluno" name="busca-aluno" style='margin:1rem auto 1rem auto;  width:90%; ' >
+                            <button class="search-button" type="submit"  style='height: 10rem importamt;border-radius: 1rem;'><i class="fa-regular fa-user-magnifying-glass"></i></button>
+                          </div>
+                        </form> 
+                      </div> 
+                    </div>                                                   
+                  </div> 
                     <table class="table table-striped">
                         <thead>
                       <tr>
