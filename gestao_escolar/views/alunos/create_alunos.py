@@ -62,11 +62,16 @@ class Create_Alunos(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         # Verifica se já existe um aluno com o mesmo nome
         nome_completo = form.cleaned_data['nome_completo']
-        nome_mae = form.cleaned_data['nome_mae']
+        nome_mae = form.cleaned_data['nome_mae']        
         #if Alunos.objects.filter(nome_completo__iexact=nome_completo).exists():
         if Alunos.objects.filter(nome_completo__icontains=nome_completo, nome_mae__icontains = nome_mae).exists():
             return redirect('Gestao_Escolar:alunos_encontred', nome_completo=nome_completo, nome_mae=nome_mae)
-
+        
+        
+        if self.request.user.first_name:        
+            form.instance.res_cadastro = f'{self.request.user.first_name} {self.request.user.last_name}'
+        else:
+            form.instance.res_cadastro = self.request.user
         
         # Calcular a idade
         data_nascimento = form.cleaned_data['data_nascimento']

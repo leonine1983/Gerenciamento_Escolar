@@ -29,7 +29,11 @@ urlpatterns = [
     path('gestao_escolar/Alunos/', Create_Alunos.as_view(), name="GE_Escola_alunos_create"),
     path('gestao_escolar/Alunos/encontred/<str:nome_completo>/<str:nome_mae>', AlunosEcontred.as_view(), name="alunos_encontred"),
     path('gestao_escolar/Alunos/econtred', CreateAlunosConfirma.as_view(), name="alunos_create_encontred"),
-    path('gestao_escolar/Alunos/etapa_2/<int:pk>', CreateAlunosConfirmaEtapa2.as_view(), name="alunos_create_etapa2"),
+    path('gestao_escolar/Alunos/etapa_2/<int:pk>', CreateAlunosConfirmaEtapa2.as_view(), name="alunos_create_etapa2"),    
+    path('gestao_escolar/Alunos/etapa_3/<int:pk>', CreateAlunosConfirmaEtapa3.as_view(), name="alunos_create_etapa3"),
+    path('gestao_escolar/Alunos/etapa_4/<int:pk>', CreateAlunosConfirmaEtapa4.as_view(), name="alunos_create_etapa4"),
+    path('gestao_escolar/Alunos/etapa_5/<int:pk>', CreateAlunosConfirmaEtapa5.as_view(), name="alunos_create_etapa5"),
+    path('gestao_escolar/Alunos/perfil/<int:pk>', PerfilAluno.as_view(), name="alunos_perfil"),
 
 
     path('gestao_escolar/Alunos/<int:pk>', Create_Alunos_Document.as_view(), name="GE_alunos_create_document"),    

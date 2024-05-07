@@ -45,25 +45,4 @@ class CreateAlunosConfirma(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         context['now'] = datetime.now()    
         context['bottom'] = 'Avançar'          
         context['page_ajuda'] = "<div class='m-2'><b>Nessa área, definimos todos os dados para a celebração do contrato com o profissional."     
-     
-      
         return context   
-    """
-    def form_valid(self, form):
-        # Calcular a idade
-        data_nascimento = form.cleaned_data['data_nascimento']
-        ano_atual = date.today().year
-        idade = ano_atual - data_nascimento.year - ((ano_atual, data_nascimento.month, data_nascimento.day) < (ano_atual, date.today().month, date.today().day))
-        form.instance.idade = idade
-        print(f'Essa é a idade do aluno: {idade}')
-        return super().form_valid(form)
-    
-    def form_valid(self, form):        
-        # Calcular a idade
-        data_nascimento = form.cleaned_data['data_nascimento']
-        ano_atual = date.today().year
-        idade = ano_atual - data_nascimento.year - ((ano_atual, data_nascimento.month, data_nascimento.day) < (ano_atual, date.today().month, date.today().day))
-        form.instance.idade = idade
-        print(f'Essa é a idade do aluno: {idade}')
-        
-        return super().form_valid(form)"""

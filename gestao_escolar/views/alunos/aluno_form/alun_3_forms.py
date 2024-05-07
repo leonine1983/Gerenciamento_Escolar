@@ -19,65 +19,9 @@ choices = {
 }
 
 
-class Alunos_form_etapa2(forms.ModelForm):
-
-    nome_social = forms.CharField(
-        label='Nome Social (Se possuir):',
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    )   
-    data_nascimento = forms.DateField(
-        label='Data de Nascimento:',
-        widget=forms.DateInput(attrs={'class': 'form-control border border-info p-3 pb-3  text-info col2 m-2 rounded-1', 'type': 'date'}),        
-    )
+class Alunos_form_etapa3(forms.ModelForm):
     
-    sexo = forms.ModelChoiceField(
-        label='Sexo:',
-        queryset=Sexo.objects.all(),
-        widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1 bg-transparent text-info col m-2 rounded-1'}),
-    )
     
-    etnia = forms.ModelChoiceField(
-        queryset=Etnia.objects.all(),
-        widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1 bg-transparent text-info col m-2 rounded-1'}),
-    )
-    tel_celular_aluno = forms.CharField(   
-        label=mark_safe('<i class="fa-brands fa-whatsapp text-success"></i> Telefone celular do aluno'),   
-        widget=forms.TextInput(attrs={'class': 'form-control  border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=True
-    )
-    email = forms.CharField(        
-        widget=forms.EmailInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    )
-   
-    tel_celular_mae = forms.CharField(  
-        label=mark_safe('<i class="fa-brands fa-whatsapp text-success"></i> Telefone celular da mãe'),      
-        widget=forms.TextInput(attrs={'class': 'form-control  border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    )
-    nome_pai = forms.CharField(        
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    )
-    
-    tel_celular_pai = forms.CharField(      
-        label=mark_safe('<i class="fa-brands fa-whatsapp text-success"></i> Telefone celular do pai'),    
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    )
-    naturalidade = forms.CharField(        
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-    )
-    nacionalidade = forms.ModelChoiceField(
-        queryset=Nacionalidade.objects.all(),
-        widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1 bg-transparent text-info col m-2 rounded-1'}),
-    )
-    """
-    nacionalidade = forms.ModelChoiceField(
-        queryset=Nacionalidade.objects.all(),
-        widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1 bg-transparent text-info col m-2 rounded-1'}),
-    )
     pais_origem = forms.ModelChoiceField(
         queryset=Pais_origem.objects.all(),
         widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1 bg-transparent text-info col m-2 rounded-1'}),
@@ -91,6 +35,7 @@ class Alunos_form_etapa2(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
         required=False
     )
+    """
     deficiencia_aluno = forms.ModelChoiceField(
         queryset=Deficiencia_aluno.objects.all(),
         widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1 bg-transparent text-info col m-2 rounded-1'}),
@@ -140,9 +85,5 @@ class Alunos_form_etapa2(forms.ModelForm):
     """
     class Meta:
         model = Alunos
-        fields = '__all__'
-        exclude = ['idade', 
-                   'aluno_inativo', 'nome_completo', 'pais_origem', 'data_entrada_no_pais', 
-                       'documento_estrangeiro', 'deficiencia_aluno', 'tipo_sanguineo', 
-                       'beneficiario_aux_Brasil', 'necessita_edu_especial', 'sindrome_de_Down', 
-                       'quilombola', 'irmao_gemeo', 'vacina_covid_19', 'dose_vacina_covid_19', 'res_cadastro', 'res_atualiza_cadastro' ]
+        fields = ['pais_origem', 'data_entrada_no_pais', 'documento_estrangeiro']
+        

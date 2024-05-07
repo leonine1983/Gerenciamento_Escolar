@@ -1,24 +1,22 @@
 from gestao_escolar.models import Alunos
-from django.http import HttpResponseBadRequest
 from django.views.generic import UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from datetime import datetime, date
+from datetime import  date
 from django.urls import reverse_lazy
-from gestao_escolar.views.alunos.alunos_form import Alunos_form
 from django.db.models import Q
 from django.shortcuts import redirect
-from gestao_escolar.views.alunos.aluno_form.alun_2_forms import Alunos_form_etapa2
+from gestao_escolar.views.alunos.aluno_form.alun_3_forms import Alunos_form_etapa3
 
-class CreateAlunosConfirmaEtapa2(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+class CreateAlunosConfirmaEtapa3(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Alunos
-    form_class = Alunos_form_etapa2
+    form_class = Alunos_form_etapa3
     template_name = 'Escola/inicio.html'
     success_message = "Aluno registrado com sucesso!!"
 
     def get_success_url(self):
         aluno_id = self.object.id 
-        return reverse_lazy('Gestao_Escolar:alunos_create_etapa3', kwargs={'pk': aluno_id})  
+        return reverse_lazy('Gestao_Escolar:alunos_create_etapa4', kwargs={'pk': aluno_id})  
 
 
     def get_queryset(self):
@@ -33,11 +31,11 @@ class CreateAlunosConfirmaEtapa2(LoginRequiredMixin, SuccessMessageMixin, Update
         context = super().get_context_data(**kwargs)        
         context['titulo_page'] = 'Alunos'        
         context['conteudo_page'] = 'Registrar Alunos'            
-        context['sub_Info_page'] = "Preencha os próximos campos do cadastro do aluno"
-        context['sub_Info_page_h4'] = "INFORMAÇÕES BÁSICAS DO ALUNO"       
+        context['sub_Info_page'] = "Só preencha os campos se o aluno veio do exterior. Caso contrário, clique em avançar!"
+        context['sub_Info_page_h4'] = "ALUNO ORIUNDO DO EXTERIOR"       
         context['oculta_tab'] = "true"
-        context['table'] = True   
-        context['bottom'] = "Salvar Informações Básicas"
+        context['table'] = True         
+        context['bottom'] = "Salvar Informações"
       
         return context   
     
