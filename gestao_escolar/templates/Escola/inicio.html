@@ -3,7 +3,16 @@
 {% block script_head %}
  {% include 'gestao_escolar/links_modal.html' %}
 <script src="{% static 'select2/js/select2.full.min.js' %}"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Importação da família de fontes Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+   
 <style>
+    .fs-family-nunito {
+        font-family: 'Nunito', sans-serif !importamt;
+    }
+
     #id_aluno_matricula{
         display: none;
     }

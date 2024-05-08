@@ -4,7 +4,7 @@ from decimal import Decimal
 
 from django.db.models.signals import post_migrate
 from django.dispatch import receiver
-from rh.models import Ano, Encaminhamentos, Escola, Profissao, Uf_Unidade_Federativa
+from rh.models import Ano, Encaminhamentos, Escola, Profissao, Uf_Unidade_Federativa, Sexo
 
 
 class AnoLetivo(models.Model):
@@ -128,7 +128,7 @@ choices = {
 class Alunos(models.Model):
     nome_completo = models.CharField(max_length=120, null=False, default='Nome completo do aluno', verbose_name='Nome completo do aluno*')    
     nome_social = models.CharField(max_length=30, null=True, blank=True, default='')
-    #sexo = models.ForeignKey(Sexo, on_delete= models.CASCADE, verbose_name='Gênero sexual do aluno*')
+    sexo = models.ForeignKey(Sexo, on_delete= models.CASCADE, verbose_name='Gênero sexual do aluno*', null=True)
     data_nascimento = models.DateField(verbose_name='Data de Nascimento*', null=True)    
     idade = models.IntegerField(null=True, blank=True)
     etnia = models.ForeignKey(Etnia, null=True, on_delete=models.CASCADE, verbose_name='Etnia do aluno*:')
