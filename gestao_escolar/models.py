@@ -225,15 +225,14 @@ choice_local_diferenciado= {
 
 
 class Alunos_Documentacao(models.Model):
-    aluno = models.OneToOneField(Alunos, on_delete=models.CASCADE)
+    aluno = models.OneToOneField(Alunos, related_name="aluno_documento_related", on_delete=models.CASCADE)
     RG = models.CharField(max_length=14, null=True, blank=True, default='000.000.00-00')    
     RG_emissao = models.DateField(null=True, blank=True, default=timezone.now)  
     RG_UF = models.OneToOneField(Uf_Unidade_Federativa, on_delete=models.CASCADE, null=True)
     orgao_emissor = models.CharField(max_length=5, null=True, blank=True)
 
     renda_familiar = models.CharField(max_length=7, null=True, blank=True)
-    situacao_familiar = models.CharField(max_length=15, null=True, blank=True)
-
+    #situacao_familiar = models.CharField(max_length=15, null=True, blank=True)
     CPF = models.CharField(max_length=14, null=True, blank=True, default='000.000.000-00')   
 
     login_aluno = models.CharField(max_length=10, null=True, blank=True)     

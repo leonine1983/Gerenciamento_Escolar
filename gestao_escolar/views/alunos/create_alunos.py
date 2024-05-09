@@ -23,7 +23,7 @@ class Create_Alunos(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         aluno_id = self.object.id 
 
         # Redireciona para a nova view com o ID do aluno
-        return reverse_lazy('Gestao_Escolar:GE_alunos_create_document', kwargs={'pk': aluno_id})  
+        return reverse_lazy('Gestao_Escolar:alunos_create_etapa2', kwargs={'pk': aluno_id})  
 
     def get_queryset(self):
         txt_nome = self.request.GET.get('busca-aluno')
@@ -66,18 +66,9 @@ class Create_Alunos(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         #if Alunos.objects.filter(nome_completo__iexact=nome_completo).exists():
         if Alunos.objects.filter(nome_completo__icontains=nome_completo, nome_mae__icontains = nome_mae).exists():
             return redirect('Gestao_Escolar:alunos_encontred', nome_completo=nome_completo, nome_mae=nome_mae)
-        
-        
         if self.request.user.first_name:        
             form.instance.res_cadastro = f'{self.request.user.first_name} {self.request.user.last_name}'
         else:
             form.instance.res_cadastro = self.request.user
-        
-        # Calcular a idade
-        data_nascimento = form.cleaned_data['data_nascimento']
-        ano_atual = date.today().year
-        idade = ano_atual - data_nascimento.year - ((ano_atual, data_nascimento.month, data_nascimento.day) < (ano_atual, date.today().month, date.today().day))
-        form.instance.idade = idade
-        print(f'Essa é a idade do aluno: {idade}')
         
         return super().form_valid(form)

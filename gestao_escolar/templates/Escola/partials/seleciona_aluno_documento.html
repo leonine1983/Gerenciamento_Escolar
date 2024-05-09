@@ -11,9 +11,8 @@
         
         </div>
         <div class="modal-body shadow-sm bg-light-subtle">
-          <div style="background-image: radial-gradient(circle at 50% -20.71%, #edf3ff 0, #b5c9f2 50%, #79a1e2 100%); margin:-1rem" class="mb-3 p-2">
-              <i class="fa-regular fa-face-grin-squint"></i> Olá, <span class="text-capitalize ">{{request.user.first_name}} {{request.user.last_name}}!!</span>            
-              <span class="m-0">Por favor, utilize os campos abaixo para registrar um aluno no sistema:</span>                
+          <div class="modal_windows_title mb-3 p-2 ">
+            <i class="fa-regular fa-face-grin-squint"></i> <span class="text-capitalize fs-7"> Olá, {% if request.user.first_name %}{{request.user.first_name}} {{request.user.last_name}}{% else %}{{request.user}}{% endif %}!!</span>  
           </div>
           <ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item" role="presentation">
@@ -24,8 +23,7 @@
             <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
               <div class='p-2 fs-6 border-danger-subtle border-right d-flex text-light' style= 'box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset; background-color:rgb(116, 145, 140)'>
                 <div class=" p-1 mr-4 "><i class="fa-thin fa-tally "></i> Atenção!! Não feche essa página sem ter preenchido todas a informações obrigatórias do aluno.</div>              
-                  <!-- Exibir a paginação -->
-                             
+                  <!-- Exibir a paginação -->                             
                 </div>
               </div>
               <div class="form-group ">
@@ -43,8 +41,8 @@
                   <span>Informações Básicas</span>
                     <div class="border p-3 row row-cols-3 rounded-3 bg-light-subtle mb-5">
                       <div class="col">                            
-                        <p class="p-0">Selecione o Aluno*:</p>
-                        {{form.aluno}}
+                        <p class="p-1">Aluno*:</p>
+                        <span class="fs-4">{{form.aluno}}</span>
                       </div>  
                     </div>
 
@@ -73,11 +71,7 @@
                       <div class="col-5">
                         <p>Renda Familiar (Soma de todos os valores que compõem a renda mensal da familia):* <i class="fa-duotone fa-piggy-bank"></i></p>
                         {{form.renda_familiar}}
-                      </div>
-                      <div class="col-2">
-                        <p>Situação Familiar:</p>
-                        {{form.situacao_familiar}}
-                      </div>                      
+                      </div>                   
                     </div>
 
                     <span class=" mt-2">Dados de conexão*</span>
@@ -159,27 +153,26 @@
                         {{form.cartorio}}
                       </div>
                       <div class="col">
-                        Justificativa para a falta de documentos:</p>
-                        {{form.justificativa_falta_document}}
+                        Justificativa para a falta de documentos:<br>
+                        {{form.justificativa_falta_documento}}
                       </div> 
                       <div class="col">
-                        Local Diferenciado:</p>
+                        <span class='fw-bold'>Local Diferenciado:</span><br>
+                        (indicar se o nascimento ocorreu em um local específico, incomum ou fora do habitual. Isso pode incluir situações como nascimentos em residências, em veículos (como carros ou ambulâncias), em locais públicos, em trânsito, entre outros.)
                         {{form.local_diferenciado}}
                       </div>                      
                     </div>
 
                     <span class=" mt-2">Falecimento do Aluno / Veio a óbito</span>
-                    <div class="border p-3 row row-cols-4 rounded-3 bg-light-subtle mb-5">                          
-                      <div class="col">
+                    <div class="border p-3 row row-cols-4 rounded-3 bg-light-subtle mb-5 bg-danger-subtle fs-3">                          
+                      <div class="col text-center">
                         <p>Óbito: </p>
                         {{form.obito}}
                       </div>
-                      <div class="col">
-                         Data do Óbito:</p>
+                      <div class="col text-center justify-content-center">
+                         Data do Óbito:
                         {{form.data_obito}}
-                      </div> 
-                      
-                                          
+                      </div>              
                     </div>
                   
                   </div> 

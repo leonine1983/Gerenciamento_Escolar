@@ -5,3 +5,6 @@ from .create_etapa3 import *
 from .create_etapa4 import *
 from .create_etapa5 import *
 from .perfil_aluno import *
+
+# Update
+from .updater_alunos_document import *

@@ -36,8 +36,8 @@ urlpatterns = [
     path('gestao_escolar/Alunos/perfil/<int:pk>', PerfilAluno.as_view(), name="alunos_perfil"),
 
 
-    path('gestao_escolar/Alunos/<int:pk>', Create_Alunos_Document.as_view(), name="GE_alunos_create_document"),    
-    path('gestao_escolar/Alunos/documentos<int:pk>', Update_Alunos_Document.as_view(), name="GE_alunos_update_document"),
+    path('gestao_escolar/Alunos/<int:pk>', Create_Alunos_Document.as_view(), name="GE_alunos_create_document"),     
+    path('gestao_escolar/Alunos/documentos/atualiza<int:pk>', Update_Alunos_Document.as_view(), name="GE_alunos_update_document"),
     path('gestao_escolar/Alunos/atualiza/<int:pk>', Update_Alunos.as_view(), name="GE_Escola_alunos_update"),    
     path('gestao_escolar/Alunos/delete/<int:pk>', Delete_Alunos.as_view(), name="GE_Escola_alunos_delete"),
     #path('autocomplete/', autocomplete.Select2ListView.as_view(), name='autocomplete_aluno'),

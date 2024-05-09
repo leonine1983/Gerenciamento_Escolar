@@ -16,7 +16,8 @@ class CreateAlunosConfirmaEtapa5(LoginRequiredMixin, SuccessMessageMixin, Update
 
     def get_success_url(self):
         aluno_id = self.object.id 
-        return reverse_lazy('Gestao_Escolar:alunos_perfil', kwargs={'pk': aluno_id})  
+        #return reverse_lazy('Gestao_Escolar:alunos_perfil', kwargs={'pk': aluno_id})  
+        return reverse_lazy('Gestao_Escolar:GE_alunos_create_document', kwargs={'pk': aluno_id})  
 
 
     def get_queryset(self):

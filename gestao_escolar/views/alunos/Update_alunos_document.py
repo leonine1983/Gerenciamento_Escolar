@@ -13,7 +13,10 @@ class Update_Alunos_Document(LoginRequiredMixin, SuccessMessageMixin, UpdateView
     #form_class = Turma_form
     template_name = 'Escola/inicio.html'
     success_message = "Aluno registrado com sucesso!!"
-    success_url = reverse_lazy('Gestao_Escolar:GE_Escola_inicio')
+    
+    def get_success_url(self):
+        aluno_id = self.object.id 
+        return reverse_lazy('Gestao_Escolar:alunos_perfil', kwargs={'pk': aluno_id})  
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()

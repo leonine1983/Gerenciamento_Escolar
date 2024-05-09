@@ -56,6 +56,11 @@ choice_modelo_certidao = {
     ('3', 'Nenhuma')
 }
 
+choice_justifica_falta_document= {
+    ('1', 'o(a) aluno(a) não possui os documentos pessoais solicitados'),
+    ('2', 'A escola não dispõe ou não recebeu os docum. pessoais do(a) aluno(a)')    
+}
+
 
 class Aluno_documento_form(forms.ModelForm):
 
@@ -76,6 +81,7 @@ class Aluno_documento_form(forms.ModelForm):
     aluno = forms.ModelChoiceField(
         queryset=Alunos.objects.none(),
         widget=forms.Select(attrs={'class': 'border border-info p-2 pb-1 bg-transparent text-info col m-2 rounded-1',  'readonly': 'readonly'}),
+        required=False
     ) 
     CPF = forms.CharField(
         label='Número do CPF',
@@ -92,7 +98,6 @@ class Aluno_documento_form(forms.ModelForm):
         widget= forms.DateInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
         required=False
     )
-
     RG_UF = forms.ModelChoiceField(
         label="UF do RG",
         queryset=Uf_Unidade_Federativa.objects.all(),
@@ -109,17 +114,11 @@ class Aluno_documento_form(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
         required=False
     )
-    situacao_familiar = forms.CharField(
-        label='Situação Familiar',
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    )
     login_aluno = forms.CharField(
         label='Login',
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        
-    )
-   
+        required=False
+    )   
     senha = forms.CharField(
         label='Senha do aluno',
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
@@ -136,7 +135,7 @@ class Aluno_documento_form(forms.ModelForm):
         required=False
     )
     inep = forms.CharField(
-        label='INEP',
+        label='INEP do Aluno',
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
         required=False
     )
@@ -174,12 +173,12 @@ class Aluno_documento_form(forms.ModelForm):
     )
     emissao = forms.DateField(
         label = "Data de emissão do RG",
-        widget=forms.DateInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col2 m-2 rounded-1', 'type': 'date'}),      
+        widget=forms.DateInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col2 m-2 rounded-1', 'type': 'date'}), 
         required=False 
     )
     distrito_certidao = forms.CharField(
         label='Distrito',
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
+        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1', }),
         required=False
     )
     cartorio = forms.CharField(
@@ -197,11 +196,11 @@ class Aluno_documento_form(forms.ModelForm):
         queryset = Uf_Unidade_Federativa.objects.all(),
         widget=forms.Select(attrs={'class': ' border border-info p-2 pb-1 bg-transparent text-info col m-2 rounded-1'}),
         required=False        
-    )
-    
-    justificativa_falta_documento = forms.CharField(
+    )    
+    justificativa_falta_documento = forms.ChoiceField(
         label='Justificativa da falta de documentação',
-        widget=forms.TextInput(attrs={'class': ' border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
+        choices=choice_justifica_falta_document,
+        widget=forms.Select(attrs={'class': ' border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
         required=False
     )
     local_diferenciado = forms.CharField(
@@ -216,7 +215,7 @@ class Aluno_documento_form(forms.ModelForm):
     )
     data_obito = forms.DateField(
         label = "Data óbito / Data de Falecimento",
-        widget= forms.DateInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
+        widget= forms.DateInput(attrs={'class': 'form-control border border-info p-3 pb-3  text-info col m-2 rounded-1', 'type': 'date'}),
         required=False  
     )
 
