@@ -7,4 +7,4 @@ from .create_etapa5 import *
 from .perfil_aluno import *
 
 # Update
-from .updater_alunos_document import *
+from .create_etapa6_documentos import *

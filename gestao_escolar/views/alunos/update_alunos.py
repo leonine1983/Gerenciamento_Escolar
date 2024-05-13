@@ -29,12 +29,16 @@ class Update_Alunos(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         context['now'] = datetime.now()
         context['update'] = "update"        
         context['conteudo_page'] = 'Registrar Alunos'     
-        context['page_ajuda'] = "<div class='m-2'><b>Nessa área, definimos todos os dados para a celebração do contrato com o profissional."     
         context['sub_Info_page'] = "Preencha os próximos campos para atualizar o cadastro do aluno"
         context['sub_Info_page_h4'] = "INFORMAÇÕES BÁSICAS DO ALUNO"       
         context['oculta_tab'] = "true"
         context['table'] = True   
-        context['bottom'] = "Salvar Informações Básicas"       
+        context['bottom'] = "Salvar Informações Básicas"     
+        
+        
+        context['page_ajuda'] = "<div class='m-2'><b>Nessa área, definimos todos os dados para a celebração do contrato com o profissional."     
+
+
         
         return context
 

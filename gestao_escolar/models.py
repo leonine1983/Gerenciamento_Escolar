@@ -125,40 +125,6 @@ choices = {
     ('0','Não informado')
 }
 
-class Alunos(models.Model):
-    nome_completo = models.CharField(max_length=120, null=False, default='Nome completo do aluno', verbose_name='Nome completo do aluno*')    
-    nome_social = models.CharField(max_length=30, null=True, blank=True, default='')
-    sexo = models.ForeignKey(Sexo, on_delete= models.CASCADE, verbose_name='Gênero sexual do aluno*', null=True)
-    data_nascimento = models.DateField(verbose_name='Data de Nascimento*', null=True)    
-    idade = models.IntegerField(null=True, blank=True)
-    etnia = models.ForeignKey(Etnia, null=True, on_delete=models.CASCADE, verbose_name='Etnia do aluno*:')
-    #aluno_inativo = models.BooleanField(default=False, null=True)
-    tel_celular_aluno = models.CharField(max_length=30, null=False, default='Celular 01', verbose_name='Nº de telefone do aluno*')    
-    email = models.EmailField(max_length=200, null=False, verbose_name='Email*')
-    nome_mae = models.CharField(max_length=120, null=False, default='Nome completo da Mãe', verbose_name='Nome da Mãe*')
-    tel_celular_mae = models.CharField(max_length=30, null=True, default='Telefone da mae', verbose_name='Nº do celular do mãe*')
-    nome_pai = models.CharField(max_length=120, null=True, default='Nome completo da Pai')
-    tel_celular_pai = models.CharField(max_length=30, null=True, default='Telefone do pai')
-    naturalidade = models.CharField(max_length=30, null=False, default='Cidade onde nasceu')
-    nacionalidade = models.ForeignKey(Nacionalidade, on_delete=models.CASCADE, default=1, verbose_name='Nacionalidade*')
-    pais_origem = models.ForeignKey(Pais_origem, blank=True, null=True, on_delete=models.CASCADE)
-    data_entrada_no_pais= models.DateField(null=True, blank=True)  
-    documento_estrangeiro = models.CharField(max_length=30, null=True, blank=True)
-    deficiencia_aluno = models.ForeignKey(Deficiencia_aluno, on_delete=models.CASCADE, null=True, verbose_name='Informe se o aluno possui deficiência*')    
-    tipo_sanguineo = models.CharField(max_length=3, choices=choices, null=True, )
-    beneficiario_aux_Brasil = models.BooleanField(default=False,null=True, verbose_name='Selecione se o aluno é beneficiário do Bolsa Família/Aux. Brasil')
-    necessita_edu_especial = models.BooleanField(default=False,null=True, verbose_name='Selecione se o aluno precisa de algum atendimento especial')
-    sindrome_de_Down = models.BooleanField(default=False,null=True, verbose_name='Selecione se o aluno for portador de Síndrome de Down')
-    quilombola = models.BooleanField(default=False,null=True, verbose_name='Selecione se o aluno possui deficiência')
-    irmao_gemeo = models.BooleanField(default=False, null=True, verbose_name='Selecione se o aluno possui irmão(s) gêmeos')
-    vacina_covid_19 = models.BooleanField(default=False, null=True,verbose_name='Selecione se o aluno tomou vacina contra a covid 19' )
-    dose_vacina_covid_19 = models.IntegerField(null=True, blank=True, verbose_name='Preencha se o aluno tomou alguma dose da covid 19' )
-    res_cadastro = models.CharField(max_length=120, null=True, default='Quem criou o cadastro')    
-    res_atualiza_cadastro = models.CharField(max_length=120, null=True, default='Quem atualizou')    
-
-    def __str__(self):
-        return self.nome_completo 
-    
 choice_uf = {
     (1, 'AC'),
     (2, 'AL'),
@@ -224,8 +190,38 @@ choice_local_diferenciado= {
 }
 
 
-class Alunos_Documentacao(models.Model):
-    aluno = models.OneToOneField(Alunos, related_name="aluno_documento_related", on_delete=models.CASCADE)
+class Alunos(models.Model):
+    nome_completo = models.CharField(max_length=120, null=False, default='Nome completo do aluno', verbose_name='Nome completo do aluno*')    
+    nome_social = models.CharField(max_length=30, null=True, blank=True, default='')
+    sexo = models.ForeignKey(Sexo, on_delete= models.CASCADE, verbose_name='Gênero sexual do aluno*', null=True)
+    data_nascimento = models.DateField(verbose_name='Data de Nascimento*', null=True)    
+    idade = models.IntegerField(null=True, blank=True)
+    etnia = models.ForeignKey(Etnia, null=True, on_delete=models.CASCADE, verbose_name='Etnia do aluno*:')
+    #aluno_inativo = models.BooleanField(default=False, null=True)
+    tel_celular_aluno = models.CharField(max_length=30, null=False, default='Celular 01', verbose_name='Nº de telefone do aluno*')    
+    email = models.EmailField(max_length=200, null=False, verbose_name='Email*')
+    nome_mae = models.CharField(max_length=120, null=False, default='Nome completo da Mãe', verbose_name='Nome da Mãe*')
+    tel_celular_mae = models.CharField(max_length=30, null=True, default='Telefone da mae', verbose_name='Nº do celular do mãe*')
+    nome_pai = models.CharField(max_length=120, null=True, default='Nome completo da Pai')
+    tel_celular_pai = models.CharField(max_length=30, null=True, default='Telefone do pai')
+    naturalidade = models.CharField(max_length=30, null=False, default='Cidade onde nasceu')
+    nacionalidade = models.ForeignKey(Nacionalidade, on_delete=models.CASCADE, default=1, verbose_name='Nacionalidade*')
+    pais_origem = models.ForeignKey(Pais_origem, blank=True, null=True, on_delete=models.CASCADE)
+    data_entrada_no_pais= models.DateField(null=True, blank=True)  
+    documento_estrangeiro = models.CharField(max_length=30, null=True, blank=True)
+    deficiencia_aluno = models.ForeignKey(Deficiencia_aluno, on_delete=models.CASCADE, null=True, verbose_name='Informe se o aluno possui deficiência*')    
+    tipo_sanguineo = models.CharField(max_length=3, choices=choices, null=True, )
+    beneficiario_aux_Brasil = models.BooleanField(default=False,null=True, verbose_name='Selecione se o aluno é beneficiário do Bolsa Família/Aux. Brasil')
+    necessita_edu_especial = models.BooleanField(default=False,null=True, verbose_name='Selecione se o aluno precisa de algum atendimento especial')
+    sindrome_de_Down = models.BooleanField(default=False,null=True, verbose_name='Selecione se o aluno for portador de Síndrome de Down')
+    quilombola = models.BooleanField(default=False,null=True, verbose_name='Selecione se o aluno possui deficiência')
+    irmao_gemeo = models.BooleanField(default=False, null=True, verbose_name='Selecione se o aluno possui irmão(s) gêmeos')
+    vacina_covid_19 = models.BooleanField(default=False, null=True,verbose_name='Selecione se o aluno tomou vacina contra a covid 19' )
+    dose_vacina_covid_19 = models.IntegerField(null=True, blank=True, verbose_name='Preencha se o aluno tomou alguma dose da covid 19' )
+    res_cadastro = models.CharField(max_length=120, null=True, default='Quem criou o cadastro')    
+    res_atualiza_cadastro = models.CharField(max_length=120, null=True, default='Quem atualizou')    
+
+    # Documentação
     RG = models.CharField(max_length=14, null=True, blank=True, default='000.000.00-00')    
     RG_emissao = models.DateField(null=True, blank=True, default=timezone.now)  
     RG_UF = models.OneToOneField(Uf_Unidade_Federativa, on_delete=models.CASCADE, null=True)
@@ -258,7 +254,8 @@ class Alunos_Documentacao(models.Model):
     data_obito = models.DateField(null=True, blank=True)
 
     def __str__(self):
-        return self.aluno.nome_completo    
+        return self.nome_completo 
+
 
 class Disciplina(models.Model):
     nome = models.CharField(max_length=100)

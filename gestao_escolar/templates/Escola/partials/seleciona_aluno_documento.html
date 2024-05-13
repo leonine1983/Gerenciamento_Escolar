@@ -51,18 +51,22 @@
                       <div class="col-5">
                         <p>N° RG:*</p>
                         {{form.RG}}
+                        {{form.RG.errors}}
                       </div>
                       <div class="col-2">
                         <p>Data de Emissão*:</p>
                         {{form.RG_emissao}}
+                        {{form.RG_emissao.errors}}
                       </div>
                       <div class="col-2">
                         <p>UF*:</p>
                         {{form.RG_UF}}
+                        {{form.RG_UF.errors}}
                       </div>
                       <div class="col-2">
                         <p>Órgão Emissor*:</p>
                         {{form.orgao_emissor}}
+                        {{form.orgao_emissor.errors}}
                       </div>
                     </div>
 
@@ -71,6 +75,7 @@
                       <div class="col-5">
                         <p>Renda Familiar (Soma de todos os valores que compõem a renda mensal da familia):* <i class="fa-duotone fa-piggy-bank"></i></p>
                         {{form.renda_familiar}}
+                        {{form.renda_familiar.errors}}
                       </div>                   
                     </div>
 
@@ -79,14 +84,17 @@
                       <div class="col">
                         <p>CPF do aluno: </p>
                         {{form.CPF}}
+                        {{form.CPF.errors}}
                       </div>
                       <div class="col">
                         <p><i class="fa-solid fa-user"></i> Login de acesso do aluno*:</p>
                         {{form.login_aluno}}
+                        {{form.login_aluno.errors}}
                       </div>  
                       <div class="col">
                         <p><i class="fa-solid fa-key"></i> Senha do aluno*:</p>
                         {{form.senha}}
+                        {{form.senha.errors}}
                       </div>                     
                     </div>
 
@@ -95,14 +103,17 @@
                       <div class="col">
                         <p>Cartão Nacional da Saúde (CNS): </p>
                         {{form.cartao_nacional_saude_cns}}
+                        {{form.cartao_nacional_saude_cns.errors}}
                       </div>
                       <div class="col">
                          NIS*:</p>
                         {{form.nis}}
+                        {{form.nis.errors}}
                       </div>  
                       <div class="col">
                         INEP*:</p>
                         {{form.inep}}
+                        {{form.inep.errors}}
                       </div>                     
                     </div>
 
@@ -111,55 +122,68 @@
                       <div class="col">
                         <p>Estado Civil: </p>
                         {{form.estado_civil}}
+                        {{form.estado_civil.errors}}
                       </div>
                       <div class="col">
                          Tipo de Certidão*:</p>
                         {{form.tipo_certidao}}
+                        {{form.tipo_certidao.errors}}
                       </div>  
                       <div class="col">
                         N° da Certidão*:</p>
                         {{form.numero_certidao}}
+                        {{form.numero_certidao.errors}}
                       </div>                        
                       <div class="col">
                         Livro*:</p>
                         {{form.livro}}
+                        {{form.livro.errors}}
                       </div> 
                       <div class="col">
                         Folha*:</p>
                         {{form.folha}}
+                        {{form.folha.errors}}
                       </div> 
                       <div class="col">
                         Termo*:</p>
                         {{form.termo}}
+                        {{form.termo.errors}}
                       </div> 
                       <div class="col">
                         Emissão*:</p>
                         {{form.emissao}}
+                        {{form.emissao.errors}}
                       </div> 
                       <div class="col">
                         Distrito*:</p>
                         {{form.distrito_certidao}}
+                        {{form.distrito_certidao.errors}}
                       </div> 
                       <div class="col">
                         Comarca*:</p>
                         {{form.comarca}}
+                        {{form.comarca.errors}}
                       </div> 
                       <div class="col">
                         Cartorio UF*:</p>
                         {{form.cartorio_uf}}
+                        {{form.cartorio_uf.errors}}
                       </div> 
                       <div class="col">
                         Cartório:</p>
                         {{form.cartorio}}
+                        {{form.cartorio.errors}}
                       </div>
                       <div class="col">
                         Justificativa para a falta de documentos:<br>
                         {{form.justificativa_falta_documento}}
+                        {{form.justificativa_falta_documento.errors}}
                       </div> 
                       <div class="col">
                         <span class='fw-bold'>Local Diferenciado:</span><br>
                         (indicar se o nascimento ocorreu em um local específico, incomum ou fora do habitual. Isso pode incluir situações como nascimentos em residências, em veículos (como carros ou ambulâncias), em locais públicos, em trânsito, entre outros.)
                         {{form.local_diferenciado}}
+                        {{form.local_diferenciado.errors}}
                       </div>                      
                     </div>
 
@@ -168,10 +192,12 @@
                       <div class="col text-center">
                         <p>Óbito: </p>
                         {{form.obito}}
+                        {{form.obito.errors}}
                       </div>
                       <div class="col text-center justify-content-center">
                          Data do Óbito:
                         {{form.data_obito}}
+                        {{form.data_obito.errors}}
                       </div>              
                     </div>
                   

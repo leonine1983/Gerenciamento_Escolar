@@ -1,4 +1,4 @@
-from gestao_escolar.models import Alunos, Alunos_Documentacao
+from gestao_escolar.models import Alunos
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -8,14 +8,14 @@ from .alunos_form import Aluno_documento_form
 
 
 class Create_Alunos_Document(LoginRequiredMixin, SuccessMessageMixin, CreateView):
-    model = Alunos_Documentacao
+    model = Alunos
     form_class = Aluno_documento_form
     #form_class = Turma_form
     template_name = 'Escola/inicio.html'
     success_message = "Aluno registrado com sucesso!!"
 
     def get_success_url(self):
-        aluno_id = self.object.aluno.id 
+        aluno_id = self.kwargs['pk']
         return reverse_lazy('Gestao_Escolar:alunos_perfil', kwargs={'pk': aluno_id})  
 
     def get_form_kwargs(self):
