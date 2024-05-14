@@ -47,6 +47,7 @@
            font-family: 'El Messiri', sans-serif !important;
            font-family: 'Gruppo', sans-serif;
            font-weight:200!important;
+         
        }
        .bd-placeholder-img {
         font-size: 1.125rem;
@@ -158,25 +159,28 @@
         input{
           text-transform: uppercase;
         }
+        /*paleta*/
+        .bg-verde-1{background: #b4d6c1;}
+        .bg-verde-2{background: #dfeae2;}
    </style>
     {% block css %}{% endblock css %}
     {% block script_head %}{% endblock script_head %}   
     <title>{% block title_page %}{% endblock title_page %}</title> 
 </head>
 <body>
-  <main class='shadow p-3 mb-2 bg-white rounded'>
+  <main class='shadow  mb-2 bg-white rounded'>
 
     <!--Botão muda tema-->
       {% include 'gestao_escolar/botom_cores/cores.html' %}
     <!-- Fim Botão muda tema-->
 
     {% comment "Head" %} Cabeçalho ----------------------------------------------- {% endcomment %}
-        {% include 'gestao_escolar/headers/index.html' %}
-      
-    {% comment "Sidebar" %} Menu lateral esquerdo  ------------------------------- {% endcomment %}
+        {% include 'gestao_escolar/headers/index.html' %}      
+    
     <div class="d-flex">
+      {% comment "Sidebar" %} Menu lateral esquerdo  ------------------------------- {% endcomment %}
         {% include 'gestao_escolar/sidebars/index.html' %}
-    {% comment "Main" %} Conteudo Principal{% endcomment %}
+      {% comment "Main" %} Conteudo Principal{% endcomment %}
         {% block main %}{% endblock main %}
     </div>
 

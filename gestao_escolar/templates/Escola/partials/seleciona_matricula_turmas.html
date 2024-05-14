@@ -64,7 +64,9 @@ input[type=checkbox]{
                     <table class="table table-striped">
                         <thead>
                       <tr>
-                        <th scope="col">Turma / Serie</th>
+                        <th scope="col" class='text-left'>Turma / Serie</th>
+                        <th scope="col">Alunos matriculados</th>
+                        <th scope="col">Máximo de alunos </th>
                         <th scope="col">Ano Letivo</th>
                         <th scope="col">Turma Multisérie</th>                        
                       </tr>
@@ -72,7 +74,9 @@ input[type=checkbox]{
                     <tbody>
                     {% for n in object_list %}
                       <tr>
-                        <td>{{n.nome}}</td>
+                        <td class='text-left'><span class='text-uppercase '>{{n.nome}} {{n.descritivo_turma}}</span> <a class='btn btn-sm  me-1' href="{% url 'Gestao_Escolar:GE_Escola_Turmas_update' n.pk %}"><i class="fa-thin fa-pen-to-square"></i><span>Editar</span></a></td>
+                        <td>{{n.related_matricula_turma.all|length}}</td>
+                        <td>{{n.quantidade_vagas}} </td>
                         <td>{{n.ano_letivo}}</td>
                         {% if turma_multiserie %}                        
                         <td>Sim</td>

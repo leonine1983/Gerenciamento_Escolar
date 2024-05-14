@@ -18,21 +18,22 @@
       </div>
       
       <img src="{% static 'aluno-.png' %}" style='position:absolute; z-index:-0,1;top:3rem; left:0.3rem'  alt="">
-      <div class="modal-body shadow-sm bg-light-subtle" style='margin-left:10.5rem' >
+      <div class="modal-body shadow-sm bg-light-subtle" style='margin-left:10.5rem;' >
         <div class="modal_windows_title mb-3 p-2 ">
-            <i class="fa-regular fa-face-grin-squint"></i> <span class="text-capitalize fs-7"> Olá, seja muito bem-vindo, {% if request.user.first_name %}{{request.user.first_name}} {{request.user.last_name}}{% else %}{{request.user}}{% endif %}!!</span>  
+            <i class="fa-regular fa-face-grin-squint"></i> <span class="text-capitalize fs-7"> Olá {% if request.user.first_name %}{{request.user.first_name}} {{request.user.last_name}}{% else %}{{request.user}}{% endif %}!! CADASTROS DE ALUNOS</span>  
         </div>
         {% if not oculta_tab %}            
         <ul class="nav nav-tabs" id="myTab" role="tablist">          
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true"><i class="fa-sharp fa-solid fa-people fs-5"></i> Toda os alunos</button>
-            </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true"><i class="fa-sharp fa-solid fa-people fs-5"></i> Toda os alunos</button>
+          </li>
           <li class="nav-item bg-secondary-subtle " role="presentation">
             <button class="nav-link {% if oculta_tab %}active{% endif %} " id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Criar cadastro do aluno <i class="fa-sharp fa-solid fa-plus"></i> </button>
           </li>  
         </ul>                         
         <div class="tab-content" id="myTabContent">          
-            <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">  
+            <div class="tab-pane fade show active bg-secondary-subtle" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0"
+            >  
               <div  class='p-2 fs-6 border-danger-subtle border-right d-flex text-light' style= 'box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset; background-color:rgb(116, 145, 140)'>
                 <div  class="  mr-4  fs-5 d-flex  w-100">             
                   <div class="mt-0 mb-0" style='margin:auto;  width:90%; '>
@@ -162,6 +163,25 @@
         $("#id_tel_celular_pai").mask("(00) 0 0000 0000")
     })
     
+</script>
+
+<script src="{% static 'global/js/cheatsheet.js' %}"></script>
+<!--Drag e Drop-->
+{% include "Escola/partials/utils/dragDrop.html" %}
+
+<script>
+  // Adicione um ouvinte de evento de mudança ao <select>
+document.getElementById("mySelect").addEventListener("change", function() {
+  // Remove a classe 'selected' de todas as opções
+  var options = this.getElementsByTagName("option");
+  for (var i = 0; i < options.length; i++) {
+    options[i].classList.remove("selected");
+  }
+
+  // Adiciona a classe 'selected' à opção selecionada
+  var selectedOption = this.options[this.selectedIndex];
+  selectedOption.classList.add("selected");
+});
 </script>
 <!--FIM Mascara para formularios-->
 

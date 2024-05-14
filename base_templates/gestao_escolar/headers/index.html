@@ -1,5 +1,17 @@
 {% load static %}
-<header class="p-3 mb-3 border-bottom shadow-bottom w-100 m-0" >
+<header class="p-3 mb-3 border-bottom shadow-bottom w-100 m-0" style="
+
+width: 100%; /* Ajuste conforme necessário */
+    height: 100%; /* Ajuste conforme necessário */
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), url('{% static "fundoEduca.jpg" %}');
+    background-size: cover; /* Para cobrir todo o container */
+    background-position: center; /* Para centralizar a imagem */
+
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
+    
+" >
+
+
   <div class="container">
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
       <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none me-5">

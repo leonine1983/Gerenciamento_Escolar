@@ -41,3 +41,17 @@ def set_registro_teste(sender, **kwargs):
                     assunto="Olá!",
                     messagem="Bem vindo ao nosso sistema!",
                 )
+
+
+class PaletaCores(models.Model):
+    nome_paleta = models.CharField(max_length=20, default='Paleta Branca')
+    cor_primaria = models.CharField(max_length=7, default='#fff')
+    cor_secundaria = models.CharField(max_length=7, default='#fff')
+    cor_sucesso = models.CharField(max_length=7, default='#fff')
+    cor_info = models.CharField(max_length=7, default='#fff')
+    cor_aviso = models.CharField(max_length=7, default='#fff')
+    cor_perigo = models.CharField(max_length=7, default='#ffffff')
+    cor_texto = models.CharField(max_length=7, default='#000')
+
+    def __str__(self):
+        return self.nome_paleta

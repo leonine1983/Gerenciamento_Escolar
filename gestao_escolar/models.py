@@ -472,7 +472,7 @@ escola_fora = {
 
 class Matriculas(models.Model):
     aluno = models.ForeignKey(Alunos, related_name='related_matricula_alunos', on_delete=models.CASCADE)
-    turma = models.ForeignKey(Turmas, on_delete=models.CASCADE)
+    turma = models.ForeignKey(Turmas, related_name='related_matricula_turma', on_delete=models.CASCADE)
     data_matricula = models.DateField(auto_now=True)
     obervacao = models.TextField(max_length=300, null=True, blank=True)
     escolarizacao_fora = models.CharField(choices=escola_fora, default=1, max_length=1)
@@ -481,7 +481,7 @@ class Matriculas(models.Model):
     data_afastamento_inicio = models.DateField(null=True)
     data_afastamento_fim = models.DateField(null=True)
     motivo_afastamento = models.TextField(max_length=200, null=True)
-    calcula_media = models.BooleanField(default=True)
+    calcula_media = models.BooleanField(default=True, null=True, blank=True)
 
     """
     # Sobrescrever o método save para verificar se o aluno ja está matriculado em alguma turma

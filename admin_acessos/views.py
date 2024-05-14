@@ -35,10 +35,6 @@ class Create_Login(LoginView):
     def get_success_url(self):
         return reverse_lazy('admin_acessos:painel_acesso')
 
-    
-
-
-
 # Faz o logout
 class Faz_logout(LogoutView):
     next_page = reverse_lazy('admin_acessos:login_create')
@@ -72,8 +68,6 @@ class MessageUserForm(forms.ModelForm):
         }
 
 
-
-
 class Mensagem_create(CreateView):
     model = message_user
     #fields = ['user', 'assunto', 'messagem']
@@ -91,16 +85,13 @@ class Mensagem_create(CreateView):
         return super(Mensagem_create, self).form_valid(form)
 
 
-
 class Mensagem_lista(ListView):
     model = message_user
     template_name = 'Controle_Estoque/mensagem/mensage_lista.html'
 
     # Filtrar as mensagens em que o usuario logado é um dos destinatários
     def get_queryset(self):
-        return message_user.objects.filter(user=self.request.user)
-    
-
+        return message_user.objects.filter(user=self.request.user) 
 
 
 class Mensagem_uptade(UpdateView):
@@ -148,3 +139,35 @@ class DetalheView_mensage(DetailView):
         context ['active'] = 'mensagem'
         context ['tipo'] = 'visualiza'
         return context
+    
+
+# PALETAS DE CORES
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from .models import PaletaCores
+
+class PaletaCoresListView(ListView):
+    model = PaletaCores
+    template_name = 'paletacores_list.html'
+
+class PaletaCoresDetailView(DetailView):
+    model = PaletaCores
+    template_name = 'paletacores_detail.html'
+
+class PaletaCoresCreateView(CreateView):
+    model = PaletaCores
+    template_name = 'paletacores_form.html'
+    fields = ['nome_paleta', 'cor_primaria', 'cor_secundaria', 'cor_sucesso', 'cor_info', 'cor_aviso', 'cor_perigo', 'cor_texto']
+    success_url = reverse_lazy('paletacores_list')
+
+class PaletaCoresUpdateView(UpdateView):
+    model = PaletaCores
+    template_name = 'paletacores_form.html'
+    fields = ['nome_paleta', 'cor_primaria', 'cor_secundaria', 'cor_sucesso', 'cor_info', 'cor_aviso', 'cor_perigo', 'cor_texto']
+    success_url = reverse_lazy('paletacores_list')
+
+class PaletaCoresDeleteView(DeleteView):
+    model = PaletaCores
+    template_name = 'paletacores_confirm_delete.html'
+    success_url = reverse_lazy('paletacores_list')

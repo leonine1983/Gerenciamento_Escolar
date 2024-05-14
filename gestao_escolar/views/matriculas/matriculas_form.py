@@ -54,7 +54,9 @@ class Matricula_form(forms.ModelForm):
         required=False  
     )  
     calcula_media = forms.BooleanField(
-        widget=forms.CheckboxInput(attrs={'class': 'border border-info p-2 pb-1 bg-transparent text-info col m-2 rounded-1'})
+        label='Não calcular média',
+        widget=forms.CheckboxInput(attrs={'class': 'border border-info p-2 pb-1 bg-transparent text-info col m-2 rounded-1'}),
+        required=False
         )   
 
     turma = forms.ModelChoiceField(
@@ -137,7 +139,9 @@ class Matricula_form_retorno_aluno(forms.ModelForm):
         #)      
     
     calcula_media = forms.BooleanField(
-        widget=forms.CheckboxInput(attrs={'class': 'border border-info p-2 pb-1 bg-transparent text-info col m-2 rounded-1'})
+        label='Não calcular média',
+        widget=forms.CheckboxInput(attrs={'class': 'border border-info p-2 pb-1 bg-transparent text-info col m-2 rounded-1'}),
+        required=False
         )   
 
     turma = forms.ModelChoiceField(

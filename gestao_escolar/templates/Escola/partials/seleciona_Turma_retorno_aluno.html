@@ -1,5 +1,4 @@
  {% block script_head %}
- {% load qr_code %}
  {% load static %}
  <style>
   .grid{
@@ -48,13 +47,12 @@
               <div class="d-flex">
                 <!-- Lista de turmas -->
                 <div>
-
                 </div>
                 <!-- Lista de turmas -->
                 <form action="" method="post" >
                   <div class="row row-cols-3">
                     {% csrf_token %}
-                  {{form.as_div}}
+                    {{form.as_div}}
                   </div>
                   <button type="submit" class="w-100 btn btn-success" data-dismiss="modal"><i class="fa-duotone fa-screen-users"></i> Matricular aluno</button>
                 </form>
@@ -64,10 +62,6 @@
     </div>
     </div>
 </div>
-
-
-
-
 <script>
 
 function imprimirConteudoDiv() {

@@ -231,20 +231,3 @@
 </script>
 <!--FIM Mascara para formularios-->
 
-
-
-<script>
-  // Adicione um ouvinte de evento de mudança ao <select>
-document.getElementById("mySelect").addEventListener("change", function() {
-  // Remove a classe 'selected' de todas as opções
-  var options = this.getElementsByTagName("option");
-  for (var i = 0; i < options.length; i++) {
-    options[i].classList.remove("selected");
-  }
-
-  // Adiciona a classe 'selected' à opção selecionada
-  var selectedOption = this.options[this.selectedIndex];
-  selectedOption.classList.add("selected");
-});
-
-</script>
