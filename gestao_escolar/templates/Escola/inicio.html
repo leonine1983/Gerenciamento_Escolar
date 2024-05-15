@@ -88,20 +88,11 @@
 {% endblock script_head %} 
 
 {% block main %}
-<div class="shadow-sm p-3 mb-3  w-100" style=''>
-    <div class='bg-verde-2 p-4 h5' style='margin:-1.8rem -1rem 0 -1rem'>
-        <span class="text-uppercase">
-            <i class="fa-solid fa-school-flag"></i> {{request.session.escola_nome}}
-        </span>
-        <span class="mr-5 ml-5">|</span> 
-        <span class="fs-6">
-            <i class="fa-solid fa-calendar-days"></i> Ano Letivo: {{request.session.anoLetivo_nome}}
-        </span>
-    </div>
-
+<div class="shadow-sm p-3 mb-3  w-100 mt-5" style=''>
+    <div class=' p-4 h5 bg-p-3' style='margin:-1rem -1rem 0 -1rem'></div>
     {% if not update  %}
         <!-- informações-->
-        <div class=" rounded-top-2  bg-body-tertiary " style='margin:-1.4rem 0rem 1rem 0rem !important'>
+        <div class=" rounded-top-2  bg-body-tertiary " style='margin:-1.2rem 0rem 1rem 0rem !important'>
             <div class='mb-2'>
                 {% include 'gestao_escolar/navbars/index.html' %}    
             </div>
