@@ -51,29 +51,13 @@ td, tr {
 {% block css %}
 <link rel="stylesheet" href="{% static 'global/css/search.css' %}">
 {% endblock css %}
-<div class="modal fade" id="modal_escola" style='background:#000'  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    
-    <div class="modal-dialog w-100">
-      <div class="modal-content bg-secondary-subtle mx-auto ">
-        <div class="modal-header">
-        <h4 class="modal-title alert-heading  fs-3"><span class="text-uppercase ml-5  "><i class="fa-duotone fa-flag"></i> AVISO!! </span></h4>        
-        <button type="button" class="close" data-dismiss="modal">&times;</button>        
-        </div>
         {% for message in messages %}
-        <div class="modal-body shadow-sm alert  fs-6 {% if message.tags %} {{ message.tags }}{% endif %}"  role="alert"> 
-          <ul class="messages">
-            
-                <div class='display-3 text-center'>{{ message|safe }}</div>
-                
-            
-        </ul>
+        <div class="alert  fs-6 {% if message.tags %} {{ message.tags }}{% endif %}"  role="alert"> 
+          <div class="messages">            
+                <div class='display-3 text-center'>{{ message|safe }}</div>  
+          </div>
         </div>
-        {% endfor %}                       
-      </div>
-    </div>
-</div>     
-    
-
+        {% endfor %} 
 {% load static %}
 
 <!-- Mascara para formularios-->
