@@ -393,7 +393,7 @@ class Turmas(models.Model):
     turma_multiserie = models.BooleanField(null=True, default=False)
 
     def __str__(self):
-        return self.nome
+        return f'{self.nome.upper()} {self.descritivo_turma.upper()}'
 
 niveis = {
     ('1', "Médio"),
@@ -457,8 +457,9 @@ class TurmaDisciplina(models.Model):
     turma = models.ForeignKey(Turmas,related_name='gradeTurma_related', on_delete=models.CASCADE, null=True)
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE, null=True)
     professor = models.ForeignKey(Profissionais, related_name='gradeProfessor1_related', on_delete=models.CASCADE, null=True)    
-    professo2 = models.ForeignKey(Profissionais,related_name='gradeProfessor2_related', on_delete=models.CASCADE, null=True, blank=True)    
-    auxiliar_classe = models.ManyToManyField(Profissionais,  null=True)
+    professo2 = models.ForeignKey(Profissionais,related_name='gradeProfessor2_related', on_delete=models.CASCADE, null=True, blank=True) 
+    reserva_tecnica =  models.ManyToManyField(Profissionais, related_name='reservaTecnica_related',  null=True) 
+    auxiliar_classe = models.ManyToManyField(Profissionais,related_name='auxiliarClasse_related', null=True)
 
     carga_horaria_anual = models.IntegerField(null=True)
     limite_faltas = models.IntegerField(null=True) 

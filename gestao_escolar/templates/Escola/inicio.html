@@ -90,7 +90,7 @@
 {% block main %}
 <div class="shadow-sm p-3 mb-3  w-100 mt-5" style=''>
     <div class=' p-4 h5 bg-p-3' style='margin:-1rem -1rem 0 -1rem'></div>
-    {% if not update  %}
+    
         <!-- informações-->
         <div class=" rounded-top-2  bg-body-tertiary " style='margin:-1.2rem 0rem 1rem 0rem !important'>
             <div class='mb-2'>
@@ -126,26 +126,7 @@
                 </div>
             </div>
         </div>
-        
-    {% else %}
-    <div class="p-2">&nbsp;</div>
-    <div class="p-2 pl-1  {{btn_bg}} w-75 m-auto  ">{{svg|safe}} {{titulo_page}} <span class="pl-1 text-uppercase">{{ object }}</span></div>    
-    <form class="shadow shadow-sm p-3 overflow-scroll row w-75 m-auto" method="post"class='m-3 p-3 row row-cols-3' >
-        {{ form.non_field_errors }}
-        {% csrf_token %}
-        {% for field in form %}
-        <div class="form-group col-2 ">
-        {{ field.label_tag }}
-        {{ field }}
-        {{ field.errors }}
-        </div>
-        {% endfor %}   
-        <div class="m-auto w-75 row"> 
-            <a class="btn btn-sm btn-secondary col m-3 p-4 text-decoration-none link-light" href="{% url 'Gestao_Escolar:GE_Escola_inicio' %}" type="submit">Cancelar</a>
-            <button class="btn btn-sm btn-primary {{btn_bg}} col m-3 link-light" type="submit">{{button}} <span class="text-capitalize">{{object}}</span></button>
-        </div> 
-    </form> 
-    {% endif %}
+    
         
         <!-- End informações-->    
     {% if  conteudo_page == 'Nome das Escolas' %}
