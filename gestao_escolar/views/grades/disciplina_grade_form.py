@@ -8,27 +8,39 @@ class Diciplina_Grade_form (forms.ModelForm):
     
     
     turma = forms.ModelChoiceField(
-        #label='Nome da Turma:',
+        label='Turma:',
         queryset = Turmas.objects.none(),
-        widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1 bg-transparent text-info m-2 rounded-1 w-75'}),
+        widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1  text-info m-2 rounded-1 w-75'}),
     ) 
     disciplina= forms.ModelChoiceField(
-        #label='Nome da Turma:',
+        label='Selecione a Disciplina:',
         queryset = Disciplina.objects.all(),
-        widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1 bg-transparent text-info m-2 rounded-1 w-75'}),
+        widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1  text-info m-2 rounded-1 w-75'}),
     )   
     professor= forms.ModelChoiceField(
-        #label='Nome da Turma:',
+        label='Selecione o professor:',
         queryset = Profissionais.objects.none(),
-        widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1 bg-transparent text-info m-2 rounded-1 w-75'}),
+        widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1  text-info m-2 rounded-1 w-75'}),
     )  
+    professor2= forms.ModelChoiceField(
+        label='Selicione o professor se houver necessidade de atribuir mais um professor na turma:',
+        queryset = Profissionais.objects.none(),
+        widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1  text-info m-2 rounded-1 w-75'}),
+        required=False
+    ) 
+    auxiliar_classe= forms.ModelChoiceField(
+        label='Selicione os auxiliares de classe, se houver necessidade:',
+        queryset = Profissionais.objects.all(),
+        widget=forms.Select(attrs={'class': ' border border-info p-1 pb-1  text-info m-2 rounded-1 w-75'}),
+        required=False
+    ) 
     carga_horaria_anual= forms.CharField(
-        #label='Nome da Turma:',
-        widget=forms.TextInput(attrs={'class': ' border border-info p-1 pb-1 bg-transparent text-info m-2 rounded-1 w-75'}),
+        label='Carga horária anual da disciplina:',
+        widget=forms.NumberInput(attrs={'class': ' border border-info p-1 pb-1 text-info m-2 rounded-1 '}),
     )    
     limite_faltas= forms.CharField(
-        #label='Nome da Turma:',
-        widget=forms.TextInput(attrs={'class': ' border border-info p-1 pb-1 bg-transparent text-info m-2 rounded-1 w-75'}),
+        label='Atribua o número máximo de faltas que o aluno pode ter na disciplina e não ser reprovado:',
+        widget=forms.NumberInput(attrs={'class': 'border border-info p-1 pb-1  text-info m-2 rounded-1'}),
     )  
 
     def __init__(self, *args, **kwargs):
@@ -41,6 +53,8 @@ class Diciplina_Grade_form (forms.ModelForm):
                 self.fields['turma'].initial = query_turma.first()
                 self.fields['professor'].queryset= query_professor
                 self.fields['professor'].initial= query_professor.first() 
+                self.fields['professor2'].queryset= query_professor
+                self.fields['professor2'].initial= query_professor.first() 
 
     class Meta:
         model = TurmaDisciplina

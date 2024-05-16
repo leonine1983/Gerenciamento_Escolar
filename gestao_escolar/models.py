@@ -452,11 +452,14 @@ class Professores(models.Model):  # Não inclua um campo 'id' aqui
 # Professores auxiliares 
 """
 
-
+# GRADE DE DISCIPLINAS E PROFESSORES
 class TurmaDisciplina(models.Model):
-    turma = models.ForeignKey(Turmas, on_delete=models.CASCADE, null=True)
+    turma = models.ForeignKey(Turmas,related_name='gradeTurma_related', on_delete=models.CASCADE, null=True)
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE, null=True)
-    professor = models.ForeignKey(Profissionais, on_delete=models.CASCADE, null=True)
+    professor = models.ForeignKey(Profissionais, related_name='gradeProfessor1_related', on_delete=models.CASCADE, null=True)    
+    professo2 = models.ForeignKey(Profissionais,related_name='gradeProfessor2_related', on_delete=models.CASCADE, null=True, blank=True)    
+    auxiliar_classe = models.ManyToManyField(Profissionais,  null=True)
+
     carga_horaria_anual = models.IntegerField(null=True)
     limite_faltas = models.IntegerField(null=True) 
 
