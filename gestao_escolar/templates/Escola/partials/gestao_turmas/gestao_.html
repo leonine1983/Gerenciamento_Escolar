@@ -28,7 +28,7 @@
               </li>
               {% else %}
               <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true"><b class ='text-uppercase fs-3 pr-3'>{{matriculas.0.turma}}</b><i class="fa-solid fa-people-roof bi fs-4"></i></button>
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true"><b class ='text-uppercase fs-3 pr-3'>{{matriculas.0.turma}}</b><i class="fa-solid fa-people-roof bi fs-4"></i> {{matriculas|length}} matrículas</button>
               </li>
               <li class="nav-item" role="presentation">
                 <button class="nav-link" id="profile-tab2" data-bs-toggle="tab" data-bs-target="#profile-tab-pane2" type="button" role="tab" aria-controls="profile-tab-pane2" aria-selected="false"><i style="font-size: 1.65rem;" class="fs-4 fa-solid fa-users-gear"></i> Coodernar a turma do <b class='text-uppercase'> {{matriculas.0.turma}}</b></button>
@@ -42,7 +42,7 @@
                   <div class=' border-success border-bottom  bg-neutral_light mt-0  p-3 mb-3 '>
                     <h3 class='col-8'><i class="fa-solid fa-people-roof bi fs-4"></i> Todas as Turmas</h3>                
                   </div>
-                  <table class='table table-striped w-75 m-auto bg-light table-sm shadow-sm '>
+                  <table class='table table-striped w-100  m-auto bg-light table-sm shadow-sm '>
                     <thead>
                       <tr>
                         <th class='p-2 text-center'>ICON</th>
@@ -57,7 +57,7 @@
                       {% for n in turmas %}
                       <tr>
                         <td class='p-2 text-center'><a href='{% url "Gestao_Escolar:NotasAluno_one_create" n.pk %}'><i class="fa-duotone fa-circle-chevron-right"></i></a></td>                    
-                        <td class='p-2 text-center'>{{n.nome}}</td>
+                        <td class='p-2 text-left text-capitalize'>{{n.nome}} {{n.descritivo_turma}}</td>
                         <td class='p-2 text-center'>{{n.turno}}</td>
                         <td class='p-2 text-center'>{{n.serie}}</td>
                         <td class='p-2 text-center'>{{n.ano_letivo}}</td>
@@ -69,36 +69,21 @@
                   </table> 
                   {% else %}
                   <!--INICIA AQUI A PARTE DA GESTÃO DE TURMA - Alunos matriculados na turma-->
-                  <div class="row row-cols-4 p-2">
-                    <div class="col">Alunos matriculados</div>
-                    <div class="col">Periodo:</div>
-                    <div class="col">Série:</div>
-                    <div class="col">Quant. Alunos:</div>
-                  </div>  
-                  <div class="bg-light p-2 w-75 m-auto">           
+                  <div class="bg-light p-2  m-auto">           
                     <table class="table table-striped">
                       <thead>
                         <tr class="bg-secondary text-light mt-2">
-                          <th class="text-center">Codigo</th>
-                          <th class="text-center">Aluno</th>                        
-                          <th class="text-center">Inep</th>
+                          <th class="text-center">Aluno</th>    
                           <th class="text-center">Data de Matricula</th>  
                         </tr>
                       </thead>
                       <tbody>                     
+                        {% for n in matriculas %}
                         <tr>
-                          <td class="text-center p-0">000</td>
-                          <td class="text-center p-0">Belge de Oliveira couto</td>
-                          <td class="text-center p-0">0202</td>
-                          <td class="text-center p-0">05 de abril 2023</td>
+                          <td class="text-center p-0 text-capitalize ">{{n.aluno}}</td>
+                          <td class="text-center p-0">{{n.data_matricula}}</td>
                         </tr> 
-                        <tr>
-                          <td class="text-center p-0">000</td>
-                          <td class="text-center p-0">Belge de Oliveira couto</td>
-                          <td class="text-center p-0">0202</td>
-                          <td class="text-center p-0">05 de abril 2023</td>
-                        </tr> 
-                                            
+                        {% endfor %}                                            
                       </tbody>
                     </table> 
                   </div>

@@ -1,5 +1,5 @@
 from django import forms
-from gestao_escolar.models import Disciplina, Turmas, TurmaDisciplina, Profissionais, Trimestral_Notas_Aluno, Matriculas
+from gestao_escolar.models import Disciplina, Turmas, TurmaDisciplina, Profissionais, GestaoTurmas, Matriculas
 
 # widget personalizado que usa as classes (form-control, border, p-3, pb-3 e bg-transparent) para ser atribuido ao campo 'tempo_meses' 
 
@@ -51,7 +51,7 @@ class NotasAlunos_All_form (forms.ModelForm):
             self.fields['aluno_matriculados'].queryset = query_aluno
 
     class Meta:
-        model = Trimestral_Notas_Aluno
+        model = GestaoTurmas
         fields = ['grade', 'trimestre', 'aluno_matriculados', 'notas']
     
 

@@ -509,8 +509,7 @@ class Matriculas(models.Model):
  
         
     
-    """
-    
+    """   
     
 
     def __str__(self):
@@ -557,7 +556,7 @@ class Trimestre(models.Model):
         return self.numero_nome
     
 
-class Trimestral_Notas_Aluno(models.Model):
+class GestaoTurmas(models.Model):
     grade = models.ForeignKey(TurmaDisciplina, null=True, on_delete=models.CASCADE)
     trimestre = models.ForeignKey(Trimestre, null=True, on_delete=models.CASCADE)
     aluno_matriculados = models.ForeignKey(Matriculas, null=True, on_delete=models.CASCADE)    
