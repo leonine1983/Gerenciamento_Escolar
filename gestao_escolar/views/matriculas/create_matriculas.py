@@ -1,11 +1,12 @@
 from gestao_escolar.models import Escola, Matriculas, AnoLetivo, Turmas, Alunos
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from datetime import datetime
-from django.urls import reverse_lazy
+from django.contrib import messages
+from django.urls import reverse_lazy, reverse
 from .matriculas_form import Matricula_form
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.shortcuts import redirect
 
 
 class Create_Matriculas(LoginRequiredMixin, CreateView):
@@ -82,8 +83,17 @@ class Create_Matriculas(LoginRequiredMixin, CreateView):
 
             if matricula_exist.exists():
                 for n in matricula_exist:
+                    matricula_aluno = n.aluno
+                    matricula_sexo = n.aluno.sexo.id
+                    if matricula_sexo == 2:
+                        sexo = 'a'
+                    else:
+                        sexo = 'o' 
                     matricula_turma = n.turma
                     matricula_escola = n.turma.escola
                     matricula_ano = n.turma.ano_letivo
-                form.add_error(f"O aluno já está matriculado na turma do {matricula_turma}, da escola {matricula_escola} no Ano Letivo {matricula_ano}")       
+                messages.error(self.request, f"{sexo} alun{sexo} <span class='text-capitalize'>{matricula_aluno}</span> já está matriculado na turma do {matricula_turma}</br> Escola {matricula_escola}, no Ano Letivo {matricula_ano}") 
+                return redirect(reverse('Gestao_Escolar:GE_Escola_Matricula_create', kwargs={'pk': self.kwargs['pk']}))
+
+                
         return super().form_valid(form)

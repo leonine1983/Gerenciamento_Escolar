@@ -21,15 +21,16 @@ class Matricula_form(forms.ModelForm):
     
     aluno = forms.ModelChoiceField(
         queryset = Alunos.objects.none() ,
-        widget=forms.Select(attrs={'class': 'border border-info p-2 pb-1 bg-transparent text-info col m-2 rounded-1'}),
+        widget=forms.Select(attrs={'class': 'border border-info p-2 pb-1 bg-transparent txt-p col-6 m-2 rounded-1'}),
     )
+    """
     inep = forms.CharField(
-        widget = forms.TextInput(attrs={'class': 'border border-info p-2 pb-1 bg-transparent text-info col m-2 rounded-1'}),
+        widget = forms.TextInput(attrs={'class': 'border border-info p-2 pb-1 bg-transparent txt-p col m-2 rounded-1'}),
         required=False          
-    )        
+    )  """      
     escolarizacao_fora = forms.ChoiceField(
         choices=escola_fora,
-        widget=forms.Select(attrs={'class': ' border border-info p-2 pb-1 bg-transparent text-info col m-2 rounded-1'}),
+        widget=forms.Select(attrs={'class': ' border border-info p-2 pb-1 bg-transparent txt-p col m-2 rounded-1'}),
         
     )        
     #periodo_multiserie = forms.ChoiceField(
@@ -50,23 +51,24 @@ class Matricula_form(forms.ModelForm):
         #required=False
         #)      
     obervacao = forms.CharField(
-        widget=forms.Textarea(attrs={'class': 'border border-info p-2 pb-1 bg-transparent text-info col m-2 rounded-1 h-25'}),
+        widget=forms.Textarea(attrs={'class': 'border border-info p-2 pb-1 bg-transparent txt-p col m-2 rounded-1 h-25'}),
         required=False  
     )  
     calcula_media = forms.BooleanField(
         label='Não calcular média',
-        widget=forms.CheckboxInput(attrs={'class': 'border border-info p-2 pb-1 bg-transparent text-info col m-2 rounded-1'}),
+        widget=forms.CheckboxInput(attrs={'class': 'border border-info p-2 pb-1 bg-transparent txt-p col m-2 rounded-1'}),
         required=False
         )   
 
     turma = forms.ModelChoiceField(
+        label='Turma',
         queryset=Turmas.objects.none(),
-        widget=forms.Select(attrs={'class': 'border border-info p-2 pb-1 bg-transparent text-info col m-2 rounded-1'}),
+        widget=forms.Select(attrs={'class': 'border border-info p-2 pb-1 bg-transparent txt-p col m-2 rounded-1'}),
     ) 
 
     serie_multiseriada  = forms.ModelChoiceField(
         queryset = Serie_Escolar.objects.all(),
-        widget=forms.Select(attrs={'class': 'border border-info p-2 pb-1 bg-transparent text-info col m-2 rounded-1'}),
+        widget=forms.Select(attrs={'class': 'border border-info p-2 pb-1 bg-transparent txt-p col m-2 rounded-1'}),
         required=False  
     )
     # Para aceitar o modificação do form feita lá na view
@@ -77,6 +79,7 @@ class Matricula_form(forms.ModelForm):
 
         if turma_queryset is not None:
             self.fields['turma'].queryset = turma_queryset
+            self.fields['turma'].initial = turma_queryset.first()
             self.fields['aluno'].queryset = aluno_queryset
 
         # Dentro do metodo init, iniciaremos o campo serie_multiseriada OCULTA, e        
@@ -92,7 +95,7 @@ class Matricula_form(forms.ModelForm):
     
     class Meta:
         model = Matriculas
-        fields =['aluno', 'inep', 'turma',  'obervacao', 'escolarizacao_fora', 'serie_multiseriada']
+        fields =['aluno',  'turma',  'obervacao', 'escolarizacao_fora', 'serie_multiseriada']
 
   
 

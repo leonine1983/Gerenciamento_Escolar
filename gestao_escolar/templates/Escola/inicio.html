@@ -194,11 +194,7 @@
     <!--Impressos-->
     {% if  conteudo_page == "imprime_turma" %}
         {% include 'Escola/partials/impressos/impresso_turmas.html' %}
-    {% endif %}  
-   
-    
-   
-
+    {% endif %}       
     
     <!--Ferramentas-->
     {% if  conteudo_page == 'imagem-docx' %}
@@ -223,8 +219,8 @@
         {% include 'Escola/partials/verifica_sem_registros/n_turma.html' %}
     {% endif %}  
 
-    {% if messages %}
-        {% include 'Escola/partials/mensagens.html' %}        
+    {% if messages %}                
+        {% include 'Escola/partials/mensagens.html' %}          
     {% endif %}
     
 </div>
