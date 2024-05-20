@@ -155,6 +155,7 @@
     {% if  conteudo_page == 'Matricular Aluno' %}
         {% include 'Escola/partials/seleciona_matricular_aluno.html' %}
     {% endif %} 
+
     {% if  conteudo_page == 'Remaneja Aluno' %}
         {% include 'Escola/partials/seleciona_matricular_remanejamento.html' %}
     {% endif %} 
@@ -194,7 +195,10 @@
     <!--Impressos-->
     {% if  conteudo_page == "imprime_turma" %}
         {% include 'Escola/partials/impressos/impresso_turmas.html' %}
-    {% endif %}       
+    {% endif %}   
+    {% if  conteudo_page == 'delete' %}
+        {% include 'Escola/partials/seleciona_DELETE.html' %}
+    {% endif %}     
     
     <!--Ferramentas-->
     {% if  conteudo_page == 'imagem-docx' %}
