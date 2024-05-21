@@ -15,10 +15,12 @@ class ViewDetailMatriculasTurma(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)        
         context['titulo_page'] = 'Matrículas'          
         context['svg'] = svg 
-        context['matriculas'] = Matriculas.objects.filter(turma=self.kwargs['pk'])
+        context['matriculas'] = Matriculas.objects.filter(turma=self.kwargs['pk'])        
         context['now'] = datetime.now()
-        context['conteudo_page'] = "Todas as matriculas"               
+        context['conteudo_page'] = "imprime_turma_matricula"               
         context['page_ajuda'] = "<div class='m-2'><b>Nessa área, definimos todos os dado"
+        # Quantidades
+        context['matri_m'] = Matriculas.objects.filter(turma=self.kwargs['pk'], aluno__sexo__id = 1)
         
         return context
             

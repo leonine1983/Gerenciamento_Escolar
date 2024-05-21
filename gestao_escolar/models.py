@@ -541,7 +541,9 @@ class Matriculas(models.Model):
  
         
     
-    """   
+    """ 
+    class Meta:
+        ordering = ['aluno']
     
 
     def __str__(self):

@@ -59,7 +59,7 @@
 
     .modal-content{        
         width: 80vw!important;
-        height:90vh!important
+        min-height:93vh!important
       
     }
     .modal-dialog{ 
@@ -376,9 +376,13 @@
     {% if  conteudo_page == 'Gestão Turmas' %}
         {% include 'Escola/partials/gestao_turmas/gestao_.html' %}
     {% endif %}  
+
     <!--Impressos-->
     {% if  conteudo_page == "imprime_turma" %}
         {% include 'Escola/partials/impressos/impresso_turmas.html' %}
+    {% endif %}       
+    {% if  conteudo_page == "imprime_turma_matricula" %}
+        {% include 'Escola/partials/impressos/impresso_turmas_matricula.html' %}
     {% endif %}   
     {% if  conteudo_page == 'delete' %}
         {% include 'Escola/partials/seleciona_DELETE.html' %}
