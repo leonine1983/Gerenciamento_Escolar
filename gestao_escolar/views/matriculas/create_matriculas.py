@@ -65,7 +65,7 @@ class Create_Matriculas(LoginRequiredMixin, CreateView, SuccessMessageMixin):
         context['n_matriculas'] = matriculas
         #context['now'] = datetime.now()
         context['serie_multi'] = Turmas.objects.get(pk = self.kwargs['pk']).turma_multiserie
-        context['turma_ativa'] = Turmas.objects.get(pk = self.kwargs['pk']).nome      
+        context['turma_ativa'] = Turmas.objects.get(pk = self.kwargs['pk'])   
         context['conteudo_page'] = "Matricular Aluno"               
         context['page_ajuda'] = "<div class='border bg-secondary p-2'><h2>Pessoar a ser contratada</h2><div>"        
         return context   
