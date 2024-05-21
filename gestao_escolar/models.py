@@ -225,7 +225,7 @@ class Alunos(models.Model):
     # Documentação
     RG = models.CharField(max_length=14, null=True, blank=True, default='000.000.00-00')    
     RG_emissao = models.DateField(null=True, blank=True, default=timezone.now)  
-    RG_UF = models.OneToOneField(Uf_Unidade_Federativa, on_delete=models.CASCADE, null=True)
+    RG_UF = models.ForeignKey(Uf_Unidade_Federativa, on_delete=models.CASCADE, null=True)
     orgao_emissor = models.CharField(max_length=5, null=True, blank=True)
 
     renda_familiar = models.CharField(max_length=7, null=True, blank=True)

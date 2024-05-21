@@ -227,6 +227,48 @@
 .win11-search-button:hover {
     background-color: #005a9e;
 }
+
+/* Estilo da paginação Windows 11 */
+.win11-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 1rem;
+    font-family: "Segoe UI", Tahoma, Geneva, sans-serif;
+}
+
+.win11-step-links {
+    display: flex;
+    gap: 10px;
+}
+
+.win11-pagination-link {
+    padding: 8px 12px;
+    color: #0078d4;
+    text-decoration: none;
+    border: 1px solid #0078d4;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.win11-pagination-link:hover {
+    background-color: #0078d4;
+    color: white;
+}
+
+.win11-current {
+    padding: 8px 12px;
+    background-color: #f3f3f3;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #333;
+}
+.win11-total-records {
+    font-size: 14px;
+    color: #333;
+    margin-left:1rem;
+    font-weight: bold;
+}
 </style>
 {% endblock script_head %} 
 

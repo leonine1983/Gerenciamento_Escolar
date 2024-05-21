@@ -70,7 +70,7 @@ input[type=checkbox]{
               </ul>             
               <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active " id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">  
-                  <div class="win11-search-wrapper bg-p-5 m-0 p-1">
+                  <div class="win11-search-wrapper bg-p-5 m-0 p-1 d-flex">
                     <form action="?" method="GET" class="form-inline">
                         {% csrf_token %}            
                         <div class="win11-search-wrapper-inner">
@@ -78,6 +78,26 @@ input[type=checkbox]{
                             <button class="win11-search-button" type="submit"><i class="fa-regular fa-user-magnifying-glass"></i></button>
                         </div>
                     </form> 
+                    <div class="win11-pagination">
+                      <span class="win11-step-links">
+                          {% if matriculas.has_previous %}
+                              <a href="?page=1" class="win11-pagination-link">&laquo; Primeiro</a>
+                              <a href="?page={{ matriculas.previous_page_number }}" class="win11-pagination-link">Anterior</a>
+                          {% endif %}
+                  
+                          <span class="win11-current">
+                              Página {{ matriculas.number }} de {{ matriculas.paginator.num_pages }}.
+                          </span>
+                  
+                          {% if matriculas.has_next %}
+                              <a href="?page={{ matriculas.next_page_number }}" class="win11-pagination-link">Próximo</a>
+                              <a href="?page={{ matriculas.paginator.num_pages }}" class="win11-pagination-link">Último &raquo;</a>
+                          {% endif %}
+                      </span>
+                      <span class="win11-total-records">
+                        <i class="fa-thin fa-address-card"></i> Total de matriculas: {{ matriculas.paginator.count }}
+                      </span>
+                    </div>
                   </div>                  
                   <table class="win11-table ">
                     <thead>
@@ -132,32 +152,8 @@ input[type=checkbox]{
 
 
 
-
-
-                {% for contact in page_obj %}
-                {# Each "contact" is a Contact model object. #}
-                {{ contact.full_name|upper }}<br>
-                ...
-            {% endfor %}
             
-            <div class="pagination">
-                <span class="step-links">
-                    {% if page_obj.has_previous %}
-                        <a href="?page=1">&laquo; first</a>
-                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-                    {% endif %}
-            
-                    <span class="current">
-                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                    </span>
-            
-                    {% if page_obj.has_next %}
-                        <a href="?page={{ page_obj.next_page_number }}">next</a>
-                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-                    {% endif %}
-                </span>
-            </div>
-
+          
 
 
 

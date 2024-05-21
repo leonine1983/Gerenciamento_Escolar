@@ -57,7 +57,7 @@ class Create_Matriculas(LoginRequiredMixin, CreateView, SuccessMessageMixin):
             context['matriculas'] = matriculas
         else:
             matriculas = Matriculas.objects.filter(turma =self.kwargs['pk'])
-            paginato = Paginator(matriculas, per_page=15)
+            paginato = Paginator(matriculas, per_page=9)
             page_number = self.request.GET.get('page')
             page_obj = paginato.get_page(page_number)
             context['matriculas'] = page_obj
