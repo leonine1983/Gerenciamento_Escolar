@@ -69,26 +69,23 @@ input[type=checkbox]{
                 </li>
               </ul>             
               <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active pl-4 pr-4" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">  
-                  <div  class='p-2 fs-6 border-danger-subtle border-right d-flex text-light' style= 'box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset; background-color:rgb(116, 145, 140)'>
-                    <div  class="  mr-4  fs-5 d-flex  w-100">       
-                      <div class="mt-0 mb-0" style='margin:auto;  width:90%; '>
-                        <form action="?" method="GET" class="form-inline">
-                            {% csrf_token %}            
-                            <div class="search-wrapper" style='margin:1rem auto 1rem auto;  width:110%; '>
-                              <input type="text" class="search-input rounded-3 m-0 mr-2 ml-2" placeholder="Buscar por aluno" name="busca-aluno" style='margin:1rem auto 1rem auto;  width:90%; ' >
-                              <button class="search-button" type="submit"  style='height: 10rem importamt;border-radius: 1rem;'><i class="fa-regular fa-user-magnifying-glass"></i></button>
-                            </div>
-                          </form> 
-                      </div>            
-                               
-                    </div>
-                  </div>  
-                  <table class="table table-striped ">
+                <div class="tab-pane fade show active " id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">  
+                  <div class="win11-search-wrapper bg-p-5 m-0 p-1">
+                    <form action="?" method="GET" class="form-inline">
+                        {% csrf_token %}            
+                        <div class="win11-search-wrapper-inner">
+                            <input type="text" class="win11-search-input" placeholder="Buscar por aluno" name="busca-aluno">
+                            <button class="win11-search-button" type="submit"><i class="fa-regular fa-user-magnifying-glass"></i></button>
+                        </div>
+                    </form> 
+                  </div>                  
+                  <table class="win11-table ">
                     <thead>
-                  <tr>
+                  <tr>                    
+                    <th scope="col">Ordem</th>
                     <th scope="col">Aluno</th>
                     <th scope="col">Idade</th>
+                    <th scope="col">Uniforme</th>
                     <th scope="col">Sexo</th>
                     <th scope="col">INEP</th>
                     <th scope="col">Nome da Mãe</th>
@@ -97,24 +94,25 @@ input[type=checkbox]{
                     {% endif %}  
                     <th scope="col">Síndrome de Down</th>
                     <th scope="col">Deficiência Física</th>        
-                    <th scope="col text-align">Ações</th>       
+                    <th scope="col" class="text-center fw-bold">Ações</th>       
                   </tr>
                 </thead>
                 <tbody>
                 {% for n in matriculas %}
                   <tr>
-                    <td class='text-align'>{{n.aluno}}</td>
-                    <td class='text-align'>{{n.aluno.idade}} anos</td>
-                    <td class='text-align'>{{n.aluno.sexo}}</td>
-                    <td class='text-align'>{{n.inep}}</td>
-                    <td class='text-align'>{{n.aluno.nome_mae}}</td>
+                    <td class='text-center'>{{forloop.counter}}</td>
+                    <td class='text-start text-capitalize'>{{n.aluno}}</td>
+                    <td class='text-center'>{{n.aluno.idade}} anos</td>
+                    <td class='text-center'>{{n.camisa_tamanho}}</td>
+                    <td class='text-center'>{{n.aluno.sexo}}</td>
+                    <td class='text-center'>{{n.aluno.inep}}</td>
+                    <td class='text-center'>{{n.aluno.nome_mae}}</td>
   
                     {% if n.aluno.sindrome_de_Down  %}
                     <td class='text-align'>Sim</td>
                     {% else %}
                     <td class='text-align'>Não</td>
-                    {% endif %}
-  
+                    {% endif %}  
                     <td class='text-align'>
                       {{n.aluno.deficiencia_aluno}} 
                     </td>
@@ -130,29 +128,70 @@ input[type=checkbox]{
                 {% endfor %}                
                 </tbody>                  
                 </table>
-                </div>
 
+
+
+
+
+
+                {% for contact in page_obj %}
+                {# Each "contact" is a Contact model object. #}
+                {{ contact.full_name|upper }}<br>
+                ...
+            {% endfor %}
+            
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+            
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
                 <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
                   <div class="form-group border shadow bg-p-5">
                     <form method="post" >
                         {{ form.non_field_errors }}
                         {% csrf_token %}
-                        <div class="m-3 p-3 row row-cols-2 h-auto " >
+                        {{form.media}}
+                        <div class="p-2 row row-cols-2" >
                         {% for field in form %}
                           <div class="form-group">
                               {{ field.label_tag }}
                               {{ field }}
-                              {{ field.errors }}
-                          </div>
-                        {% endfor %}  
+                              {{ field.errors }}         
+                          </div>                 
+                        {% endfor %}                            
+                        </div>  
+                        <div class="d-flex justify-content-center gap-1 mb-4">
+                          <a class="col-5 btn btn-sm btn-danger"  href="{% url 'Gestao_Escolar:GE_Escola_Matricula_Turmas_lista' %}"  type="submit">Cancelar</a>
+                          <button class=" col-5 btn btn-sm btn-primary" type="submit">Matricular aluno</button>
                         </div>
-                      <button class="btn btn-sm btn-primary" type="submit">Salvar registro do aluno</button>
-                  </form> 
-
-                  </div>               
+                  </form>                     
+                </div>               
               </div>
-
-
         </div>        
     </div>
     </div>

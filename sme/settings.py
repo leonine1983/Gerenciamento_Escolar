@@ -34,8 +34,8 @@ INSTALLED_APPS = [
     'gestao_escolar',
     'rh',
     'admin_acessos',
-
     'ckeditor',
+    'ckeditor_uploader'
    
 
 
@@ -133,6 +133,24 @@ STATICFILES_DIRS = [
 ]
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Mudanças do CKEDITOR
+# Media_path
+CKEDITOR_IMAGE_BACKEND = 'pillow'
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+
+# Para responsividade e code snippet
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': None,
+        'width' :'100%',
+        'extraPlugins': ".".join(
+            [
+                "codesnippet"
+            ]
+        )
+    }
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

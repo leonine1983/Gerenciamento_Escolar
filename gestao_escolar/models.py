@@ -2,9 +2,10 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
-from django.db.models.signals import post_migrate, post_save
+from django.db.models.signals import post_migrate
 from django.dispatch import receiver
-from rh.models import Ano, Encaminhamentos, Escola, Profissao, Uf_Unidade_Federativa, Sexo
+from rh.models import Ano, Encaminhamentos, Escola, Uf_Unidade_Federativa, Sexo
+from ckeditor_uploader.fields import RichTextUploadingField
 
 
 class AnoLetivo(models.Model):
@@ -507,7 +508,6 @@ class Matriculas(models.Model):
     turma = models.ForeignKey(Turmas, related_name='related_matricula_turma', on_delete=models.CASCADE)
     camisa_tamanho = models.ForeignKey(TamanhoRoupa, related_name='related_camisa', null=True, on_delete=models.CASCADE)
     data_matricula = models.DateField(auto_now=True)
-    obervacao = models.TextField(max_length=300, null=True, blank=True)
     escolarizacao_fora = models.CharField(choices=escola_fora, default=1, max_length=1)
     serie_multiseriada  = models.ForeignKey(Serie_Escolar, null=True, blank=True, on_delete=models.CASCADE)    
     #periodo_multiserie = models.CharField(choices=turno, null=True, max_length=12 )
@@ -515,7 +515,8 @@ class Matriculas(models.Model):
     data_afastamento_fim = models.DateField(null=True)
     motivo_afastamento = models.TextField(max_length=200, null=True)
     calcula_media = models.BooleanField(default=True, null=True, blank=True)
-    profissional_matricula = models.ForeignKey(User, related_name='related_matricula_alunos', null=True, on_delete=models.CASCADE)
+    profissional_matricula = models.ForeignKey(User, related_name='related_matricula_alunos', null=True, on_delete=models.CASCADE)    
+    obervacao = RichTextUploadingField(null=True, blank=True)
     
 
     """

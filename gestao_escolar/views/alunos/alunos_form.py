@@ -27,10 +27,6 @@ class Alunos_form(forms.ModelForm):
         label='Nome Completo (Igual ao do RG):',
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 text-info col m-2 rounded-1'}),
     )
-    #data_nascimento = forms.DateField(
-     #   label='Data de Nascimento:',
-      #  widget=forms.DateInput(attrs={'class': 'form-control border border-info p-3 pb-3  text-info col2 m-2 rounded-1', 'type': 'date'}),        
-    #)
     nome_mae = forms.CharField(      
         label=mark_safe('<i class="fa-solid fa-user-tie-hair"></i> Mãe'),
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 text-info col m-2 rounded-1'}),
