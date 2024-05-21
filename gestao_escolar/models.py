@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from decimal import Decimal
+from django.contrib.auth.models import User
 
 from django.db.models.signals import post_migrate, post_save
 from django.dispatch import receiver
@@ -474,18 +474,49 @@ escola_fora = {
     ('3', 'Em domicílio')
 }
 
+class TamanhoRoupa(models.Model):
+    nome = models.CharField(max_length=2)
+    descricao = models.TextField(blank=True, null=True)
+    largura = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    altura = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    comprimento = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    peso = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+
+    def __str__(self):
+        return self.nome
+    
+    @receiver(post_migrate)
+    def populate_tamanhos_roupa(sender, **kwargs):
+        if not TamanhoRoupa.objects.exists():
+            # Criar registros de exemplo para cada tamanho de roupa
+            tamanhos = [
+                {'nome': 'PP', 'descricao': 'Tamanho extra pequeno', 'largura': 40, 'altura': 60, 'comprimento': 30, 'peso': 0.2},
+                {'nome': 'P', 'descricao': 'Tamanho pequeno', 'largura': 45, 'altura': 65, 'comprimento': 35, 'peso': 0.3},
+                {'nome': 'M', 'descricao': 'Tamanho médio', 'largura': 50, 'altura': 70, 'comprimento': 40, 'peso': 0.4},
+                {'nome': 'G', 'descricao': 'Tamanho grande', 'largura': 55, 'altura': 75, 'comprimento': 45, 'peso': 0.5},
+                {'nome': 'GG', 'descricao': 'Tamanho extra grande', 'largura': 60, 'altura': 80, 'comprimento': 50, 'peso': 0.6},
+            ]
+
+            for tamanho in tamanhos:
+                TamanhoRoupa.objects.get_or_create(**tamanho)
+
+
+
 class Matriculas(models.Model):
     aluno = models.ForeignKey(Alunos, related_name='related_matricula_alunos', on_delete=models.CASCADE)
     turma = models.ForeignKey(Turmas, related_name='related_matricula_turma', on_delete=models.CASCADE)
+    camisa_tamanho = models.ForeignKey(TamanhoRoupa, related_name='related_camisa', null=True, on_delete=models.CASCADE)
     data_matricula = models.DateField(auto_now=True)
     obervacao = models.TextField(max_length=300, null=True, blank=True)
     escolarizacao_fora = models.CharField(choices=escola_fora, default=1, max_length=1)
-    serie_multiseriada  = models.ForeignKey(Serie_Escolar, null=True, blank=True, on_delete=models.CASCADE)
+    serie_multiseriada  = models.ForeignKey(Serie_Escolar, null=True, blank=True, on_delete=models.CASCADE)    
     #periodo_multiserie = models.CharField(choices=turno, null=True, max_length=12 )
     data_afastamento_inicio = models.DateField(null=True)
     data_afastamento_fim = models.DateField(null=True)
     motivo_afastamento = models.TextField(max_length=200, null=True)
     calcula_media = models.BooleanField(default=True, null=True, blank=True)
+    profissional_matricula = models.ForeignKey(User, related_name='related_matricula_alunos', null=True, on_delete=models.CASCADE)
+    
 
     """
     # Sobrescrever o método save para verificar se o aluno ja está matriculado em alguma turma

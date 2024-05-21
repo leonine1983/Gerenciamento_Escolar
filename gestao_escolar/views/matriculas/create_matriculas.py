@@ -2,6 +2,7 @@ from gestao_escolar.models import Escola, Matriculas, AnoLetivo, Turmas, Alunos
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy, reverse
 from .matriculas_form import Matricula_form
 from django.core.paginator import Paginator
@@ -9,12 +10,16 @@ from django.db.models import Q
 from django.shortcuts import redirect
 
 
-class Create_Matriculas(LoginRequiredMixin, CreateView):
+class Create_Matriculas(LoginRequiredMixin, CreateView, SuccessMessageMixin):
     model = Matriculas
+    success_message = "Aluno matriculado com sucesso!!!"
     #fields = '__all__'
     form_class = Matricula_form
     template_name = 'Escola/inicio.html'
-    success_url = reverse_lazy('Gestao_Escolar:GE_Escola_inicio')
+
+    def get_success_url(self):
+        return reverse_lazy('Gestao_Escolar:GE_Escola_Matricula_lista')
+    
 
     # envio_form Envia as informações de TURMA, ALUNOS para o form e ignora os alunos que ja estiverem matriculados
     def get_form_kwargs(self):
@@ -73,7 +78,7 @@ class Create_Matriculas(LoginRequiredMixin, CreateView):
         print("Dados do Formulário:")
         for key, value in form_data.items():
             print(f"{key}: {value}")
-    # Chame o método da superclasse para definir self.object
+        # Chame o método da superclasse para definir self.object
         self.object = form.save(commit=False)  # Isso pode variar com base na lógica do seu formulário
 
         if self.object:

@@ -1,6 +1,6 @@
 from typing import Any
 from django import forms
-from gestao_escolar.models import Turmas, Escola, Alunos, Remanejamento, Serie_Escolar, Matriculas
+from gestao_escolar.models import Turmas, Escola, Alunos, Remanejamento, Serie_Escolar, Matriculas, TamanhoRoupa
 
 # widget personalizado que usa as classes (form-control, border, p-3, pb-3 e bg-transparent) para ser atribuido ao campo 'tempo_meses' 
 
@@ -56,7 +56,7 @@ class Matricula_form(forms.ModelForm):
     )  
     calcula_media = forms.BooleanField(
         label='Não calcular média',
-        widget=forms.CheckboxInput(attrs={'class': 'border border-info p-2 pb-1 bg-transparent txt-p col m-2 rounded-1'}),
+        widget=forms.CheckboxInput(attrs={'class': 'p-2 pb-1 bg-transparent txt-p col m-2 rounded-1'}),
         required=False
         )   
 
@@ -71,6 +71,13 @@ class Matricula_form(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'border border-info p-2 pb-1 bg-transparent txt-p col m-2 rounded-1'}),
         required=False  
     )
+    camisa_tamanho  = forms.ModelChoiceField(
+        label='Escolha o tamando do uniforme do aluno',
+        queryset = TamanhoRoupa.objects.all(),
+        widget=forms.Select(attrs={'class': 'border border-info p-2 pb-1 bg-transparent txt-p col m-2 rounded-1'}),
+        required=False  
+    )
+   
     # Para aceitar o modificação do form feita lá na view
     def __init__(self, *args, **kwargs):
         turma_queryset = kwargs.pop('turma_queryset', None)
