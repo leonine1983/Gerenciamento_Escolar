@@ -145,7 +145,7 @@ input[type=checkbox]{
                     <td class='text-align'>{{n.serie_multiseriada}}</td>
                     {% endif %}  
                     <td class='text-align d-flex'>
-                      <a class='btn btn-sm btn-secondary pt-2' href="{% url 'Gestao_Escolar:Matricula_comprovante' n.pk %}" class="nav-link">Comprovante <i class="fa-sharp fa-solid fa-plus text-info"></i></a>
+                      <a class='btn btn-sm bg-p-5 pt-2 me-3' href="{% url 'Gestao_Escolar:Matricula_comprovante' n.pk %}" class="nav-link">Comprovante <i class="fa-thin fa-file-user"></i></a>
                       <a class='btn btn-sm btn-secondary pt-2' href="{% url 'Gestao_Escolar:GE_Escola_Remaneja_create' n.pk %}" class="nav-link">Remanejar aluno <i class="fa-sharp fa-solid fa-plus text-info"></i></a>
                       <a class='p-1' href="{% url 'Gestao_Escolar:GE_Escola_Matricula_update' n.pk %}"><span class='btn btn-sm btn-info mr-1'>Editar</span></a>
                       <a class='p-1' href="{% url 'Gestao_Escolar:GE_Escola_Matricula_delete' n.pk %}"><span class='btn btn-sm btn-danger '>Excluir</span></a></td>
