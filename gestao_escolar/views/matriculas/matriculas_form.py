@@ -99,6 +99,12 @@ class Matricula_form(forms.ModelForm):
         model = Matriculas
         fields =['aluno',  'turma', 'camisa_tamanho',  'escolarizacao_fora','calcula_media' ,'obervacao','serie_multiseriada',]
 
+
+class MatriculaUpdate_form(forms.ModelForm):
+    
+    class Meta:
+        model = Matriculas
+        fields =['aluno',  'turma', 'camisa_tamanho',  'escolarizacao_fora','calcula_media' ,'obervacao','serie_multiseriada',]
   
 
 class Turma_form(forms.ModelForm):
