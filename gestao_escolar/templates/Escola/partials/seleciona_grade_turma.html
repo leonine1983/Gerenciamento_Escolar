@@ -75,26 +75,40 @@ td, tr {
               </ul>                
               <div class="tab-content " id="myTabContent">
                 <div class="tab-pane fade show active pl-4 pr-4" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">  
-                  {% if not ativa  %}
-                    <div  class='p-2 fs-6 border-danger-subtle border-right d-flex text-light bg-p-4' style= 'box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset; '>
-                      <div  class="  mr-4  fs-5 d-flex  w-100">             
-                        <div class="mt-0 mb-0 " style='margin:auto;  width:90%; '>
-                          <form action="?" method="GET" class="form-inline ">
+                  {% if not ativa  %}  
+                        <div class="win11-search-wrapper bg-p-5 m-0 p-1 d-flex">
+                          <form action="?" method="GET" class="form-inline">
                               {% csrf_token %}            
-                              <div class="search-wrapper bg-light" style='margin:1rem auto 1rem auto;  width:110%; '>
-                                <input type="text" class="search-input rounded-3 m-0 mr-2 ml-2" placeholder="Buscar turma" name="busca-turma" style='margin:1rem auto 1rem auto;  width:90%; ' >
-                                <button class="bg-transparent border-0" type="submit">
-                                  <i class="fa-solid fa-magnifying-glass"></i>
-                                </button>
+                              <div class="win11-search-wrapper-inner">
+                                  <input type="text" class="win11-search-input" placeholder="Buscar turma" name="busca-turma"  name="busca-aluno">
+                                  <button class="win11-search-button" type="submit"><i class="fa-regular fa-user-magnifying-glass"></i></button>
                               </div>
-                            </form> 
-                        </div>  
-                      </div>            
-                    </div> 
+                          </form> 
+                          <div class="win11-pagination">
+                            <span class="win11-step-links">
+                                {% if turmas.has_previous %}
+                                    <a href="?page=1" class="win11-pagination-link">&laquo; Primeiro</a>
+                                    <a href="?page={{ turmas.previous_page_number }}" class="win11-pagination-link">Anterior</a>
+                                {% endif %}
+                        
+                                <span class="win11-current">
+                                    Página {{ turmas.number }} de {{ turmas.paginator.num_pages }}.
+                                </span>
+                        
+                                {% if matriculas.has_next %}
+                                    <a href="?page={{ turmas.next_page_number }}" class="win11-pagination-link">Próximo</a>
+                                    <a href="?page={{ turmas.paginator.num_pages }}" class="win11-pagination-link">Último &raquo;</a>
+                                {% endif %}
+                            </span>
+                            <span class="win11-total-records">
+                              <i class="fa-thin fa-address-card"></i> Total de turmas cadastrados: {{ turmas.paginator.count }}
+                            </span>
+                          </div>
+                        </div> 
                     {% else %}
                     <div>ddd</div>
                   {% endif %}
-                  <table class="table table-striped table-bordered shadow-sm border-2">
+                  <table class="win11-table">
                     {% if not ativa  %}
                     <thead>
                       <tr class="bg-p-2">
@@ -103,7 +117,7 @@ td, tr {
                         <th scope="col">Série</th>
                         <th scope="col">Turno</th>
                         <th scope="col">Ano</th>             
-                        <th scope="col">Ação</th>           
+                        <th scope="col" class='text-center'>Ação</th>           
                       </tr>
                     </thead>
                     <tbody>                
@@ -114,7 +128,7 @@ td, tr {
                         <td >{{n.serie}}</td>
                         <td >{{n.turno}}</td>
                         <td >{{n.ano_letivo}}</td>
-                        <td ><a class="btn btn-sm btn-success" href="{% url 'Gestao_Escolar:Grades_create' n.pk %} ">Criar Grade de disciplinas  <i class="fa-duotone fa-chart-network"></i></a></td>
+                        <td class='text-center'><a class="btn btn-sm btn-success" href="{% url 'Gestao_Escolar:Grades_create' n.pk %} ">Criar Grade de disciplinas  <i class="fa-duotone fa-chart-network"></i></a></td>
                         
                       </tr>                    
                     {% endfor %}                       

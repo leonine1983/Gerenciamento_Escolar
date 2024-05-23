@@ -106,6 +106,18 @@ class Aluno_documento_form(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
         required=False
     )
+    rua = forms.CharField(
+        label="Rua, Av., Travessa",
+        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'})        
+    )
+    bairro = forms.CharField(
+        label="Bairro",
+        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'})        
+    )
+    cidade= forms.CharField(
+        label="Cidade",
+        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'})        
+    )
     renda_familiar = forms.CharField(
         label='Renda Familiar',
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),

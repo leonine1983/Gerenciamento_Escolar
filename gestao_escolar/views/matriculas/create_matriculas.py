@@ -10,15 +10,17 @@ from django.db.models import Q
 from django.shortcuts import redirect
 
 
-class Create_Matriculas(LoginRequiredMixin, CreateView, SuccessMessageMixin):
+class Create_Matriculas(LoginRequiredMixin, SuccessMessageMixin, CreateView, ):
     model = Matriculas
     success_message = "Aluno matriculado com sucesso!!!"
     #fields = '__all__'
     form_class = Matricula_form
-    template_name = 'Escola/inicio.html'
+    template_name = 'Escola/inicio.html'    
 
     def get_success_url(self):
-        return reverse_lazy('Gestao_Escolar:GE_Escola_Matricula_lista')
+        turma = self.object.turma.id
+        print (f'essa é a turma {turma}')
+        return reverse_lazy('Gestao_Escolar:GE_Escola_Matricula_create', kwargs={'pk': turma}) 
     
 
     # envio_form Envia as informações de TURMA, ALUNOS para o form e ignora os alunos que ja estiverem matriculados
