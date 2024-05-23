@@ -1,0 +1,4 @@
+# EXEMPLO __startswith usar essa terminação no filter faz com que 
+# considere a pesquisa somente as iniciais adicionadas, no exemplo abaixo,
+# todo o conteudo que tiver a inicial 'todos-' farão parte da pesquisa
+a = Matriculas.object.filter(cod_matricula__startswith = f'todos-')

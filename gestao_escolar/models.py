@@ -504,6 +504,7 @@ class TamanhoRoupa(models.Model):
 
 
 class Matriculas(models.Model):
+    cod_matricula = models.TextField(max_length=200, null=True, default='2023-001')
     aluno = models.ForeignKey(Alunos, related_name='related_matricula_alunos', on_delete=models.CASCADE)
     turma = models.ForeignKey(Turmas, related_name='related_matricula_turma', on_delete=models.CASCADE)
     camisa_tamanho = models.ForeignKey(TamanhoRoupa, related_name='related_camisa', null=True, on_delete=models.CASCADE)

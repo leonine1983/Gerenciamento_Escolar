@@ -71,8 +71,23 @@ class Create_Matriculas(LoginRequiredMixin, CreateView, SuccessMessageMixin):
         return context   
         
     
-    def form_valid(self, form):
-        # Imprima o conteúdo do objeto
+    def form_valid(self, form):        
+        # GERAR CODIDO DE MATICULA ----------
+        ano_atual = self.request.session['anoLetivo_nome']
+        # Usar o startswith para consultar somente os registros que tem a inicial igual ao ano letivo atual
+        codigo_matricula_atual = Matriculas.objects.filter(cod_matricula__startswith = f'{ano_atual}-')
+        # Determinar o proximo numero sequencial
+        if codigo_matricula_atual.exists():
+            ultimo_numero = int(codigo_matricula_atual.order_by('-cod_matricula').first().cod_matricula.split('-')[1])
+            proximo_numero = ultimo_numero + 1
+        else:
+            proximo_numero = 1
+        # Formatar o codigo
+        novo_codigo = f'{ano_atual}-{proximo_numero:07d}'
+        form.instance.cod_matricula = novo_codigo
+        # / ----------
+
+        
         form_data = self.request.POST    
         # Imprima os dados do formulário
         print("Dados do Formulário:")
@@ -82,10 +97,8 @@ class Create_Matriculas(LoginRequiredMixin, CreateView, SuccessMessageMixin):
         self.object = form.save(commit=False)  # Isso pode variar com base na lógica do seu formulário
 
         if self.object:
-            print(f'visualizando um dentro da condição {self.object}')
             matricula_exist = Matriculas.objects.filter(aluno=self.object.aluno, turma__ano_letivo=self.request.session['anoLetivo_id'])
             matricula_exist = matricula_exist.exclude(pk=self.object.pk) if self.object.pk else matricula_exist
-
             if matricula_exist.exists():
                 for n in matricula_exist:
                     matricula_aluno = n.aluno
@@ -98,7 +111,5 @@ class Create_Matriculas(LoginRequiredMixin, CreateView, SuccessMessageMixin):
                     matricula_escola = n.turma.escola
                     matricula_ano = n.turma.ano_letivo
                 messages.error(self.request, f"{sexo} alun{sexo} <span class='text-capitalize'>{matricula_aluno}</span> já está matriculado na turma do {matricula_turma}</br> Escola {matricula_escola}, no Ano Letivo {matricula_ano}") 
-                return redirect(reverse('Gestao_Escolar:GE_Escola_Matricula_create', kwargs={'pk': self.kwargs['pk']}))
-
-                
+                return redirect(reverse('Gestao_Escolar:GE_Escola_Matricula_create', kwargs={'pk': self.kwargs['pk']}))                
         return super().form_valid(form)

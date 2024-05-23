@@ -50,15 +50,32 @@
                             padding:0.5rem;
                             font-size:0.8rem!important;
                         } 
-                        .txt-center{
+                        .text-center{
                             text-align: center;
                         }
                         .border{border: 1px solid black;}    
                         .d-flex{display: flex}
                         .p-1{padding: 1rem;}
                         a {text-decoration: none;}
-                            
+                        section {
+                            padding: 1rem;
+                        } 
+                        section span {
+                            font-weight: bold;
+                        } 
+                        section p {
+                            text-align:justify
+                        }                            
                     } 
+                    section {
+                            padding: 1rem;
+                        } 
+                    section span {
+                            font-weight: bold;
+                        }  
+                    section p {
+                            text-align:justify
+                        } 
                     </style>
                     <div style="max-height: 7rem; display:flex; justify-content: space-between" class='d-flex'>
                         <div id='prefeitura' style='margin:0.5rem; display:flex; width:auto '>
@@ -74,47 +91,38 @@
                         <div id='sme' style='width:25%; padding-top:0.2rem'>                
                             <img  src='{% static "SME - 2 PNG.png " %}' alt=""  style="height: 70% !important;"  srcset="">                
                         </div>           
-                    </div>
-                    <hr>
-                    <p style='text-align:center'>RELAÇÃO DE ALUNOS POR TURMA</p>
-                    <h2 >{{matriculas.0.turma}} | <span class='text-capitalize'>{{request.session.escola_nome}}</span> </h2>
-                    <p style='margin:0px;padding:0px'>{{matriculas|length}} alunos matriculados | Ano {{request.session.anoLetivo_nome}}</p>                   
-                   
-                    <table  style='width:100%'>
-                        <tr style='background:#ccc'>
-                            <th>Ordem</th>
-                            <th >Alunos</th>
-                            <th>Sexo</th>
-                            <th>Uniforme</th>
-                            <th>Idade</th>
-                            <th>Etnia</th>                            
-                            <th>Bairro</th>
-                            <th>Etnia</th>
-                        </tr>
-                        {% for l  in matriculas %}
-                        <tr style=' border: #ccc 0.1rem solid; text-transform: uppercase;'>
-                            <td style="text-align: center;">{{forloop.counter}}</td>
-                            <td style="text-align: left;">{{l.aluno}}</td>
-                            <td style="text-align: center;"><a href='{% url "Gestao_Escolar:GE_Escola_Matricula_update" l.pk %}'>{{l.aluno.sexo}}</a></td>
-                            <td style="text-align: center;">{{l.camisa_tamanho}}</td>
-                            <td style="text-align: center;">{{l.aluno.idade }}</td>
-                            <td style="text-align: center;">{{l.aluno.etnia }}</td>
-                            <td style="text-align: center;">{{l.aluno.bairro }}</td>
-                            <td style="text-align: center;">{% if turma_multiserie %}Sim {% else %}Não{% endif %}</td>
-                        </tr>   
-                        {% endfor %}                        
-                    </table>
-                    <div style="position:absolute;bottom: 0;display: flex;">
-                        <img src="{% static "rh/S-RHE.svg" %}" alt="" sizes="" srcset="">
-                        <div style='font-size: 0.8rem;'>
-                            {{list_escola.nome_escola}}</br>
-                            {{list_escola.endereco_escola}}</br>                
-                            {{list_escola.telefone_escola}}</br>
-                            
+                    </div>                    
+                    <div>                        
+                        <h1 class="text-center p-1">Comprovante de Matrícula</h1>
+                        <hr>
+                        <div class="d-flex" style='justify-content: space-between;'>
+                            <section>
+                                <span> Nome Aluno:</span> {{object|upper}}<br>
+                                <span> Gênero Sexual:</span> {{object.aluno.sexo|upper}}<br>
+                                <span> Data de Nascimento:</span> {{object.aluno.data_nascimento}}<br>
+                                <span> Série/Ano:</span> {{object.turma}} / {{object.turma.ano_letivo}} <br>
+                                <span> Turno:</span> {{object.turma.turno}}<br>
+                                <span> Número de Matrícula:</span> {{object.cod_matricula}}<br>
+                            </section>
+                            <div style="width: 8rem;height: 13rem; ">
+                                {% if  object.aluno.sexo.id == 2 %}
+                                    <img src="{% static 'woman.png' %}" style='width:100%' alt="">
+                                {% else %}
+                                    <img src="{% static 'man.png' %}" style='width:100%' alt="">
+                                {% endif %}   
+                            </div>
+                        </div>
+                        
+                        <div>                           
+                            <section>
+                                <p>Este documento certifica que {% if object.aluno.sexo == 'Feminino' %}a {% else %}a{% endif %}  alun{% if object.aluno.sexo == 'Feminino' %}a {% else %}a{% endif %} <b>{{object|upper}}</b> está devidamente matriculad{% if object.aluno.sexo == 'Feminino' %}a {% else %}a{% endif %}
+                                 na <b>{{object.turma.escola|upper}}</b>, no <b>{{object.turma}}</b> correspondente ao ano letivo de <b>{{object.turma.ano_letivo}}</b>, 
+                                  no turno {{object.turma.turno|upper}}. </p>
+                            </section>
+                            <p style="text-align: right; padding: 1rem;">Vera Cruz, {{data_atual}}</p>
+                            <p style="text-align: center; padding: 1rem; width: 40%;margin: 5rem auto; font-weight: bold;border-top:0.1rem solid black ;">Assinatura e Carimbo da Direção</p>                            
                         </div>
                     </div>
-                </div>
-              
             
             </div>
             

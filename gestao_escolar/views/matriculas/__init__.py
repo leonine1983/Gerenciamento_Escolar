@@ -5,3 +5,4 @@ from .delete_matriculas import *
 from .list_matriculas import *
 from .view_matriculas_turmas import *
 from .detail_matriculas_turmas import *
+from .comprovante_matricula import *
