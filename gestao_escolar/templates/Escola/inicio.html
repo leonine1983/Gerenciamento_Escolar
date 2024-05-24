@@ -145,7 +145,7 @@
 .win11-table td {
     padding: 12px;
     text-align: left;
-    font-size: 14px;
+    font-size: 16px;
     border-bottom: 1px solid #ddd;
 }
 
@@ -269,6 +269,37 @@
     margin-left:1rem;
     font-weight: bold;
 }
+
+/*Nav em estilo win 11*/
+.nav-win11 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .nav-win11 a {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.5) !important;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    flex-grow: 1;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: rgba(190, 224, 250, 0.3); /* cor de fundo com transparência */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+    margin: 0 4px;
+  }
+  
+  .nav-win11 a:hover {
+    color: #005499 !important;
+    background-color: rgba(170, 214, 240, 0.9) !important; /* cor de fundo com transparência ao passar o mouse */
+  }
+  
+  
+  
 </style>
 {% endblock script_head %} 
 
@@ -379,6 +410,9 @@
     {% endif %}    
     {% if  conteudo_page == 'Gestão Turmas' %}
         {% include 'Escola/partials/gestao_turmas/gestao_.html' %}
+    {% endif %}  
+    {% if  conteudo_page ==  "Gestão Turmas - Notas Aluno"   %}
+        {% include 'Escola/partials/gestao_turmas/notas.html' %}
     {% endif %}  
 
     <!--Impressos-->
