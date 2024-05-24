@@ -772,10 +772,19 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>      
       </div>
       <div>
-        <form action="">
-          {% csrf_token %}
-          {{form.as_div}}
-        </form>
+      <form method="post">
+        {% csrf_token %}
+        {{ formset.management_form }}
+            {% for form in formset %}
+            <div class="form-control m-1 d-flex bg-success" style="height: 10rem;">
+                {{ form.as_div }}
+            </div>
+            {% endfor %}
+        <button type="submit">Salvar</button>
+      </form>
+     
+    
+      
       </div>
     </div>      
   </div> 

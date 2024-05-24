@@ -545,22 +545,14 @@ class Trimestre(models.Model):
         return self.numero_nome
     
 
-class GestaoTurmas(Matriculas):
+class GestaoTurmas(models.Model):    
+    aluno= models.ForeignKey(Matriculas, null=True, on_delete=models.CASCADE)
     grade = models.ForeignKey(TurmaDisciplina, null=True, on_delete=models.CASCADE)
     trimestre = models.ForeignKey(Trimestre, null=True, on_delete=models.CASCADE)  
     notas = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)   
 
-    matriculas_ptr = models.OneToOneField(
-        Matriculas,
-        parent_link=True,
-        db_column='matriculas_ptr',
-        on_delete=models.CASCADE,
-        default=None  # Ou qualquer outro valor padrão apropriado
-    )
- 
-
     def __str__(self):
-        return f'Notas do {self.trimestre.numero_nome} do aluno {self.aluno_matriculados.aluno.nome_completo}'
+        return self.aluno.aluno.nome_completo
 
 """
 class Atividade(models.Model):

@@ -42,6 +42,7 @@
     outline: none;
     font-size: 0;
     text-align: left;
+    
   }
   .pcss3t > input {
     position: absolute;
@@ -88,7 +89,7 @@
   }
   .pcss3t > ul > li {
     position: absolute;
-    width: 100%;
+    width: 100%;   
     overflow: auto;
     padding: 30px 40px 40px;
     box-sizing: border-box;
@@ -131,8 +132,9 @@
   }
   .pcss3t-height-auto > ul > li {
     position: static;
-    display: none;
+    display: none;        
     height: auto !important;
+
   }
   .pcss3t-height-auto > .tab-content-first:checked ~ ul .tab-content-first,
   .pcss3t-height-auto > .tab-content-2:checked ~ ul .tab-content-2,
@@ -817,10 +819,10 @@
             </table> 
           </li>
           {% else %}  
-          <li class="tab-content tab-content-first typography ">  
+          <li class="tab-content tab-content-first typography bg-p-5">  
 
-            <nav class="nav-win11 ">
-              <a href="{% url 'Gestao_Escolar:NotasAluno' %}"><i class="fa-thin fa-hundred-points"></i> Notas</a>
+            <nav class="nav-win11">
+              <a href="{% url 'Gestao_Escolar:NotasAluno' matriculas.0.turma.pk %}"><i class="fa-thin fa-hundred-points"></i> Notas </a>
               <a href="http://"><i class="fa-solid fa-person-to-door"></i> Faltas</a>
               <a href="http://"><i class="fa-solid fa-align-justify"></i> Justficar Faltas</a>
               <a href="http://"><i class="fa-duotone fa-notebook"></i> Relatar Ocorrência</a>
