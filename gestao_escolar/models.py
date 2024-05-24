@@ -435,26 +435,8 @@ class Faculdades_ou_Escolas (models.Model):
         if not Faculdades_ou_Escolas.objects.exists():
             Faculdades_ou_Escolas.objects.create(
                 nome = "UNEB - Universidade Estadual da Bahia",                
-            ) 
-    
+            )    
 
-"""
-# A class Professores descende da class Profissionais 
-class Professores(models.Model):  # Não inclua um campo 'id' aqui
-    docente = models.ForeignKey(Profissionais, on_delete=models.CASCADE, null=True)
-    escolas = models.ManyToManyField(Escola)
-    data_entrada_escola = models.DateField(null=False)
-    data_saida_escola = models.DateField(null=True)
-    efetivo = models.BooleanField(default=False)
-    # ---------------------------------------------
-    disciplina = models.ManyToManyField(Disciplina)
-    formacao_academica = models.ForeignKey(Cursos, on_delete=models.CASCADE, null=True)
-    instituto_academico = models.ForeignKey(Faculdades_ou_Escolas, on_delete=models.CASCADE, null=True)
-    foto = models.ImageField(null=True)
-
-
-# Professores auxiliares 
-"""
 
 # GRADE DE DISCIPLINAS E PROFESSORES
 class TurmaDisciplina(models.Model):
@@ -521,34 +503,9 @@ class Matriculas(models.Model):
     calcula_media = models.BooleanField(default=True, null=True, blank=True)
     profissional_matricula = models.ForeignKey(User, related_name='related_matricula_alunos', null=True, on_delete=models.CASCADE)    
     obervacao = RichTextUploadingField(null=True, blank=True)
-    
 
-    """
-    # Sobrescrever o método save para verificar se o aluno ja está matriculado em alguma turma
-    def save(self, *args, **kwargs):
-        # Verifica se o aluno está matriculado em alguma turma, de qualquer escola do aluno letivo atual
-        matricula_exist = Matriculas.objects.filter(aluno = self.aluno, turma__ano_letivo = self.request.session['anoLetivo_id'])
-        
-        # Se tiver atualizando, exclua a matricula atual
-        if self.pk:
-            matricula_exist = matricula_exist.exclude(pk = self.pk)
-        # Se já existir uma matricula do aluno no ano letivo atual, gere um aviso
-        if matricula_exist.exists():
-            matricula = Matriculas.objects.filter(pk = self.pk)
-            for n in matricula:
-                matricula_turma = n.turma.nome
-                matricula_escola = n.turma.escola
-                matricula_ano = n.turma.ano_letivo
-
-            raise ValueError (f"O aluno ja está matriculado na turma do {matricula_turma}, da escola {matricula_escola} no Ano Letivo {matricula_ano}  ")
-        super().save(*args, **kwargs)
- 
-        
-    
-    """ 
     class Meta:
-        ordering = ['aluno']
-    
+        ordering = ['aluno']   
 
     def __str__(self):
         return self.aluno.nome_completo
@@ -569,11 +526,6 @@ class Remanejamento(models.Model):
         return self.tipo
 
 
-
-# ------------------------------------------------------------------------------------
-# ------------------------- Atividades do aluno --------------------------------------
-# ------------------------------------------------------------------------------------
-
 class Trimestre(models.Model):
     numero_nome = models.CharField(null=True, max_length=14)
     ano_letivo = models.ForeignKey(AnoLetivo, null=True, on_delete=models.CASCADE)
@@ -588,7 +540,6 @@ class Trimestre(models.Model):
             Trimestre.objects.bulk_create(
                 [Trimestre(numero_nome = num, ano_letivo = ano) for num, ano in trimestre]
             )
-
 
     def __str__(self):
         return self.numero_nome
