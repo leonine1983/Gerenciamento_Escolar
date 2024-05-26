@@ -85,7 +85,10 @@ urlpatterns = [
     path('gestao_escolar/Gestao_Turmas/', Create_Notas.as_view(), name="NotasAluno_all_create"),  
     path('gestao_escolar/Gestao_Turmas/turma/<int:pk>', Create_Notas_pk.as_view(), name="NotasAluno_one_create"),      
     path('gestao_escolar/Gestao_Turmas/turma/notas/<int:pk>', verifica_e_cria_gestao_turmas, name="NotasAluno"),        
-    path('gestao_escolar/Gestao_Turmas/aluno/notas/<int:pk>',gestao_turmas_update_view, name='gestao_turmas_update'),   
+    path('gestao_escolar/Gestao_Turmas/aluno/notas/<int:pk>',gestao_turmas_update_view, name='gestao_turmas_update'),  
+
+    # Notas Trimestre
+    path('criar-gestao-turma/notas/trimestre/<int:aluno_id>/', GestaoTurmasNotas.as_view(), name='criar_gestao_turma'), 
     
 
     

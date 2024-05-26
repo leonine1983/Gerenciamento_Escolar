@@ -12,12 +12,7 @@ def verifica_e_cria_gestao_turmas(request, pk):
     
     for m in n: 
         if not GestaoTurmas.objects.filter(aluno= m):
-            GestaoTurmas.objects.create(aluno = Matriculas.objects.get(pk = m))          
-    """
-    if not GestaoTurmas.objects.filter(matriculas_ptr=m.matricula.id).exists():
-            # Se não existir, cria um novo registro com os campos vazios
-            GestaoTurmas.objects.create(matriculas_ptr=m.matricula)
-    """
-    # Redireciona para a UpdateView (ajuste o nome da URL conforme necessário)
+            GestaoTurmas.objects.create(aluno = Matriculas.objects.get(pk = m))   
+                 
     return redirect(reverse('Gestao_Escolar:gestao_turmas_update', kwargs={'pk': pk}))
 
