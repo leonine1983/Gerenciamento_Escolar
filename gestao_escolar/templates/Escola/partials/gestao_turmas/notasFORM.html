@@ -76,29 +76,35 @@
             </div>
             <form method="post" class="win11-form">
                 {% csrf_token %}   
-                <h1>Lançamento de notas do aluno | {{ trimestre}}</h1>
+                <h1>Lançamento de notas do aluno | {{ trimestre }}</h1>
                 <table class='win11-table'>
-                <thead>
-                    <tr>
-                        <th># </th>        
-                        <th class="text-uppercase">{{request.session.nomeclatura.nome_diciplina}}</th>
-                        <th class="text-uppercase">{{request.session.nomeclatura.notas}}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for disciplina_nome, form in forms_dict.items %}        
-                    <tr class="win11-form-group">
-                        <td class="win11-form-field">{{forloop.counter}}</td>
-                        <td class="win11-form-field">{{ disciplina_nome }}</td>
-                        <td class="win11-form-field">{{ form.notas }}</td> <!-- Ajuste aqui -->
-                    </tr>
-                    <input type="hidden" name="{{ form.prefix }}-disciplina" value="{{ disciplina_nome }}"> <!-- Adicione esta linha -->
-                    {% endfor %}
-                </tbody>
+                    <thead>
+                        <tr>
+                            <th># </th>        
+                            <th class="text-uppercase">{{ request.session.nomeclatura.nome_diciplina }}</th>
+                            <th class="text-uppercase">{{ request.session.nomeclatura.notas }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for disciplina_nome, form in forms_dict.items %}        
+                        <tr class="win11-form-group">
+                            <td class="win11-form-field">{{ forloop.counter }}</td>
+                            <td class="win11-form-field">{{ disciplina_nome }}</td>
+                            <td class="win11-form-field">
+                                {{ form.notas }}
+                                {% for error in form.notas.errors %}
+                                    <span class="error">{{ error }}</span>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        <input type="hidden" name="{{ form.prefix }}-disciplina" value="{{ disciplina_nome }}">
+                        {% endfor %}
+                    </tbody>
                 </table>
                 <button type="submit" class="win11-button">Salvar</button>
             </form>
             
+      
             
         </div>
     </div>

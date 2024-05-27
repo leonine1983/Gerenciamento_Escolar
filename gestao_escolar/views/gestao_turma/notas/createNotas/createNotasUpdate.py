@@ -2,11 +2,19 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from gestao_escolar.models import GestaoTurmas, Matriculas, Trimestre, TurmaDisciplina
 from django import forms
+from django.core.validators import MaxValueValidator
 
 class GestaoTurmasForm(forms.ModelForm):
+    notas = forms.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        validators=[MaxValueValidator(10.00, message="O valor não pode ser maior que 10.00.")]
+    )
+    
     class Meta:
         model = GestaoTurmas
         fields = ['notas']
+
 
 from django.http import QueryDict
 
