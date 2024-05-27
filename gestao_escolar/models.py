@@ -546,7 +546,7 @@ class Trimestre(models.Model):
     
 
 class GestaoTurmas(models.Model):    
-    aluno= models.ForeignKey(Matriculas, null=True, on_delete=models.CASCADE)
+    aluno= models.ForeignKey(Matriculas, related_name='gestao_turmas_related', null=True, on_delete=models.CASCADE)
     grade = models.ForeignKey(TurmaDisciplina, null=True, on_delete=models.CASCADE)
     trimestre = models.ForeignKey(Trimestre, null=True, on_delete=models.CASCADE)  
     notas = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)   

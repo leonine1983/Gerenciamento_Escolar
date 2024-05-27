@@ -16,3 +16,5 @@ def verifica_e_cria_gestao_turmas(request, pk):
                  
     return redirect(reverse('Gestao_Escolar:gestao_turmas_update', kwargs={'pk': pk}))
 
+
+

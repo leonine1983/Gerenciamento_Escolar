@@ -89,6 +89,7 @@ urlpatterns = [
 
     # Notas Trimestre
     path('criar-gestao-turma/notas/trimestre/<int:aluno_id>/', GestaoTurmasNotas.as_view(), name='criar_gestao_turma'), 
+    path('gestao_turmas/<int:aluno_id>/<int:trimestre_id>/', create_or_update_gestao_turmas, name='create_or_update_gestao_turmas'),
     
 
     

@@ -1,18 +1,18 @@
-from django.urls import reverse_lazy
-from django.shortcuts import render, redirect
-from gestao_escolar.models import GestaoTurmas, Trimestre, Turmas, TurmaDisciplina
-from django.forms import modelformset_factory
+from django.shortcuts import render
+from gestao_escolar.models import Trimestre, Matriculas, TurmaDisciplina
+
+
 
 def gestao_turmas_update_view(request, pk):
-    # Obter todos os objetos de GestaoTurmas para a turma com a chave primária 'pk'
-    queryset = GestaoTurmas.objects.filter(aluno__turma=pk)
-    matricula = TurmaDisciplina.objects.filter(turma=pk)
+    matriculas = Matriculas.objects.filter(turma=pk)
+    trimestres = Trimestre.objects.all()
+    disciplinas = TurmaDisciplina.objects.filter(turma=pk)
+
     context = {
-        'disciplina':matricula,
-        'gestaoTurmas': queryset, 
-        'conteudo_page': f"Gestão Turmas - Notas Aluno", 
-        'page_ajuda': "<div class='m-2'><b>Nessa área, definimos todos os dados para a",        
-        'trimestre': Trimestre.objects.all()
+        'matriculas': matriculas,
+        'trimestre': trimestres,
+        'disciplinas': disciplinas,
+        'conteudo_page': f"Gestão Turmas - Notas Aluno",
     }
        
     return render(request, 'Escola/inicio.html', context)
