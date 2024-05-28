@@ -42,11 +42,13 @@ def create_or_update_gestao_turmas(request, aluno_id, trimestre_id):
                 total_notas = notas_aluno['notas__sum']
                 
                 ano_letivo = aluno.turma.ano_letivo
-                quant_trimestres = Trimestre.objects.filter(ano_letivo=ano_letivo).count()
+                trimestres = Trimestre.objects.filter(ano_letivo=ano_letivo)
+                quant_trimestres = trimestres.count()
 
                 # Calcular a média final se houver notas
                 if total_notas is not None:
                     media_final = total_notas / (quant_trimestres - 1)
+                    form.instance.trimestre = Trimestre.objects.get(id = 4)                   
                     form.instance.media_final = media_final
 
                 form.save()
