@@ -23,21 +23,34 @@
           <div class="pcss3t pcss3t-effect-scale pcss3t-theme-1">
             {% for t in trimestre %}
                 <input type="radio" name="pcss3t" {% if t.id == 1 %} checked {% endif %} id="tab{{ t.id }}" class="{% if t.id == 1 %}tab-content-first{% else %}tab-content-{{ t.id }}{% endif %}">
-                <label for="tab{{ t.id }}" class="col-3"><h1>{{ t.numero_nome }}</h1></label>
+                <label for="tab{{ t.id }}" class="col-2"><h1>{{ t.numero_nome }}</h1></label>
             {% endfor %}
         
             <ul>
                 {% for t in trimestre %}
                     <li class="tab-content {% if t.id == 1 %}tab-content-first{% else %}tab-content-{{ t.id }}{% endif %} typography">
-                        <table class="win11-table">
-                            <thead>
+                        <table class="win11-table " style="background-color: transparent  !important;;">
+                            <thead class="bg-p-3">
                                 <tr>
                                     <th>#</th>
                                     <th>Aluno</th>
                                     {% for disciplina in disciplinas %}
-                                        <th class="text-center">{{ disciplina.disciplina }}</th>
+                                        <th colspan="2" class="text-center">
+                                            <table class="w-100 table-bordered">
+                                                <tr class="bg-p-3" >
+                                                    <th colspan="2">{{ disciplina.disciplina }}</th>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 55px;" class="txt-p">Notas</td>
+                                                    <td class="bg-p-5 txt-p text-center">Faltas</td>
+                                                </tr>
+                                            </table>
+                                        </th>
                                     {% endfor %}
-                                    <th class="text-center">Ação</th>
+                                    <th class="text-center">Ação</th>    
+                                    
+                                    <th class="text-center">Profissional Resp.</th>                               
+                                    
                                 </tr>
                             </thead>
                             <tbody>
@@ -46,17 +59,36 @@
                                         <td>{{ forloop.counter }}</td>
                                         <td>{{ aluno.aluno }}</td>
                                         {% for disciplina in disciplinas %}
-                                            <td class="text-center">
+                                            <td class="text-center" style="width: 55px;">
                                                 {% for gestao_turma in aluno.gestao_turmas_related.all %}
                                                     {% if gestao_turma.grade == disciplina %}
                                                         {% if gestao_turma.trimestre_id == t.id %}
-                                                            {{ gestao_turma.notas }}
+                                                            {% if gestao_turma.notas is not None  %}
+                                                                {{ gestao_turma.notas }}
+                                                                {% else %}
+                                                            {% endif %}                                                            
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endfor %}                                                                                                    
+                                            </td>    
+                                            <td class="text-center bg-p-5">
+                                                {% for gestao_turma in aluno.gestao_turmas_related.all %}
+                                                    {% if gestao_turma.grade == disciplina %}
+                                                        {% if gestao_turma.trimestre_id == t.id %}
+                                                            {% if gestao_turma.faltas is not None %}
+                                                                {{ gestao_turma.faltas}}
+                                                                {% else %}
+                                                            {% endif %}
+                                                            
                                                         {% endif %}
                                                     {% endif %}
                                                 {% endfor %}
-                                            </td>
+                                            </td>                                    
+
                                         {% endfor %}
                                         <td><a class="btn win11-button fs-8" href="{% url 'Gestao_Escolar:create_or_update_gestao_turmas' aluno.id t.id %}"><i class="fa-thin fa-hundred-points text-light"></i> Lançar ou Editar Notas</a></td>
+                                        
+                                      
                                     </tr>
                                 {% endfor %}
                             </tbody>

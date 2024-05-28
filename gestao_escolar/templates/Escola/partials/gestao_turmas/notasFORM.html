@@ -76,13 +76,14 @@
             </div>
             <form method="post" class="win11-form">
                 {% csrf_token %}   
-                <h1>Lançamento de notas do aluno | {{ trimestre }}</h1>
+                <h1>Lançamento de <b>NOTAS</b> e <b>FALTAS</b> do aluno | {{ trimestre }}</h1>
                 <table class='win11-table'>
-                    <thead>
+                    <thead class="bg-p-5">
                         <tr>
                             <th># </th>        
-                            <th class="text-uppercase">{{ request.session.nomeclatura.nome_diciplina }}</th>
-                            <th class="text-uppercase">{{ request.session.nomeclatura.notas }}</th>
+                            <th class="text-uppercase text-center">{{ request.session.nomeclatura.nome_diciplina }}</th>
+                            <th class="text-uppercase text-center">{{ request.session.nomeclatura.notas }}</th>
+                            <th class="text-uppercase text-center">Quantidade de Faltas</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -93,6 +94,12 @@
                             <td class="win11-form-field">
                                 {{ form.notas }}
                                 {% for error in form.notas.errors %}
+                                    <span class="error">{{ error }}</span>
+                                {% endfor %}
+                            </td>
+                            <td class="win11-form-field">
+                                {{ form.faltas}}
+                                {% for error in form.faltas.errors %}
                                     <span class="error">{{ error }}</span>
                                 {% endfor %}
                             </td>
