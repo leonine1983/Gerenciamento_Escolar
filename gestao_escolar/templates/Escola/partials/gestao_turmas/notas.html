@@ -12,7 +12,7 @@
 <!-- Modal -->
 
 <div class="modal fade" id="modal_escola"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    
+    {% include "Escola/partials/mensagens.html" %}
   <div class="modal-dialog w-100">
       <div class="modal-content bg-secondary-subtle">
           <div class="modal-header">
@@ -27,23 +27,30 @@
             {% endfor %}
         
             <ul>
-                {% for t in trimestre %}
-                    <li class="tab-content {% if t.id == 1 %}tab-content-first{% else %}tab-content-{{ t.id }}{% endif %} typography">
-                        <table class="win11-table " style="background-color: transparent  !important;;">
-                            <thead class="bg-p-3">
+                {% for t in trimestre %}                
+                    <li class="tab-content {% if t.id == 1 %}tab-content-first bg-trimestre-{{t.id}}{% else %}tab-content-{{ t.id }}{% endif %}  typography">
+                        <table class="win11-table " >
+                            <thead class="{% if t.final  %}bg-success{% else %}bg-p-3 {% endif %}">
                                 <tr>
                                     <th>#</th>
-                                    <th>Aluno</th>
+                                    <th>Aluno </th>
                                     {% for disciplina in disciplinas %}
                                         <th colspan="2" class="text-center">
                                             <table class="w-100 table-bordered">
                                                 <tr class="bg-p-3" >
-                                                    <th colspan="2">{{ disciplina.disciplina }}</th>
+                                                    <th colspan="8">{{ disciplina.disciplina }}</th>
                                                 </tr>
+                                                {% if not t.final  %}
                                                 <tr>
-                                                    <td style="width: 55px;" class="txt-p">Notas</td>
+                                                    <td style="width: 55px;" class="txt-p">Média</td>
                                                     <td class="bg-p-5 txt-p text-center">Faltas</td>
                                                 </tr>
+                                                {% else %}
+                                                <tr>
+                                                    <td style="width: 55px;" class="txt-p">Média Final</td>
+                                                    <td style="width: 55px;"  class="bg-p-5 txt-p text-center">Total Faltas</td>
+                                                </tr>
+                                                {% endif %}
                                             </table>
                                         </th>
                                     {% endfor %}
@@ -63,10 +70,17 @@
                                                 {% for gestao_turma in aluno.gestao_turmas_related.all %}
                                                     {% if gestao_turma.grade == disciplina %}
                                                         {% if gestao_turma.trimestre_id == t.id %}
-                                                            {% if gestao_turma.notas is not None  %}
-                                                                {{ gestao_turma.notas }}
-                                                                {% else %}
-                                                            {% endif %}                                                            
+                                                            {% if not t.final  %}
+                                                                {% if gestao_turma.notas is not None  %}
+                                                                        {{ gestao_turma.notas }}                                                                 
+                                                                    {% else %}
+                                                                {% endif %} 
+                                                                {% else %} 
+                                                                {% if gestao_turma.media_final is not None  %}
+                                                                        {{gestao_turma.media_final}}                                                                    
+                                                                    {% else %}
+                                                                {% endif %} 
+                                                            {% endif %}                                                          
                                                         {% endif %}
                                                     {% endif %}
                                                 {% endfor %}                                                                                                    

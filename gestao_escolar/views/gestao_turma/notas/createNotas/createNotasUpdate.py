@@ -36,23 +36,8 @@ def create_or_update_gestao_turmas(request, aluno_id, trimestre_id):
             if form.is_valid():
                 form.instance.profissional_resp = request.user.username
                 form.instance.data_hora_mod = timezone.now()
-
-                # Recuperar todas as notas do aluno para a disciplina atual
-                notas_aluno = GestaoTurmas.objects.filter(aluno=aluno, grade=disciplina).aggregate(Sum('notas'))
-                total_notas = notas_aluno['notas__sum']
-                
-                ano_letivo = aluno.turma.ano_letivo
-                trimestres = Trimestre.objects.filter(ano_letivo=ano_letivo)
-                quant_trimestres = trimestres.count()
-
-                # Calcular a média final se houver notas
-                if total_notas is not None:
-                    media_final = total_notas / (quant_trimestres - 1)
-                    form.instance.trimestre = Trimestre.objects.get(id = 4)                   
-                    form.instance.media_final = media_final
-
                 form.save()
-        return redirect(reverse('Gestao_Escolar:gestao_turmas_update', kwargs={'pk': aluno.turma.pk}))
+        return redirect(reverse('Gestao_Escolar:create_or_update_media_turmas', kwargs={'aluno_id': aluno.pk}))
 
     else:
         forms_dict = {}
