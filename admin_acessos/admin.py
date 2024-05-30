@@ -5,5 +5,4 @@ from django.contrib.auth.forms import UserChangeForm
 
 
 
-
-
+admin.site.register(NomeclaturaJanelas)

@@ -1,14 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Group, Permission, PermissionsMixin, User
+from django.contrib.auth.models import  User
 from django.dispatch import receiver
 from django.db.models.signals import post_migrate
 from django.conf import settings
 from ckeditor.fields import RichTextField
 from django.contrib.auth import get_user_model
-from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.forms import UserChangeForm, ReadOnlyPasswordHashField
-from django.contrib import admin
-
+from gestao_escolar.models import AnoLetivo
 
 
 @receiver(post_migrate)
@@ -55,3 +52,18 @@ class PaletaCores(models.Model):
 
     def __str__(self):
         return self.nome_paleta
+
+class NomeclaturaJanelas(models.Model):
+    nome_diciplina = models.CharField(max_length=50, default='')
+    notas = models.CharField(max_length=20, default='')
+
+    def __str__(self):
+        return self.nome_diciplina
+
+    @receiver(post_migrate)
+    def criarRegistro(sender, **kwargs):
+        if not NomeclaturaJanelas.objects.exists():
+            NomeclaturaJanelas.objects.create(
+                nome_diciplina='Objetos da Aprendizagem/Disciplinas',
+                notas = 'Notas do Aluno'
+            )

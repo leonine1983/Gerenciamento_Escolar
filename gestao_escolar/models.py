@@ -529,30 +529,67 @@ class Remanejamento(models.Model):
 class Trimestre(models.Model):
     numero_nome = models.CharField(null=True, max_length=14)
     ano_letivo = models.ForeignKey(AnoLetivo, null=True, on_delete=models.CASCADE)
+    final = models.BooleanField(default=False)
     # soma_notas = models.BooleanField(default=True)  # Se True, a nota será a soma das pontuações; se False, será a média
 
     @receiver(post_migrate)
     def create_registre(sender, *args, **kwargs):
-        trimestre = [('I Trimestre', AnoLetivo.objects.get(id=1)),
-                     ('II Trimestre', AnoLetivo.objects.get(id=1)),
-                     ('III Trimestre', AnoLetivo.objects.get(id=1))]
+        trimestre = [('I Trimestre', AnoLetivo.objects.get(id=1), False),
+                     ('II Trimestre', AnoLetivo.objects.get(id=1), False),
+                     ('III Trimestre', AnoLetivo.objects.get(id=1), False),
+                     ('Final', AnoLetivo.objects.get(id=1)), True]
         if not Trimestre.objects.exists():
             Trimestre.objects.bulk_create(
-                [Trimestre(numero_nome = num, ano_letivo = ano) for num, ano in trimestre]
+                [Trimestre(numero_nome = num, ano_letivo = ano, final = final) for num, ano, final in trimestre]
             )
 
     def __str__(self):
         return self.numero_nome
     
 
+    
+
 class GestaoTurmas(models.Model):    
-    aluno= models.ForeignKey(Matriculas, null=True, on_delete=models.CASCADE)
+    aluno= models.ForeignKey(Matriculas, related_name='gestao_turmas_related', null=True, on_delete=models.CASCADE)
     grade = models.ForeignKey(TurmaDisciplina, null=True, on_delete=models.CASCADE)
     trimestre = models.ForeignKey(Trimestre, null=True, on_delete=models.CASCADE)  
     notas = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)   
+    faltas = models.IntegerField( null=True, blank=True)
+    media_final = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)  
+    profissional_resp = models.CharField(max_length=40, null=True)
+    data_hora_mod = models.DateTimeField(null=True)
+
+    # Resultado Final   
+    faltas_total = models.IntegerField( null=True, blank=True)
+    recuperacao_final = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)  
+    media_final = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)      
+    conselho_classe = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)  
+    
 
     def __str__(self):
         return self.aluno.aluno.nome_completo
+
+
+class HorarioAula(models.Model):
+    turma_disciplina = models.ForeignKey(TurmaDisciplina, on_delete=models.CASCADE)
+    dia_semana = models.IntegerField(choices=((1, 'Segunda-feira'), (2, 'Terça-feira'), (3, 'Quarta-feira'),
+                                               (4, 'Quinta-feira'), (5, 'Sexta-feira')))
+    periodo = models.IntegerField(choices=((1, '1º período'), (2, '2º período'), (3, '3º período')))
+    sequencia_didatica = models.TextField(blank=True, null=True)  # Sequência didática do professor para aquele dia e período
+
+    def __str__(self):
+        return f"{self.turma_disciplina} - {self.get_dia_semana_display()} - {self.get_periodo_display()}"
+
+class Falta(models.Model):
+    aluno = models.ForeignKey(Matriculas, on_delete=models.CASCADE)
+    horario_aula = models.ForeignKey(HorarioAula, on_delete=models.CASCADE)
+    data = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.aluno} - {self.horario_aula}"
+
+
+        
 
 """
 class Atividade(models.Model):
