@@ -11,3 +11,14 @@ def criar_sigla(value):
     sigla = ''.join(word[0].upper() for word in palavras)
 
     return sigla
+
+
+@register.filter
+def get_horario(horarios, dia, periodo):
+    for horario in horarios:
+        if horario.dia_semana == dia and horario.periodo == int(periodo):
+            return horario
+    return None
+
+
+

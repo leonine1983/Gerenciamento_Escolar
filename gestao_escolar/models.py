@@ -405,14 +405,19 @@ niveis = {
 }
 
 # ---- Esta sessão inicia herdando do model Encaminhamentos do App RH.Models -------------------------------------
-class Profissionais(models.Model):    
+from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import post_migrate
+
+# ---- Esta sessão inicia herdando do model Encaminhamentos do App RH.Models -------------------------------------
+class Profissionais(models.Model):
     nome = models.ForeignKey(Encaminhamentos, on_delete=models.CASCADE, null=True)
     cargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
     area_especializacao = models.CharField(max_length=100, null=True)
 
     def __str__(self):
         return self.nome.encaminhamento.contratado.nome
-    
+
 
 class Cursos(models.Model):
     nome = models.CharField(max_length=30)
@@ -422,43 +427,43 @@ class Cursos(models.Model):
     def cria_registro(sender, *args, **kwargs):
         if not Cursos.objects.exists():
             Cursos.objects.create(
-                nome = "Licenciatura em Pedagogia",
-                nivel = 2
+                nome="Licenciatura em Pedagogia",
+                nivel=2
             )
 
 
-class Faculdades_ou_Escolas (models.Model):
-    nome = models.CharField(max_length=50)   
+class Faculdades_ou_Escolas(models.Model):
+    nome = models.CharField(max_length=50)
 
     @receiver(post_migrate)
     def cria_registro(sender, *args, **kwargs):
         if not Faculdades_ou_Escolas.objects.exists():
             Faculdades_ou_Escolas.objects.create(
-                nome = "UNEB - Universidade Estadual da Bahia",                
-            )    
+                nome="UNEB - Universidade Estadual da Bahia",
+            )
 
 
-# GRADE DE DISCIPLINAS E PROFESSORES
 class TurmaDisciplina(models.Model):
-    turma = models.ForeignKey(Turmas,related_name='gradeTurma_related', on_delete=models.CASCADE, null=True)
+    turma = models.ForeignKey(Turmas, related_name='gradeTurma_related', on_delete=models.CASCADE, null=True)
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE, null=True)
-    professor = models.ForeignKey(Profissionais, related_name='gradeProfessor1_related', on_delete=models.CASCADE, null=True)    
-    professo2 = models.ForeignKey(Profissionais,related_name='gradeProfessor2_related', on_delete=models.CASCADE, null=True, blank=True) 
-    reserva_tecnica =  models.ManyToManyField(Profissionais, related_name='reservaTecnica_related',  null=True) 
-    auxiliar_classe = models.ManyToManyField(Profissionais,related_name='auxiliarClasse_related', null=True)
+    professor = models.ForeignKey(Profissionais, related_name='gradeProfessor1_related', on_delete=models.CASCADE, null=True)
+    professo2 = models.ForeignKey(Profissionais, related_name='gradeProfessor2_related', on_delete=models.CASCADE, null=True, blank=True)
+    reserva_tecnica = models.ManyToManyField(Profissionais, related_name='reservaTecnica_related', null=True)
+    auxiliar_classe = models.ManyToManyField(Profissionais, related_name='auxiliarClasse_related', null=True)
 
     carga_horaria_anual = models.IntegerField(null=True)
-    limite_faltas = models.IntegerField(null=True) 
+    limite_faltas = models.IntegerField(null=True)
 
     def __str__(self):
         return self.disciplina.nome
 
-   
+
 escola_fora = {
-    ('1','Não recebe'), 
-    ('2','Em hospital'),
+    ('1', 'Não recebe'),
+    ('2', 'Em hospital'),
     ('3', 'Em domicílio')
 }
+
 
 class TamanhoRoupa(models.Model):
     nome = models.CharField(max_length=2)
@@ -470,11 +475,10 @@ class TamanhoRoupa(models.Model):
 
     def __str__(self):
         return self.nome
-    
+
     @receiver(post_migrate)
     def populate_tamanhos_roupa(sender, **kwargs):
         if not TamanhoRoupa.objects.exists():
-            # Criar registros de exemplo para cada tamanho de roupa
             tamanhos = [
                 {'nome': 'PP', 'descricao': 'Tamanho extra pequeno', 'largura': 40, 'altura': 60, 'comprimento': 30, 'peso': 0.2},
                 {'nome': 'P', 'descricao': 'Tamanho pequeno', 'largura': 45, 'altura': 65, 'comprimento': 35, 'peso': 0.3},
@@ -487,7 +491,6 @@ class TamanhoRoupa(models.Model):
                 TamanhoRoupa.objects.get_or_create(**tamanho)
 
 
-
 class Matriculas(models.Model):
     cod_matricula = models.TextField(max_length=200, null=True, default='2023-001')
     aluno = models.ForeignKey(Alunos, related_name='related_matricula_alunos', on_delete=models.CASCADE)
@@ -495,20 +498,20 @@ class Matriculas(models.Model):
     camisa_tamanho = models.ForeignKey(TamanhoRoupa, related_name='related_camisa', null=True, on_delete=models.CASCADE)
     data_matricula = models.DateField(auto_now=True)
     escolarizacao_fora = models.CharField(choices=escola_fora, default=1, max_length=1)
-    serie_multiseriada  = models.ForeignKey(Serie_Escolar, null=True, blank=True, on_delete=models.CASCADE)    
-    #periodo_multiserie = models.CharField(choices=turno, null=True, max_length=12 )
+    serie_multiseriada = models.ForeignKey(Serie_Escolar, null=True, blank=True, on_delete=models.CASCADE)
     data_afastamento_inicio = models.DateField(null=True)
     data_afastamento_fim = models.DateField(null=True)
     motivo_afastamento = models.TextField(max_length=200, null=True)
     calcula_media = models.BooleanField(default=True, null=True, blank=True)
-    profissional_matricula = models.ForeignKey(User, related_name='related_matricula_alunos', null=True, on_delete=models.CASCADE)    
+    profissional_matricula = models.ForeignKey(User, related_name='related_matricula_alunos', null=True, on_delete=models.CASCADE)
     obervacao = RichTextUploadingField(null=True, blank=True)
 
     class Meta:
-        ordering = ['aluno']   
+        ordering = ['aluno']
 
     def __str__(self):
         return self.aluno.nome_completo
+
 
 remaneja_tipo = {
     ('Ativo', 'Na Turma'),
@@ -516,11 +519,11 @@ remaneja_tipo = {
     ('Transferido', 'Noturno')
 }
 
-class Remanejamento(models.Model):    
+
+class Remanejamento(models.Model):
     tipo = models.CharField(max_length=26, choices=remaneja_tipo, default='Ativo', null=False, verbose_name="Tipo de remanejamento")
     description = models.TextField(max_length=500, verbose_name="Descreva o motivo do Remanejamento. Ex.: Escola para onde o aluno será remanejado e o porquê.", )
     data = models.DateTimeField(auto_now_add=True)
-    
 
     def __str__(self):
         return self.tipo
@@ -530,55 +533,65 @@ class Trimestre(models.Model):
     numero_nome = models.CharField(null=True, max_length=14)
     ano_letivo = models.ForeignKey(AnoLetivo, null=True, on_delete=models.CASCADE)
     final = models.BooleanField(default=False)
-    # soma_notas = models.BooleanField(default=True)  # Se True, a nota será a soma das pontuações; se False, será a média
 
     @receiver(post_migrate)
     def create_registre(sender, *args, **kwargs):
         trimestre = [('I Trimestre', AnoLetivo.objects.get(id=1), False),
                      ('II Trimestre', AnoLetivo.objects.get(id=1), False),
                      ('III Trimestre', AnoLetivo.objects.get(id=1), False),
-                     ('Final', AnoLetivo.objects.get(id=1)), True]
+                     ('Final', AnoLetivo.objects.get(id=1), True)]
         if not Trimestre.objects.exists():
             Trimestre.objects.bulk_create(
-                [Trimestre(numero_nome = num, ano_letivo = ano, final = final) for num, ano, final in trimestre]
+                [Trimestre(numero_nome=num, ano_letivo=ano, final=final) for num, ano, final in trimestre]
             )
 
     def __str__(self):
         return self.numero_nome
-    
 
-    
 
-class GestaoTurmas(models.Model):    
-    aluno= models.ForeignKey(Matriculas, related_name='gestao_turmas_related', null=True, on_delete=models.CASCADE)
+class GestaoTurmas(models.Model):
+    aluno = models.ForeignKey(Matriculas, related_name='gestao_turmas_related', null=True, on_delete=models.CASCADE)
     grade = models.ForeignKey(TurmaDisciplina, null=True, on_delete=models.CASCADE)
-    trimestre = models.ForeignKey(Trimestre, null=True, on_delete=models.CASCADE)  
-    notas = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)   
-    faltas = models.IntegerField( null=True, blank=True)
-    media_final = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)  
+    trimestre = models.ForeignKey(Trimestre, null=True, on_delete=models.CASCADE)
+    notas = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    faltas = models.IntegerField(null=True, blank=True)
+    media_final = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     profissional_resp = models.CharField(max_length=40, null=True)
     data_hora_mod = models.DateTimeField(null=True)
 
-    # Resultado Final   
-    faltas_total = models.IntegerField( null=True, blank=True)
-    recuperacao_final = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)  
-    media_final = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)      
-    conselho_classe = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)  
-    
+    faltas_total = models.IntegerField(null=True, blank=True)
+    recuperacao_final = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    media_final = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    conselho_classe = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
         return self.aluno.aluno.nome_completo
 
 
-class HorarioAula(models.Model):
-    turma_disciplina = models.ForeignKey(TurmaDisciplina, on_delete=models.CASCADE)
+class DisponibilidadeProfessor(models.Model):
+    professor = models.ForeignKey(Profissionais, related_name='disponibilidade_professor', on_delete=models.CASCADE)
     dia_semana = models.IntegerField(choices=((1, 'Segunda-feira'), (2, 'Terça-feira'), (3, 'Quarta-feira'),
                                                (4, 'Quinta-feira'), (5, 'Sexta-feira')))
     periodo = models.IntegerField(choices=((1, '1º período'), (2, '2º período'), (3, '3º período')))
-    sequencia_didatica = models.TextField(blank=True, null=True)  # Sequência didática do professor para aquele dia e período
+
+    class Meta:
+        unique_together = ('professor', 'dia_semana', 'periodo')
+
+    def __str__(self):
+        return f"{self.professor} - {self.get_dia_semana_display()} - {self.get_periodo_display()}"
+
+
+class HorarioAula(models.Model):
+    turma = models.ForeignKey(Turmas, on_delete=models.CASCADE)
+    turma_disciplina = models.ForeignKey(TurmaDisciplina, on_delete=models.CASCADE)
+    dia_semana = models.IntegerField(choices=((1, 'Segunda-feira'), (2, 'Terça-feira'), (3, 'Quarta-feira'),
+                                              (4, 'Quinta-feira'), (5, 'Sexta-feira')))
+    periodo = models.IntegerField(choices=((1, '1º período'), (2, '2º período'), (3, '3º período')))
+    sequencia_didatica = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.turma_disciplina} - {self.get_dia_semana_display()} - {self.get_periodo_display()}"
+
 
 class Falta(models.Model):
     aluno = models.ForeignKey(Matriculas, on_delete=models.CASCADE)

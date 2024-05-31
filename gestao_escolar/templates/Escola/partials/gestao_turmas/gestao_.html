@@ -23,7 +23,7 @@
           <label for="tab3"><i class="icon-cogs"></i>Disciplinas</label>
           
           <input type="radio" name="pcss3t" id="tab5" class="tab-content-last">
-          <label for="tab5"><i class="icon-globe"></i>Newton</label>
+          <label for="tab5"><i class="icon-globe"></i>Horário de Aula</label>
         {% endif %}
         
         <ul>
@@ -97,7 +97,10 @@
             
             <li class="tab-content tab-content-last typography">
               <div class="typography">
-                <h1>Isaac Newton</h1>
+                <h1>Horário de Aula das Disciplinas</h1>
+                <a class='btn btn-primary' href="{% url 'Gestao_Escolar:horario_list' matriculas.0.turma.pk %}">horário</a>
+                
+                
                 <p>English physicist and mathematician who is widely regarded as one of the most influential scientists of all time and as a key figure in the scientific revolution. His book Philosophiæ Naturalis Principia Mathematica ("Mathematical Principles of Natural Philosophy"), first published in 1687, laid the foundations for most of classical mechanics. Newton also made seminal contributions to optics and shares credit with Gottfried Leibniz for the invention of the infinitesimal calculus.</p>
                 <p>Newton's Principia formulated the laws of motion and universal gravitation that dominated scientists' view of the physical universe for the next three centuries. It also demonstrated that the motion of objects on the Earth and that of celestial bodies could be described by the same principles. By deriving Kepler's laws of planetary motion from his mathematical description of gravity, Newton removed the last doubts about the validity of the heliocentric model of the cosmos.</p>
               <p class="text-right"><em>Find out more about Isaac Newton from <a href="http://en.wikipedia.org/wiki/Isaac_Newton" target="_blank">Wikipedia</a>.</em></p>		

@@ -10,7 +10,7 @@
    
 <style>
     .fs-family-nunito {
-        font-family: 'Nunito', sans-serif !importamt;
+        font-family: 'Nunito', sans-serif !important;
     }
 
     #id_aluno_matricula{
@@ -505,6 +505,10 @@
     {% if  conteudo_page ==  "Gestão Turmas - Notas Update"   %}
         {% include 'Escola/partials/gestao_turmas/notasFORM.html' %}
     {% endif %}  
+
+    {% if  conteudo_page ==  "Gestão Turmas - GerarHorario"   %}
+        {% include 'Escola/partials/gestao_turmas/horarioAula.html' %}
+    {% endif %} 
 
 
     <!--Impressos-->
