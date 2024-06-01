@@ -1,0 +1,1 @@
+from .gerarHorarioAutomaticamente import GerarHorarioView

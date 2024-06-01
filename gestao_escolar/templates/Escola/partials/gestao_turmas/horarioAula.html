@@ -82,37 +82,32 @@
                     <p>{{ message }}</p>
                 {% endfor %}
             {% endif %}
-            <table border="1">
-                <tr>
-                    <td>Período</td>
-                    <td>Segunda</td>
-                    <td>Terça</td>
-                    <td>Quarta</td>
-                    <td>Quinta</td>
-                    <td>Sexta</td>
-                    <td>Sábado</td>
-                </tr>
-                {% for periodo in "12345" %}
-                <tr>
-                    <td>{{ periodo }}º</td>
-                    {% for dia in "123456" %}
-                        {% with horario=horarios|get_horario:forloop.counter0:periodo %}
-                            {% if horario %}
-                                <td>{{ horario.turma_disciplina.disciplina.nome }} - {{ horario.turma_disciplina.professor.nome }}</td>
-                            {% else %}
-                                <td></td>
-                            {% endif %}
-                        {% endwith %}
+            
+            <h1>Horários da Turma</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Período</th>
+                        <th>Segunda</th>
+                        <th>Terça</th>
+                        <th>Quarta</th>
+                        <th>Quinta</th>
+                        <th>Sexta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for horario in horarios %}
+                    <tr>
+                        <td>{{ horario.periodo.nome_periodo }}</td>
+                        <td>{{ horario.segunda.disciplina.nome|default_if_none:"" }}</td>
+                        <td>{{ horario.terca.disciplina.nome|default_if_none:"" }}</td>
+                        <td>{{ horario.quarta.disciplina.nome|default_if_none:"" }}</td>
+                        <td>{{ horario.quinta.disciplina.nome|default_if_none:"" }}</td>
+                        <td>{{ horario.sexta.disciplina.nome|default_if_none:"" }}</td>
+                    </tr>
                     {% endfor %}
-                </tr>
-                {% endfor %}
+                </tbody>
             </table>
-            
-            
-            
-    
-   
-        
             
         </div>
     </div>

@@ -547,6 +547,62 @@ class Trimestre(models.Model):
 
     def __str__(self):
         return self.numero_nome
+    
+
+class Periodo(models.Model):
+    nome_periodo = models.CharField(max_length=30, null=True)
+    hora_inicio = models.TimeField(null=True)
+    hora_fim = models.TimeField(null=True)
+
+    @receiver(post_migrate)
+    def cria_registro (sender, **kwargs):
+        if not Periodo.objects.exists():
+            Periodo.objects.create(
+                nome_periodo="1º Periodo",
+                hora_inicio=timezone.datetime.strptime('08:00', '%H:%M').time(),
+                hora_fim=timezone.datetime.strptime('08:45', '%H:%M').time()
+            )
+            Periodo.objects.create(
+            nome_periodo="2º Período",
+            hora_inicio=timezone.datetime.strptime('08:45', '%H:%M').time(),
+            hora_fim=timezone.datetime.strptime('09:50', '%H:%M').time()
+             )
+            
+            Periodo.objects.create(
+            nome_periodo="3º Período",
+            hora_inicio=timezone.datetime.strptime('09:50', '%H:%M').time(),
+            hora_fim=timezone.datetime.strptime('10:15', '%H:%M').time()
+             )
+            Periodo.objects.create(
+            nome_periodo="4º Período",
+            hora_inicio=timezone.datetime.strptime('10:30', '%H:%M').time(),
+            hora_fim=timezone.datetime.strptime('11:15', '%H:%M').time()
+             )
+            
+            Periodo.objects.create(
+            nome_periodo="5º Período",
+            hora_inicio=timezone.datetime.strptime('11:15', '%H:%M').time(),
+            hora_fim=timezone.datetime.strptime('12:00', '%H:%M').time()
+             )
+    def __str__(self):
+        return f'{self.hora_inicio} - {self.hora_fim}'
+
+       
+
+
+
+class Horario(models.Model):
+    turma = models.ForeignKey(Turmas,null=True, on_delete=models.CASCADE)    
+    periodo = models.ForeignKey(Periodo, null=True, on_delete=models.CASCADE)
+    turno = models.CharField(choices=turno, max_length=30, null=True)
+    segunda = models.ForeignKey(TurmaDisciplina, related_name='segunda_prof', null=True, blank=True, on_delete=models.SET_NULL)
+    terca = models.ForeignKey(TurmaDisciplina, related_name='terca_prof', null=True, blank=True, on_delete=models.SET_NULL)
+    quarta = models.ForeignKey(TurmaDisciplina, related_name='quarta_prof', null=True, blank=True, on_delete=models.SET_NULL)
+    quinta = models.ForeignKey(TurmaDisciplina, related_name='quinta_prof', null=True, blank=True, on_delete=models.SET_NULL)
+    sexta = models.ForeignKey(TurmaDisciplina, related_name='sexta_prof', null=True, blank=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f"Horario - {self.turma} - {self.periodo}"
 
 
 class GestaoTurmas(models.Model):
@@ -568,39 +624,17 @@ class GestaoTurmas(models.Model):
         return self.aluno.aluno.nome_completo
 
 
-class DisponibilidadeProfessor(models.Model):
-    professor = models.ForeignKey(Profissionais, related_name='disponibilidade_professor', on_delete=models.CASCADE)
-    dia_semana = models.IntegerField(choices=((1, 'Segunda-feira'), (2, 'Terça-feira'), (3, 'Quarta-feira'),
-                                               (4, 'Quinta-feira'), (5, 'Sexta-feira')))
-    periodo = models.IntegerField(choices=((1, '1º período'), (2, '2º período'), (3, '3º período')))
-
-    class Meta:
-        unique_together = ('professor', 'dia_semana', 'periodo')
-
-    def __str__(self):
-        return f"{self.professor} - {self.get_dia_semana_display()} - {self.get_periodo_display()}"
-
-
-class HorarioAula(models.Model):
-    turma = models.ForeignKey(Turmas, on_delete=models.CASCADE)
-    turma_disciplina = models.ForeignKey(TurmaDisciplina, on_delete=models.CASCADE)
-    dia_semana = models.IntegerField(choices=((1, 'Segunda-feira'), (2, 'Terça-feira'), (3, 'Quarta-feira'),
-                                              (4, 'Quinta-feira'), (5, 'Sexta-feira')))
-    periodo = models.IntegerField(choices=((1, '1º período'), (2, '2º período'), (3, '3º período')))
-    sequencia_didatica = models.TextField(blank=True, null=True)
-
-    def __str__(self):
-        return f"{self.turma_disciplina} - {self.get_dia_semana_display()} - {self.get_periodo_display()}"
+"""
 
 
 class Falta(models.Model):
     aluno = models.ForeignKey(Matriculas, on_delete=models.CASCADE)
-    horario_aula = models.ForeignKey(HorarioAula, on_delete=models.CASCADE)
+    horario_aula = models.ForeignKey(HorarioTurma, on_delete=models.CASCADE)
     data = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.aluno} - {self.horario_aula}"
-
+"""
 
         
 

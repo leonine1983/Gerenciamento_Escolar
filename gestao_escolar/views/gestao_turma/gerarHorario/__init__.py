@@ -1,2 +1,1 @@
-from .horarioAuto import *
-from .gerarHorarioView import *
+from .gerarHorario import *
