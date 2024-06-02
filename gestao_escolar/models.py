@@ -610,12 +610,12 @@ class Periodo(models.Model):
         """
         return self.hora_inicio < other.hora_inicio
 
-       
-
+        
 
 
 class Horario(models.Model):
     turma = models.ForeignKey(Turmas,null=True, on_delete=models.CASCADE)    
+    disciplina = models.ForeignKey(TurmaDisciplina, null=True, on_delete=models.CASCADE)
     periodo = models.ForeignKey(Periodo, null=True, on_delete=models.CASCADE)
     turno = models.CharField(choices=turno, max_length=30, null=True)
     segunda = models.ForeignKey(TurmaDisciplina, related_name='segunda_prof', null=True, blank=True, on_delete=models.SET_NULL)
