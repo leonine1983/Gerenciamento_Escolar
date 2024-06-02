@@ -89,6 +89,51 @@
 
 <h1>{{ conteudo_page }}</h1>
 
+
+
+<form method="post">
+    {% csrf_token %}
+    <label for="turmas_disciplinas">Turmas e Disciplinas:</label>
+    <select name="turmas_disciplinas" id="turmas_disciplinas" multiple>
+        {% for turma_disciplina in turmas_disciplinas %}
+            <option value="{{ turma_disciplina.id }}">{{ turma_disciplina.turma }} - {{ turma_disciplina.disciplina }}</option>
+        {% endfor %}
+    </select>
+
+    <h2>Horários:</h2>
+
+    {% for periodo in periodos %}
+        <h3>{{ periodo.nome_periodo }}</h3>
+        <label for="turno_{{ periodo.id }}">Turno:</label>
+        <input type="text" name="turno_{{ periodo.id }}" id="turno_{{ periodo.id }}"><br>
+
+        <label for="segunda_{{ periodo.id }}">Segunda:</label>
+        <input type="text" name="segunda_{{ periodo.id }}" id="segunda_{{ periodo.id }}"><br>
+
+        <label for="terca_{{ periodo.id }}">Terça:</label>
+        <input type="text" name="terca_{{ periodo.id }}" id="terca_{{ periodo.id }}"><br>
+
+        <label for="quarta_{{ periodo.id }}">Quarta:</label>
+        <input type="text" name="quarta_{{ periodo.id }}" id="quarta_{{ periodo.id }}"><br>
+
+        <label for="quinta_{{ periodo.id }}">Quinta:</label>
+        <input type="text" name="quinta_{{ periodo.id }}" id="quinta_{{ periodo.id }}"><br>
+
+        <label for="sexta_{{ periodo.id }}">Sexta:</label>
+        <input type="text" name="sexta_{{ periodo.id }}" id="sexta_{{ periodo.id }}"><br>
+    {% endfor %}
+
+    <button type="submit">Enviar</button>
+</form>
+  
+
+
+
+
+
+
+
+
 <h1>Horário de Aula</h1>
 <p>{{ conteudo_page }}</p>
 <table border="1">

@@ -1,95 +1,47 @@
 from django.shortcuts import render
-from django.views.generic import View
+from django.views.generic import View, TemplateView
 from django.http import HttpResponse
 from constraint import Problem, AllDifferentConstraint
-from gestao_escolar.models import TurmaDisciplina, Periodo, Turmas, Horario
+from gestao_escolar.models import TurmaDisciplina, Turmas, Horario, Periodo
 
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
 from django.shortcuts import render
-from django.views.generic import View
-from django.http import HttpResponse
-from constraint import Problem, AllDifferentConstraint
-from gestao_escolar.models import TurmaDisciplina, Turmas, Horario
 
-class GerarHorarioView(View):
+class GerarHorarioView(CreateView):
+    model = Horario
+    fields = ['turma', 'periodo', 'turno', 'segunda', 'terca', 'quarta', 'quinta', 'sexta']
     template_name = 'Escola/inicio.html'
-    context = {'conteudo_page': "Gestão Turmas - GerarHorario"}
+    success_url = reverse_lazy('nome_da_url_de_sucesso')
 
-    def get(self, request, *args, **kwargs):
-        # Obtendo todas as turmas
-        turmas = list(Turmas.objects.all())
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["conteudo_page"] = "Gestão Turmas - GerarHorario"
+        return context
 
-        # Criando um problema de restrição
-        problem = Problem()
+    def post(self, request, *args, **kwargs):
+        # Lógica para processar os dados do formulário e criar/atualizar horários das turmas
+        turmas_disciplinas = request.POST.getlist('turmas_disciplinas')
+        periodos = Periodo.objects.all()
 
-        # Adicionando variáveis de restrição para cada turma e dia
-        dias_semana = ['segunda', 'terca', 'quarta', 'quinta', 'sexta']
-        variables = set()  # Usando um conjunto para garantir a exclusividade das variáveis
-        for turma in turmas:
-            for dia in dias_semana:
-                var = (turma, dia)
-                # Verifica se a variável já foi adicionada
-                if var not in variables:
-                    variables.add(var)
-                    problem.addVariable(var, TurmaDisciplina.objects.all())
+        for turma_disciplina_id in turmas_disciplinas:
+            turma_disciplina = TurmaDisciplina.objects.get(id=turma_disciplina_id)
+            turma = turma_disciplina.turma
 
-        # Adicionando restrição de que cada disciplina só pode ocorrer uma vez em um dia
-        for dia in dias_semana:
-            day_vars = []
-            for turma in turmas:
-                day_vars.append([(turma, dia)])
-            for p in day_vars:
-                problem.addConstraint(AllDifferentConstraint(), p)
+            for periodo in periodos:
+                turno = request.POST.get(f'turno_{turma_disciplina_id}_{periodo.id}')
 
-        # Adicionando restrição de quantidade de aulas por dia e semana
-        for td in TurmaDisciplina.objects.all():
-            for dia in dias_semana:
-                day_vars = [(turma, dia) for turma in turmas]
-                problem.addConstraint(lambda *args, td=td, dia=dia: self.check_aulas(*args, td=td, dia=dia), day_vars)
+                # Verifica se já existe um horário para esta turma e este período
+                horario, created = Horario.objects.get_or_create(turma=turma, periodo=periodo)
 
-        # Debug para verificar as variáveis e restrições do problema
-        print("Variáveis do problema:")
-        for variable, domain in problem._variables.items():
-            print(f"  {variable}: {domain}")
+                # Atualiza os dados do horário
+                horario.turno = turno
+                horario.segunda = request.POST.get(f'segunda_{turma_disciplina_id}_{periodo.id}')
+                horario.terca = request.POST.get(f'terca_{turma_disciplina_id}_{periodo.id}')
+                horario.quarta = request.POST.get(f'quarta_{turma_disciplina_id}_{periodo.id}')
+                horario.quinta = request.POST.get(f'quinta_{turma_disciplina_id}_{periodo.id}')
+                horario.sexta = request.POST.get(f'sexta_{turma_disciplina_id}_{periodo.id}')
 
-        print("Restrições do problema:")
-        for constraint in problem._constraints:
-            print(f"  {constraint}")
+                horario.save()
 
-        # Resolvendo o problema
-        solutions = problem.getSolutions()
-        print(f"Solution: {solutions}")
-        for solution in solutions:
-            print(f"Solution: {solution}")
-            for key, value in solution.items():
-                print(f" As soluções {key}: {value}")   # Adicione esta linha para verificar o conteúdo de cada solução
-
-        # Salvando os horários no banco de dados
-        for solution in solutions:
-            for key, value in solution.items():
-                if value:
-                    turma, dia = key
-                    # Criar uma nova instância de Horario
-                    horario, created = Horario.objects.get_or_create(turma=turma, turno=dia)
-                    # Atribuir o valor corretamente
-                    setattr(horario, dia, value)
-                    # Salvar a instância do Horario
-                    horario.save()
-
-        # Obtendo os horários gerados
-        horarios = Horario.objects.all()
-
-        # Renderizando o template
-        return render(request, self.template_name, {**self.context, 'horarios': horarios})
-
-
-    def check_aulas(self, *args, td, dia):
-        count = 0
-        for arg in args:
-            if arg == td:
-                count += 1
-        if count > td.quant_aulas_dia:
-            return False
-        return True
-
-    def __lt__(self, other):
-        return self.nome < other.nome
+        return render(request, self.template_name, self.get_context_data())
