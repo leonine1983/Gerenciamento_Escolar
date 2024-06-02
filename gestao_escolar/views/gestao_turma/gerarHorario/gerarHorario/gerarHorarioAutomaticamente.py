@@ -1,50 +1,95 @@
-from django.shortcuts import render, get_object_or_404
-from gestao_escolar.models import Turmas, TurmaDisciplina, Horario, Periodo
-from pulp import LpMaximize, LpProblem, LpVariable, lpSum
+from django.shortcuts import render
+from django.views.generic import View
+from django.http import HttpResponse
+from constraint import Problem, AllDifferentConstraint
+from gestao_escolar.models import TurmaDisciplina, Periodo, Turmas, Horario
 
-def GerarHorarioView(request, turma_id):
-    turma = get_object_or_404(Turmas, pk=turma_id)
+from django.shortcuts import render
+from django.views.generic import View
+from django.http import HttpResponse
+from constraint import Problem, AllDifferentConstraint
+from gestao_escolar.models import TurmaDisciplina, Turmas, Horario
 
-    # Obter todas as disciplinas e profissionais associados à turma selecionada
-    turma_disciplinas = TurmaDisciplina.objects.filter(turma=turma)
-    disciplinas = [td.disciplina for td in turma_disciplinas]
-    profissionais = [td.professor for td in turma_disciplinas]
+class GerarHorarioView(View):
+    template_name = 'Escola/inicio.html'
+    context = {'conteudo_page': "Gestão Turmas - GerarHorario"}
 
-    # Definir os períodos de aula disponíveis (assumindo que já foram criados)
-    periodos = Periodo.objects.all()
+    def get(self, request, *args, **kwargs):
+        # Obtendo todas as turmas
+        turmas = list(Turmas.objects.all())
 
-    # Criar o problema de programação linear
-    prob = LpProblem("GerarHorario", LpMaximize)
+        # Criando um problema de restrição
+        problem = Problem()
 
-    # Variáveis de decisão
-    horarios = LpVariable.dicts("Horario", ((p.pk, td.pk) for p in periodos for td in turma_disciplinas), cat='Binary')
+        # Adicionando variáveis de restrição para cada turma e dia
+        dias_semana = ['segunda', 'terca', 'quarta', 'quinta', 'sexta']
+        variables = set()  # Usando um conjunto para garantir a exclusividade das variáveis
+        for turma in turmas:
+            for dia in dias_semana:
+                var = (turma, dia)
+                # Verifica se a variável já foi adicionada
+                if var not in variables:
+                    variables.add(var)
+                    problem.addVariable(var, TurmaDisciplina.objects.all())
 
-    # Função objetivo: maximizar o número de horários atribuídos
-    prob += lpSum(horarios[(p.pk, td.pk)] for p in periodos for td in turma_disciplinas)
+        # Adicionando restrição de que cada disciplina só pode ocorrer uma vez em um dia
+        for dia in dias_semana:
+            day_vars = []
+            for turma in turmas:
+                day_vars.append([(turma, dia)])
+            for p in day_vars:
+                problem.addConstraint(AllDifferentConstraint(), p)
 
-    # Restrições: cada disciplina só pode ser atribuída a um horário por período
-    for td in turma_disciplinas:
-        for p in periodos:
-            prob += lpSum(horarios[(p.pk, td.pk)] for p in periodos) <= 1
+        # Adicionando restrição de quantidade de aulas por dia e semana
+        for td in TurmaDisciplina.objects.all():
+            for dia in dias_semana:
+                day_vars = [(turma, dia) for turma in turmas]
+                problem.addConstraint(lambda *args, td=td, dia=dia: self.check_aulas(*args, td=td, dia=dia), day_vars)
 
-    # Restrições: cada profissional só pode ministrar aulas em no máximo três períodos por turno
-    for profissional in profissionais:
-        for p in periodos:
-            prob += lpSum(horarios[(p.pk, td.pk)] for td in turma_disciplinas if td.professor == profissional) <= 3
+        # Debug para verificar as variáveis e restrições do problema
+        print("Variáveis do problema:")
+        for variable, domain in problem._variables.items():
+            print(f"  {variable}: {domain}")
 
-    # Resolver o problema
-    prob.solve()
+        print("Restrições do problema:")
+        for constraint in problem._constraints:
+            print(f"  {constraint}")
 
-    # Criar os registros de horário com base nas variáveis de decisão
-    for p in periodos:
-        for td in turma_disciplinas:
-            if horarios[(p.pk, td.pk)].varValue == 1:
-                Horario.objects.create(turma=turma, periodo=p, segunda=td if p.pk == 1 else None,
-                                       terca=td if p.pk == 2 else None, quarta=td if p.pk == 3 else None,
-                                       quinta=td if p.pk == 4 else None, sexta=td if p.pk == 5 else None)
+        # Resolvendo o problema
+        solutions = problem.getSolutions()
+        print(f"Solution: {solutions}")
+        for solution in solutions:
+            print(f"Solution: {solution}")
+            for key, value in solution.items():
+                print(f" As soluções {key}: {value}")   # Adicione esta linha para verificar o conteúdo de cada solução
 
-    # Obter todos os horários gerados para a turma
-    horarios = Horario.objects.filter(turma=turma)
+        # Salvando os horários no banco de dados
+        for solution in solutions:
+            for key, value in solution.items():
+                if value:
+                    turma, dia = key
+                    # Criar uma nova instância de Horario
+                    horario, created = Horario.objects.get_or_create(turma=turma, turno=dia)
+                    # Atribuir o valor corretamente
+                    setattr(horario, dia, value)
+                    # Salvar a instância do Horario
+                    horario.save()
 
-    # Retornar o template com o resultado
-    return render(request, 'Escola/inicio.html', {'conteudo_page': "Gestão Turmas - GerarHorario", 'horarios': horarios})
+        # Obtendo os horários gerados
+        horarios = Horario.objects.all()
+
+        # Renderizando o template
+        return render(request, self.template_name, {**self.context, 'horarios': horarios})
+
+
+    def check_aulas(self, *args, td, dia):
+        count = 0
+        for arg in args:
+            if arg == td:
+                count += 1
+        if count > td.quant_aulas_dia:
+            return False
+        return True
+
+    def __lt__(self, other):
+        return self.nome < other.nome

@@ -399,6 +399,17 @@ class Turmas(models.Model):
     def __str__(self):
         return f'{self.nome.upper()} {self.descritivo_turma.upper()}'
 
+    def __lt__(self, other):
+        """
+        Método especial que permite comparar instâncias de Turmas.
+        
+        Este método é usado para determinar a ordem entre duas instâncias de Turmas
+        ao classificá-las. Neste exemplo, estamos comparando as instâncias com base
+        no atributo 'nome'. 
+        """
+        return self.nome < other.nome
+
+
 niveis = {
     ('1', "Médio"),
     ('2', "Superior")
@@ -446,6 +457,8 @@ class Faculdades_ou_Escolas(models.Model):
 class TurmaDisciplina(models.Model):
     turma = models.ForeignKey(Turmas, related_name='gradeTurma_related', on_delete=models.CASCADE, null=True)
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE, null=True)
+    quant_aulas_semana = models.IntegerField(default=5, null=True)
+    quant_aulas_dia = models.IntegerField(default=3, null=True)
     professor = models.ForeignKey(Profissionais, related_name='gradeProfessor1_related', on_delete=models.CASCADE, null=True)
     professo2 = models.ForeignKey(Profissionais, related_name='gradeProfessor2_related', on_delete=models.CASCADE, null=True, blank=True)
     reserva_tecnica = models.ManyToManyField(Profissionais, related_name='reservaTecnica_related', null=True)
@@ -586,6 +599,16 @@ class Periodo(models.Model):
              )
     def __str__(self):
         return f'{self.hora_inicio} - {self.hora_fim}'
+    
+    def __lt__(self, other):
+        """
+        Método especial que permite comparar instâncias de Periodo.
+        
+        Este método é usado para determinar a ordem entre duas instâncias de Periodo
+        ao classificá-las. Neste exemplo, estamos comparando as instâncias com base
+        na hora de início. 
+        """
+        return self.hora_inicio < other.hora_inicio
 
        
 

@@ -88,7 +88,7 @@ urlpatterns = [
     path('gestao_escolar/Gestao_Turmas/aluno/notas/<int:pk>',gestao_turmas_update_view, name='gestao_turmas_update'),  
 
     # GErar horario
-    path('gerar_horario/<int:turma_id>/', GerarHorarioView, name='criar_horario'),
+    path('gerar_horario/', GerarHorarioView.as_view(), name='criar_horario'),
     #path('horarios/<int:turma_id>/', HorarioListView.as_view(), name='horario_list'),
 
     # Notas Trimestre

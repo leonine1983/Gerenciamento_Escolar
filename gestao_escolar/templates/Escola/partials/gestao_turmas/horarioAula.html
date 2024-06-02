@@ -1,6 +1,10 @@
 {% load static %}
 {% load meus_filtros %}
-{% block script_head %}<link rel="stylesheet" href="{% static 'global/css/css3_tab.css' %}">{% endblock script_head %} 
+{% block script_head %}<link rel="stylesheet" href="{% static 'global/css/css3_tab.css' %}">
+
+
+
+{% endblock script_head %} 
 {% block script_footer %}{% endblock script_footer %} 
 
 
@@ -75,40 +79,44 @@
                 </div>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <h1>{{ conteudo_page }}</h1>
 
             {% if messages %}
                 {% for message in messages %}
                     <p>{{ message }}</p>
                 {% endfor %}
             {% endif %}
-            
-            <h1>Horários da Turma</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Período</th>
-                        <th>Segunda</th>
-                        <th>Terça</th>
-                        <th>Quarta</th>
-                        <th>Quinta</th>
-                        <th>Sexta</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for horario in horarios %}
-                    <tr>
-                        <td>{{ horario.periodo.nome_periodo }}</td>
-                        <td>{{ horario.segunda.disciplina.nome|default_if_none:"" }}</td>
-                        <td>{{ horario.terca.disciplina.nome|default_if_none:"" }}</td>
-                        <td>{{ horario.quarta.disciplina.nome|default_if_none:"" }}</td>
-                        <td>{{ horario.quinta.disciplina.nome|default_if_none:"" }}</td>
-                        <td>{{ horario.sexta.disciplina.nome|default_if_none:"" }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            
+
+
+<h1>{{ conteudo_page }}</h1>
+
+<h1>Horário de Aula</h1>
+<p>{{ conteudo_page }}</p>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Período</th>
+            <th>Segunda</th>
+            <th>Terça</th>
+            <th>Quarta</th>
+            <th>Quinta</th>
+            <th>Sexta</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for horario in horarios %}
+        <tr>
+            <td>{{ horario.periodo }}</td>
+            <td>{{ horario.segunda }}</td>
+            <td>{{ horario.terca }}</td>
+            <td>{{ horario.quarta }}</td>
+            <td>{{ horario.quinta }}</td>
+            <td>{{ horario.sexta }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+         
         </div>
     </div>
 </div>
