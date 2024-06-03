@@ -1,74 +1,79 @@
-from django.shortcuts import render
-from django.views.generic import View, TemplateView
-from django.http import HttpResponse
-from constraint import Problem, AllDifferentConstraint
-from gestao_escolar.models import TurmaDisciplina, Turmas, Horario, Periodo
-
-from django.views.generic import CreateView
-from django.urls import reverse_lazy
-from django.shortcuts import render
-
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
-from .forms import HorarioForm
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-
+from django.forms import ModelForm
+from gestao_escolar.models import Horario, TurmaDisciplina, Periodo, Turmas
 from django import forms
-from gestao_escolar.models import Horario
 
-class HorarioForm(forms.ModelForm):
+from django.forms import ModelChoiceField
+
+class HorarioForm(ModelForm):
+    segunda = ModelChoiceField(queryset=TurmaDisciplina.objects.all(), required=False)
+    terca = ModelChoiceField(queryset=TurmaDisciplina.objects.all(), required=False)
+    quarta = ModelChoiceField(queryset=TurmaDisciplina.objects.all(), required=False)
+    quinta = ModelChoiceField(queryset=TurmaDisciplina.objects.all(), required=False)
+    sexta = ModelChoiceField(queryset=TurmaDisciplina.objects.all(), required=False)
+
     class Meta:
         model = Horario
-        fields = ['turma','disciplina', 'periodo', 'turno', 'segunda', 'terca', 'quarta', 'quinta', 'sexta']
+        fields = '__all__'
 
 
-def gerar_contexto_dinamico():
-    # Busca todos os periodos
-    periodos = Periodo.objects.all()
-    # Cria um dicionário para armazenar os contextos
-    context = {}
-    # Itera sobre os períodos e filtra os horários correspondentes
-    for periodo in periodos:
-        nome_periodo = periodo.nome_periodo
-        context[nome_periodo] = Horario.objects.filter(periodo=periodo.id)
-    return context
-
-def GerarHorarioView(request, id=None):
-    if id:
-        horario = get_object_or_404(Horario, id=id)
+def create_or_update_horario(request, turma_id, horario_id=None):
+    turma = get_object_or_404(Turmas, pk=turma_id)
+    
+    if horario_id:
+        horario = Horario.objects.get(pk=horario_id)
     else:
-        horario = None
-
-    if request.method == 'POST':
+        horario = Horario(turma=turma)
+    
+    if request.method == "POST":
         form = HorarioForm(request.POST, instance=horario)
         if form.is_valid():
-            new_horario = form.save(commit=False)
-            conflicts = []
+            horario_instance = form.save(commit=False)
+            professor_conflito = None
+            turma_conflito = None
 
-            # Verifica conflitos para cada dia da semana
-            for day in ['segunda', 'terca', 'quarta', 'quinta', 'sexta']:
-                turma_disciplina = getattr(new_horario, day)
+            # Verifica conflito de professor no mesmo período e turno
+            for dia in ['segunda', 'terca', 'quarta', 'quinta', 'sexta']:
+                turma_disciplina = getattr(horario_instance, dia)
                 if turma_disciplina:
-                    periodo = new_horario.periodo
-                    professor = turma_disciplina.professor
+                    conflito = Horario.objects.filter(
+                        periodo=horario_instance.periodo,
+                        turno=horario_instance.turno,
+                    ).exclude(pk=horario_instance.pk).filter(
+                        **{f'{dia}': turma_disciplina}
+                    ).first()
 
-                    # Verifica se há um horário existente com o mesmo professor no mesmo período
-                    conflict = Horario.objects.filter(
-                        periodo=periodo,
-                        **{day: turma_disciplina}
-                    ).exclude(id=new_horario.id).first()
-                    
-                    if conflict:
-                        conflicts.append((day, conflict.turma))
+                    if conflito:
+                        professor_conflito = turma_disciplina.professor
+                        turma_conflito = conflito.turma
+                        break
 
-            if conflicts:
-                conflict_messages = ", ".join([f"{day.capitalize()} em {turma}" for day, turma in conflicts])
-                messages.warning(request, f"O professor já está cadastrado no(s) seguinte(s) horário(s): {conflict_messages}")
+            if professor_conflito:
+                messages.warning(
+                    request, 
+                    f"O professor {professor_conflito} já está cadastrado no horário {horario_instance.periodo} no turno {horario_instance.turno} na turma {turma_conflito}."
+                )
             else:
-                new_horario.save()
-                return redirect('horario_list')  # Redireciona para a lista de horários ou outra view desejada
-
+                horario_instance.save()
+                messages.success(request, "Horário salvo com sucesso.")
+                return redirect('create_horario', turma_id=turma_id)
+        else:
+            messages.error(request, f"Erro ao salvar o formulário: {form.errors}")
     else:
-        form = HorarioForm(instance=horario)
+        # Carregar os períodos existentes
+        periodos = Periodo.objects.all()
 
-    return render(request, 'Escola/inicio.html', {'form': form, 'horario': horario, 'conteudo_page': "Gestão Turmas - GerarHorario"})
+        # Verifica se já existe um horário para essa turma e preenche o formulário com os dados existentes
+        horarios_existente = Horario.objects.filter(turma=turma)
+        if horarios_existente.exists():
+            # Aqui, ao invés de pegar o primeiro horário, você deveria pegar o último
+            ultimo_horario = horarios_existente.last()
+            form = HorarioForm(instance=ultimo_horario)
+            form.fields['periodo'].initial = ultimo_horario.periodo
+        else:
+            form = HorarioForm(instance=horario)
+
+    horarios = Horario.objects.filter(turma=turma)  # Carrega todos os horários existentes para a turma
+    
+    return render(request, 'Escola/inicio.html', {'turma_id':turma_id,'form': form, 'horarios': horarios, 'periodos': periodos, 'conteudo_page': "Gestão Turmas - GerarHorario", 'turma': turma})

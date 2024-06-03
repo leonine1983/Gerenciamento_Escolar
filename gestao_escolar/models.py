@@ -615,9 +615,7 @@ class Periodo(models.Model):
 
 class Horario(models.Model):
     turma = models.ForeignKey(Turmas,null=True, on_delete=models.CASCADE)    
-    disciplina = models.ForeignKey(TurmaDisciplina, null=True, on_delete=models.CASCADE)
-    periodo = models.ForeignKey(Periodo, null=True, on_delete=models.CASCADE)
-    turno = models.CharField(choices=turno, max_length=30, null=True)
+    periodo = models.ForeignKey(Periodo, null=True, on_delete=models.CASCADE)    
     segunda = models.ForeignKey(TurmaDisciplina, related_name='segunda_prof', null=True, blank=True, on_delete=models.SET_NULL)
     terca = models.ForeignKey(TurmaDisciplina, related_name='terca_prof', null=True, blank=True, on_delete=models.SET_NULL)
     quarta = models.ForeignKey(TurmaDisciplina, related_name='quarta_prof', null=True, blank=True, on_delete=models.SET_NULL)

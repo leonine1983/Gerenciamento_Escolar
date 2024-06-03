@@ -72,6 +72,7 @@
     
     <div class="modal-dialog w-100">
         <div class="modal-content bg-secondary-subtle">
+            {% include "Escola/partials/mensagens.html" %}
             <div class="modal-header w-100">
                 <div class="mx-5 border-bottom ">
                     <p class="m-0 p-0 h3 text-uppercase"><i style="font-size: 1.65rem;" class="fs-4 fa-solid fa-users-gear"></i> {{ aluno}}</p>                
@@ -79,20 +80,84 @@
                 </div>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <h2>{% if horario %}Editar Horário{% else %}Criar Horário{% endif %}</h2>
-            <form method="post">
-              {% csrf_token %}
-              {{ form.as_p }}
-              <button type="submit" class="btn btn-primary">{% if horario %}Atualizar{% else %}Criar{% endif %}</button>
-            </form>
-          
-            {% if messages %}
-              <ul class="messages">
-                {% for message in messages %}
-                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-              </ul>
-            {% endif %}
+
+  <h2>{% if form.instance.pk %}Editar Horário{% else %}Criar Horário{% endif %}</h2>
+  
+  <!-- Tabela com o formulário -->
+  <!-- Escola/inicio.html -->
+<!-- Escola/inicio.html -->
+<form method="post">
+<table class='win11-table'>
+    <thead>
+      <tr>
+        <th>Período</th>
+        <th>Segunda</th>
+        <th>Terça</th>
+        <th>Quarta</th>
+        <th>Quinta</th>
+        <th>Sexta  </th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for periodo in periodos %}
+       
+          {% csrf_token %}
+          <input type="hidden" name="periodo" value="{{ periodo.id }}">
+          <tr>
+            <td>{{ periodo }}</td>
+            <td>{{ form.segunda }}</td>
+            <td>{{ form.terca }}</td>
+            <td>{{ form.quarta }}</td>
+            <td>{{ form.quinta }}</td>
+            <td>{{ form.sexta }}</td>            
+          </tr> 
+        {% endfor %}
+      </tbody>
+      
+  </table><button type="submit">Salvar</button>
+</form>
+  
+
+  <h2>Horários Existentes</h2>
+  
+  <!-- Tabela com os horários existentes -->
+  <table class="win11-table">
+    <thead>
+      <tr>
+        <th>Turma</th>
+        <th>Período</th>
+        <th>Turno</th>
+        <th>Segunda</th>
+        <th>Terça</th>
+        <th>Quarta</th>
+        <th>Quinta</th>
+        <th>Sexta</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for horario in horarios %}
+      <tr>
+        <td>{{ horario.turma }}</td>
+        <td>{{ horario.periodo }}</td>
+        <td>{{ horario.turno }}</td>
+        <td>{{ horario.segunda }}</td>
+        <td>{{ horario.terca }}</td>
+        <td>{{ horario.quarta }}</td>
+        <td>{{ horario.quinta }}</td>
+        <td>{{ horario.sexta }}</td>
+        <td>
+          <a href="{% url 'Gestao_Escolar:edit_horario' turma_id horario.id %}" class="btn btn-warning btn-sm">Editar</a>
+          <!-- Adicione um botão de excluir se necessário -->
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+           
+
          
         </div>
     </div>

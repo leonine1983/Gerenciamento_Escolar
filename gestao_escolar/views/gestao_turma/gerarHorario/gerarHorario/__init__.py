@@ -1,1 +1,1 @@
-from .gerarHorarioAutomaticamente import GerarHorarioView
+from .gerarHorarioAutomaticamente import create_or_update_horario

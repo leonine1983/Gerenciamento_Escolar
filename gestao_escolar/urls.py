@@ -88,12 +88,14 @@ urlpatterns = [
     path('gestao_escolar/Gestao_Turmas/aluno/notas/<int:pk>',gestao_turmas_update_view, name='gestao_turmas_update'),  
 
     # GErar horario
-    path('gerar_horario/', GerarHorarioView, name='criar_horario'),
+    #path('gerar_horario/<int:turma_id>', create_or_update_horario, name='criar_horario'),
     #path('horarios/<int:turma_id>/', HorarioListView.as_view(), name='horario_list'),
+    path('horario/add/<int:turma_id>/', create_or_update_horario, name='criar_horario'),
+    path('horario/edit/<int:turma_id>/<int:horario_id>/', create_or_update_horario, name='edit_horario'),
 
     # Notas Trimestre
     path('criar-gestao-turma/notas/trimestre/<int:aluno_id>/', GestaoTurmasNotas.as_view(), name='criar_gestao_turma'), 
-    path('gestao_turmas/<int:aluno_id>/<int:trimestre_id>/', create_or_update_gestao_turmas, name='create_or_update_gestao_turmas'),    
+    path('gestao_turmas/<int:turma_id>/<int:trimestre_id>/', create_or_update_gestao_turmas, name='create_or_update_gestao_turmas'),    
     path('gestao_turmas/media/<int:aluno_id>/', create_or_update_Media_turmas, name='create_or_update_media_turmas'),
     
 
