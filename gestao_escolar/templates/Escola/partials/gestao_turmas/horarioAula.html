@@ -95,10 +95,17 @@
 </ul>
 {% endif %}
 
-<form method="POST">
+<!-- Escola/inicio.html -->
+
+
+<h1>{{ conteudo_page }}</h1>
+
+<!-- Escola/inicio.html -->
+
+<h1>{{ conteudo_page }}</h1>
+
+<form method="post">
   {% csrf_token %}
-  <input type="hidden" name="turma" value="{{ turma_id }}">
-  
   <table>
     <thead>
       <tr>
@@ -108,26 +115,35 @@
         <th>Quarta</th>
         <th>Quinta</th>
         <th>Sexta</th>
-        <th>Ações</th>
       </tr>
     </thead>
     <tbody>
       {% for periodo in periodos %}
-      <tr>
-        <td>{{ periodo }}</td>
-        
-        <input type="hidden" name="turma" value="{{ periodo.pk }}">
-        <td>{{ form.segunda }}</td>
-        <td>{{ form.terca }}</td>
-        <td>{{ form.quarta }}</td>
-        <td>{{ form.quinta }}</td>
-        <td>{{ form.sexta }}</td>
-        <td></td>
-      </tr>
+        <tr>
+          <td>
+            <select name="periodo">
+              <option value="">--</option>
+              {% for p in periodos %}
+                <option value="{{ p.pk }}" {% if object.periodo == p %}selected{% endif %}>{{ p }}</option>
+              {% endfor %}
+            </select>
+          </td>
+          {% for dia in ['segunda', 'terca', 'quarta', 'quinta', 'sexta'] %}
+            <td>
+              <select name="{{ dia }}">
+                <option value="">--</option>
+                {% for turma_disciplina in object.turma.turmadisciplina_set.all %}
+                  <option value="{{ turma_disciplina.pk }}" {% if getattr(object, dia) == turma_disciplina %}selected{% endif %}>{{ turma_disciplina }}</option>
+                {% endfor %}
+              </select>
+            </td>
+          {% endfor %}
+        </tr>
       {% endfor %}
     </tbody>
   </table>
-  <button type="submit">Salvar</button>
+
+  <input type="submit" value="Salvar">
 </form>
 
 
@@ -155,14 +171,12 @@
       <tr>
         <td>{{ horario.turma }}</td>
         <td>{{ horario.periodo }}</td>
-        <td>{{ horario.turno }}</td>
         <td>{{ horario.segunda }}</td>
         <td>{{ horario.terca }}</td>
         <td>{{ horario.quarta }}</td>
         <td>{{ horario.quinta }}</td>
         <td>{{ horario.sexta }}</td>
         <td>
-          <a href="{% url 'Gestao_Escolar:edit_horario' turma_id horario.id %}" class="btn btn-warning btn-sm">Editar</a>
           <!-- Adicione um botão de excluir se necessário -->
         </td>
       </tr>
