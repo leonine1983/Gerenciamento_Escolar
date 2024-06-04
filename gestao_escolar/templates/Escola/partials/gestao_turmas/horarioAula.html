@@ -86,8 +86,20 @@
   <!-- Tabela com o formulário -->
   <!-- Escola/inicio.html -->
 <!-- Escola/inicio.html -->
-<form method="post">
-<table class='win11-table'>
+  
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<form method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="turma" value="{{ turma_id }}">
+  
+  <table>
     <thead>
       <tr>
         <th>Período</th>
@@ -95,34 +107,37 @@
         <th>Terça</th>
         <th>Quarta</th>
         <th>Quinta</th>
-        <th>Sexta  </th>
+        <th>Sexta</th>
+        <th>Ações</th>
       </tr>
     </thead>
     <tbody>
-        {% for periodo in periodos %}
-       
-          {% csrf_token %}
-          <input type="hidden" name="periodo" value="{{ periodo.id }}">
-          <tr>
-            <td>{{ periodo }}</td>
-            <td>{{ form.segunda }}</td>
-            <td>{{ form.terca }}</td>
-            <td>{{ form.quarta }}</td>
-            <td>{{ form.quinta }}</td>
-            <td>{{ form.sexta }}</td>            
-          </tr> 
-        {% endfor %}
-      </tbody>
-      
-  </table><button type="submit">Salvar</button>
+      {% for periodo in periodos %}
+      <tr>
+        <td>{{ periodo }}</td>
+        
+        <input type="hidden" name="turma" value="{{ periodo.pk }}">
+        <td>{{ form.segunda }}</td>
+        <td>{{ form.terca }}</td>
+        <td>{{ form.quarta }}</td>
+        <td>{{ form.quinta }}</td>
+        <td>{{ form.sexta }}</td>
+        <td></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <button type="submit">Salvar</button>
 </form>
+
+
   
 
   <h2>Horários Existentes</h2>
   
   <!-- Tabela com os horários existentes -->
   <table class="win11-table">
-    <thead>
+    <thead class='bg-p-3'>
       <tr>
         <th>Turma</th>
         <th>Período</th>
