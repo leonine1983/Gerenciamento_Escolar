@@ -103,48 +103,64 @@
 <!-- Escola/inicio.html -->
 
 <h1>{{ conteudo_page }}</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Atualizar Horários</title>
+</head>
+<body>
+    <h1>{{ conteudo_page }}</h1>
 
-<form method="post">
-  {% csrf_token %}
-  <table>
-    <thead>
-      <tr>
-        <th>Período</th>
-        <th>Segunda</th>
-        <th>Terça</th>
-        <th>Quarta</th>
-        <th>Quinta</th>
-        <th>Sexta</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for periodo in periodos %}
-        <tr>
-          <td>
-            <select name="periodo">
-              <option value="">--</option>
-              {% for p in periodos %}
-                <option value="{{ p.pk }}" {% if object.periodo == p %}selected{% endif %}>{{ p }}</option>
-              {% endfor %}
-            </select>
-          </td>
-          {% for dia in ['segunda', 'terca', 'quarta', 'quinta', 'sexta'] %}
-            <td>
-              <select name="{{ dia }}">
-                <option value="">--</option>
-                {% for turma_disciplina in object.turma.turmadisciplina_set.all %}
-                  <option value="{{ turma_disciplina.pk }}" {% if getattr(object, dia) == turma_disciplina %}selected{% endif %}>{{ turma_disciplina }}</option>
+    <form method="post">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        <table>
+            <thead>
+                <tr>
+                    <th>Período</th>
+                    <th>Segunda</th>
+                    <th>Terça</th>
+                    <th>Quarta</th>
+                    <th>Quinta</th>
+                    <th>Sexta</th>
+                    <th>Excluir</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for form in formset %}
+                    <tr>
+                        <td>
+                            {{ form.periodo }}
+                        </td>
+                        <td>
+                            {{ form.segunda }}
+                        </td>
+                        <td>
+                            {{ form.terca }}
+                        </td>
+                        <td>
+                            {{ form.quarta }}
+                        </td>
+                        <td>
+                            {{ form.quinta }}
+                        </td>
+                        <td>
+                            {{ form.sexta }}
+                        </td>
+                        <td>
+                            {{ form.DELETE }}
+                        </td>
+                    </tr>
                 {% endfor %}
-              </select>
-            </td>
-          {% endfor %}
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+            </tbody>
+        </table>
+        <button type="submit">Salvar</button>
+    </form>
 
-  <input type="submit" value="Salvar">
-</form>
+</body>
+</html>
+
+
 
 
   
