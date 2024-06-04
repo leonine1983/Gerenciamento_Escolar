@@ -99,36 +99,35 @@
   {% csrf_token %}
   <input type="hidden" name="turma" value="{{ turma_id }}">
   
-  <table>
-    <thead>
-      <tr>
-        <th>Período</th>
-        <th>Segunda</th>
-        <th>Terça</th>
-        <th>Quarta</th>
-        <th>Quinta</th>
-        <th>Sexta</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for periodo in periodos %}
-      <tr>
-        <td>{{ periodo }}</td>
-        
-        <input type="hidden" name="turma" value="{{ periodo.pk }}">
-        <td>{{ form.segunda }}</td>
-        <td>{{ form.terca }}</td>
-        <td>{{ form.quarta }}</td>
-        <td>{{ form.quinta }}</td>
-        <td>{{ form.sexta }}</td>
-        <td></td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  <button type="submit">Salvar</button>
+  <form method="post">
+    {% csrf_token %}
+    <table>
+        <thead>
+            <tr>
+                <th>Período</th>
+                <th>Segunda</th>
+                <th>Terça</th>
+                <th>Quarta</th>
+                <th>Quinta</th>
+                <th>Sexta</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for form in formset %}
+                <tr>
+                    <td>{{ form.instance.periodo }}</td>
+                    <td>{{ form.segunda }}</td>
+                    <td>{{ form.terca }}</td>
+                    <td>{{ form.quarta }}</td>
+                    <td>{{ form.quinta }}</td>
+                    <td>{{ form.sexta }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit">Salvar Horários</button>
 </form>
+
 
 
   
