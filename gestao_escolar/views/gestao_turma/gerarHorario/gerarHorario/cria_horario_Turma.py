@@ -1,64 +1,60 @@
-from django.shortcuts import render, redirect
-from django.views.generic import CreateView
+from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
 from django.contrib import messages
-from gestao_escolar.models import Horario, TurmaDisciplina, Periodo
+from gestao_escolar.models import Horario, TurmaDisciplina, Turmas
+from django.shortcuts import get_object_or_404
 
 class HorarioCreateView(CreateView):
     model = Horario
-    template_name = 'Escola/inicio.html'
     fields = ['periodo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado']
+    template_name = 'Escola/inicio.html'
+    success_url = reverse_lazy('nome_da_url')
 
     def form_valid(self, form):
-        turma_id = self.kwargs.get('turma_id')
-        form.instance.turma_id = turma_id
+        # Pegar o ID da turma da URL
+        turma_id = self.kwargs['turma_id']
+        # Obter a turma com base no ID
+        turma = get_object_or_404(Turmas, pk=turma_id)
+        turmaDisciplina = get_object_or_404(TurmaDisciplina, turma=turma_id)
+
+        # Adicionando a turma ao formulário
+        form.instance.turma = turma
+
+        # Realizar as verificações de restrições
         periodo = form.cleaned_data.get('periodo')
-        turma_disciplina_ids = [
-            form.cleaned_data.get('segunda'),
-            form.cleaned_data.get('terca'),
-            form.cleaned_data.get('quarta'),
-            form.cleaned_data.get('quinta'),
-            form.cleaned_data.get('sexta'),
-            form.cleaned_data.get('sabado'),
-        ]
+        disciplinas_dia = [form.cleaned_data.get(field) for field in ['segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'] if form.cleaned_data.get(field)]
 
         # Restrição de Período
-        for turma_disciplina_id in turma_disciplina_ids:
-            if turma_disciplina_id and Horario.objects.filter(turma_id=turma_id, periodo=periodo).exists():
-                messages.error(self.request, f"O profissional já ocupa o período {periodo}.")
-                return self.form_invalid(form)
+        for disciplina in disciplinas_dia:
+            if Horario.objects.filter(turma=turma, periodo=periodo, segunda=disciplina).exists():
+                messages.error(self.request, f"O professor já ocupa o período {periodo} na turma {turma}.")
+                return HttpResponseRedirect(reverse_lazy('Gestao_Escolar:criar_horario', kwargs={'turma_id':self.kwargs['turma_id']}))
 
         # Restrição de Aulas por Dia
-        for turma_disciplina_id in turma_disciplina_ids:
-            if turma_disciplina_id:
-                quant_aulas_dia = turma_disciplina_id.quant_aulas_dia
-                if quant_aulas_dia:
-                    # Verificar se já existe um período com o mesmo dia da semana
-                    if Horario.objects.filter(
-                        turma_id=turma_id,
-                        periodo__hora_inicio__week_day=periodo.hora_inicio.weekday()
-                    ).exists():
-                        messages.error(self.request, f"A quantidade máxima de aulas diárias para {turma_disciplina_id.disciplina.nome} foi atingida.")
-                        return self.form_invalid(form)
+        for disciplina in disciplinas_dia:
+            if turmaDisciplina.quant_aulas_dia > 0:                
+                if disciplinas_dia.count(disciplina) >= turmaDisciplina.quant_aulas_dia:
+                    messages.error(self.request, f"A quantidade máxima de aulas diárias para a disciplina {disciplina} foi atingida.")
+                    return HttpResponseRedirect(reverse_lazy('Gestao_Escolar:criar_horario', kwargs={'turma_id':self.kwargs['turma_id']}))
 
         # Restrição de Aulas por Semana
-        for turma_disciplina_id in turma_disciplina_ids:
-            if turma_disciplina_id:
-                quant_aulas_semana = turma_disciplina_id.quant_aulas_semana
-                if quant_aulas_semana and Horario.objects.filter(
-                    turma_id=turma_id, 
-                    segunda=turma_disciplina_id
-                ).count() >= quant_aulas_semana:
-                    messages.error(self.request, f"A quantidade máxima de aulas semanais para {turma_disciplina_id.disciplina.nome} foi atingida.")
-                    return self.form_invalid(form)
+        if turmaDisciplina.quant_aulas_semana > 0:            
+            if Horario.objects.filter(turma=turma, segunda__in=disciplinas_dia).count() >= turmaDisciplina.quant_aulas_semana:
+                messages.error(self.request, f"A quantidade máxima de aulas semanais para a turma {turma} foi atingida.")
+                return HttpResponseRedirect(reverse_lazy('Gestao_Escolar:criar_horario', kwargs={'turma_id':self.kwargs['turma_id']}))
 
         return super().form_valid(form)
 
+    def get_initial(self):
+        initial = super().get_initial()
+        # Pegar o ID da turma da URL
+        turma_id = self.kwargs['turma_id']
+        # Definir a turma como inicial
+        initial['turma'] = turma_id
+        return initial
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['conteudo_page'] = "Gestão Turmas - GerarHorario"        
-        context['horarios'] = Horario.objects.filter(turma = self.kwargs.get('turma_id'))
+        context['conteudo_page'] = "Gestão Turmas - GerarHorario"
         return context
-
-    def get_success_url(self):
-        return reverse_lazy('Gestao_Escolar:criarIDhorario', kwargs={"turma_id": self.kwargs.get('turma_id')})
