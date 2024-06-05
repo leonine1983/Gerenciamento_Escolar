@@ -621,6 +621,7 @@ class Horario(models.Model):
     quarta = models.ForeignKey(TurmaDisciplina, related_name='quarta_prof', null=True, blank=True, on_delete=models.SET_NULL)
     quinta = models.ForeignKey(TurmaDisciplina, related_name='quinta_prof', null=True, blank=True, on_delete=models.SET_NULL)
     sexta = models.ForeignKey(TurmaDisciplina, related_name='sexta_prof', null=True, blank=True, on_delete=models.SET_NULL)
+    sabado = models.ForeignKey(TurmaDisciplina, related_name='sabado_prof', null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f"Horario - {self.turma} - {self.periodo}"
