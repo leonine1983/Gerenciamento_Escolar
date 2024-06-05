@@ -95,40 +95,20 @@
 </ul>
 {% endif %}
 
-<form method="POST">
+<h1>{{ conteudo_page }}</h1>
+<form method="post">
   {% csrf_token %}
-  <input type="hidden" name="turma" value="{{ turma_id }}">
-  
-  <form method="post">
-    {% csrf_token %}
-    <table>
-        <thead>
-            <tr>
-                <th>Período</th>
-                <th>Segunda</th>
-                <th>Terça</th>
-                <th>Quarta</th>
-                <th>Quinta</th>
-                <th>Sexta</th>
-            </tr>
-        </thead>
-        <tbody>
-          {{form}}
-            {% for form in formset %}
-                <tr>
-                    <td>{{ form.instance.periodo }}</td>
-                    <td>{{ form.segunda }}</td>
-                    <td>{{ form.terca }}</td>
-                    <td>{{ form.quarta }}</td>
-                    <td>{{ form.quinta }}</td>
-                    <td>{{ form.sexta }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <button type="submit">Salvar Horários</button>
+  {{ form.as_p }}
+  <button type="submit">Salvar</button>
 </form>
 
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
 
 
   

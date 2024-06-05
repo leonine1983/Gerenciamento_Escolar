@@ -94,7 +94,7 @@ urlpatterns = [
     path('horario/edit/<int:turma_id>/<int:horario_id>/', create_or_update_horario, name='edit_horario'),
     
     
-    path('horario/turma/<int:turma_id>/', GerarHorarioView.as_view(), name='criarIDhorario'),
+    path('horario/turma/<int:turma_id>/', HorarioCreateView.as_view(), name='criarIDhorario'), 
 
     # Notas Trimestre
     path('criar-gestao-turma/notas/trimestre/<int:aluno_id>/', GestaoTurmasNotas.as_view(), name='criar_gestao_turma'), 
