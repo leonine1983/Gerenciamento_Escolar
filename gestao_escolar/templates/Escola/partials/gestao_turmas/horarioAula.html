@@ -98,7 +98,33 @@
 <h1>{{ conteudo_page }}</h1>
 <form method="post">
   {% csrf_token %}
-  {{ form.as_p }}
+
+  
+  fields = ['periodo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado']
+<table class="win11-table">
+  <thead class="bg-p-3">
+    <tr>
+      <td>Perído de aula</td>
+      <td>Segunda</td>
+      <td>Terça</td>
+      <td>Quarta</td>
+      <td>Quinta</td>
+      <td>Sexta</td>
+      <td>Sábado</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>{{form.periodo}}{{form.periodo.errors}}</th>
+      <th>{{form.segunda}}{{form.segunda.errors}}</th>
+      <th>{{form.terca}}{{form.terca.errors}}</th>
+      <th>{{form.quarta}}{{form.quarta.errors}}</th>
+      <th>{{form.quinta}}{{form.quinta.errors}}</th>
+      <th>{{form.sexta}}{{form.sexta.errors}}</th>
+      <th>{{form.sabado}}{{form.sabado.errors}}</th>      
+    </tr>    
+  </tbody>
+</table>
   <button type="submit">Salvar</button>
 </form>
 
