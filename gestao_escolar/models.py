@@ -621,8 +621,11 @@ class Horario(models.Model):
     quinta = models.ForeignKey(TurmaDisciplina, related_name='quinta_prof', null=True, blank=True, on_delete=models.SET_NULL)
     sexta = models.ForeignKey(TurmaDisciplina, related_name='sexta_prof', null=True, blank=True, on_delete=models.SET_NULL)
     sabado = models.ForeignKey(TurmaDisciplina, related_name='sabado_prof', null=True, blank=True, on_delete=models.SET_NULL)
-    data_inicio = models.DateField()
-    data_fim = models.DateTimeField()      
+    data_inicio = models.DateField(null=True)
+    data_fim = models.DateTimeField(null=True)      
+
+    class Meta:
+        ordering = ['periodo__nome_periodo']
 
     def __str__(self):
         return f"Horario - {self.turma} - {self.periodo}"

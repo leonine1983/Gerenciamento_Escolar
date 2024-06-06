@@ -12,14 +12,44 @@
     <div class="modal-dialog w-100">
         <div class="modal-content bg-secondary-subtle p-5">
             {% include "Escola/partials/mensagens.html" %}
-            <div class="modal-header w-100">
-                <div class="mx-5 border-bottom ">
-                    <p class="m-0 p-0 h3 text-uppercase"><i style="font-size: 1.65rem;" class="fs-4 fa-solid fa-users-gear"></i> {{ aluno}}</p>                
-                    <p class="m-0 p-0 h4 mx-5 "> </span></h2></p>                         
-                </div>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            
+            <div class="modal-header w-100 d-flex border-bottom border-secondary">
+              
+            <h1><img src="{% static 'svg/grade_horario.svg' %}" alt=""> Horários do {{turma}}</h1>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>                
             </div>
-            <h1>{% if form.instance.pk %}Editar Horário{% else %}Criar Horário {{object}}{% endif %}</h1> 
+            <hr class="mb-0">           
+            <table class="win11-table">
+              <thead class='bg-p-3'>
+                <tr>
+                  <th>Período</th>
+                  <th>Segunda</th>
+                  <th>Terça</th>
+                  <th>Quarta</th>
+                  <th>Quinta</th>
+                  <th>Sexta</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for horario in horarios %}
+                <tr>
+                  <td>{{ horario.periodo }}</td>
+                  <td>{{ horario.segunda }}</td>
+                  <td>{{ horario.terca }}</td>
+                  <td>{{ horario.quarta }}</td>
+                  <td>{{ horario.quinta }}</td>
+                  <td>{{ horario.sexta }}</td>
+                  <td>
+                    <!-- <a href="" class="btn btn-warning btn-sm">Editar</a>
+                  Adicione um botão de excluir se necessário -->
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            
+            <h2 class="mt-5">{% if form.instance.pk %}Editar Horário{% else %}Criar Horário {{object}}{% endif %}</h2> 
             {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
@@ -27,87 +57,62 @@
                 {% endfor %}
             </ul>
             {% endif %}
-            <form method="post" class='win11-form'>
+           
+            
+            <form method="post">
               {% csrf_token %}
-              <table class="win11-table table-bordered">
-                <nav class='nav-win11'>
-                  <div>{{form.data_inicio.label_tag}}{{form.data_inicio}}{{form.data_inicio.errors}}</div>
-                  <div>{{form.data_fim.label_tag}}{{form.data_fim}}{{form.data_fim.errors}}</div>
-                </nav>
-                <thead class="bg-p-3">
-                  <tr>
-                    <td>Perído de aula</td>
-                    <td>Segunda</td>
-                    <td>Terça</td>
-                    <td>Quarta</td>
-                    <td>Quinta</td>
-                    <td>Sexta</td>
-                    <td>Sábado</td>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th>{{form.periodo}}{{form.periodo.errors}}</th>
-                    <th>{{form.segunda}}{{form.segunda.errors}}</th>
-                    <th>{{form.terca}}{{form.terca.errors}}</th>
-                    <th>{{form.quarta}}{{form.quarta.errors}}</th>
-                    <th>{{form.quinta}}{{form.quinta.errors}}</th>
-                    <th>{{form.sexta}}{{form.sexta.errors}}</th>
-                    <th>{{form.sabado}}{{form.sabado.errors}}</th>      
-                  </tr>    
-                </tbody>
+              <!-- Colocando os campos de data de início e fim fora da tabela -->
+              <label>Data de Início:</label>
+              <input type="date" name="data_inicio" value="{{ data_inicio }}">
+              <label>Data de Fim:</label>
+              <input type="date" name="data_fim" value="{{ data_fim }}">
+              
+              <!-- Exibindo as mensagens de erro do formulário -->
+              {% for field in form %}
+                  {% for error in field.errors %}
+                      <div class="error">{{ error }}</div>
+                  {% endfor %}
+              {% endfor %}
+          
+              <!-- Exibindo mensagens de erro gerais -->
+              {% for error in form.non_field_errors %}
+                  <div class="error">{{ error }}</div>
+              {% endfor %}
+              
+              <table>
+                  <thead>
+                      <tr>
+                          <th>Período</th>
+                          <th>Segunda</th>
+                          <th>Terça</th>
+                          <th>Quarta</th>
+                          <th>Quinta</th>
+                          <th>Sexta</th>
+                          <th>Sábado</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {% for form, periodo_nome in forms_periodos %}
+                          <tr>
+                              <td>
+                                  {{ periodo_nome }}
+                                  <input type="hidden" name="{{ form.prefix }}-periodo" value="{{ form.prefix }}">
+                              </td>
+                              <td>{{ form.segunda }}</td>
+                              <td>{{ form.terca }}</td>
+                              <td>{{ form.quarta }}</td>
+                              <td>{{ form.quinta }}</td>
+                              <td>{{ form.sexta }}</td>
+                              <td>{{ form.sabado }}</td>
+                          </tr>
+                      {% endfor %}
+                  </tbody>
               </table>
-                <button type="submit">Salvar</button>
-              </form>
-
-
-{% if messages %}
-  <ul class="messages">
-    {% for message in messages %}
-      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-  </ul>
-{% endif %}
-
+              <button type="submit">Salvar</button>
+          </form>
+          
 
   
-
-  <h2>Horários Existentes</h2>
-  
-  <!-- Tabela com os horários existentes -->
-  <table class="win11-table">
-    <thead class='bg-p-3'>
-      <tr>
-        <th>Turma</th>
-        <th>Período</th>
-        <th>Turno</th>
-        <th>Segunda</th>
-        <th>Terça</th>
-        <th>Quarta</th>
-        <th>Quinta</th>
-        <th>Sexta</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for horario in horarios %}
-      <tr>
-        <td>{{ horario.turma }}</td>
-        <td>{{ horario.periodo }}</td>
-        <td>{{ horario.turno }}</td>
-        <td>{{ horario.segunda }}</td>
-        <td>{{ horario.terca }}</td>
-        <td>{{ horario.quarta }}</td>
-        <td>{{ horario.quinta }}</td>
-        <td>{{ horario.sexta }}</td>
-        <td>
-           <!-- <a href="" class="btn btn-warning btn-sm">Editar</a>
-         Adicione um botão de excluir se necessário -->
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
 
 
            

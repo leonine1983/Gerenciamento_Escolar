@@ -1,64 +1,92 @@
 from django import forms
-from gestao_escolar.models import Horario, Turmas, TurmaDisciplina
-from django.views.generic.edit import CreateView
+from gestao_escolar.models import Horario, Turmas, TurmaDisciplina, Periodo
+from django.views import View
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-from .forms import HorarioForm
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
+
+from django import forms
+from gestao_escolar.models import Horario
 
 class HorarioForm(forms.ModelForm):
-    data_inicio = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    data_fim = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    data_inicio = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        required=False  # Tornando data_inicio não obrigatório
+    )
+    data_fim = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        required=False  # Tornando data_fim não obrigatório
+    )
 
     class Meta:
         model = Horario
-        fields = ['periodo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado', 'data_inicio', 'data_fim']
+        fields = ['segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado', 'data_inicio', 'data_fim']
+
+    def __init__(self, *args, **kwargs):
+        # Recebendo a data inicial do contexto
+        data_inicio = kwargs.pop('data_inicio', None)
+        super().__init__(*args, **kwargs)
+        # Definindo o valor da data inicial no campo do formulário
+        if data_inicio:
+            self.fields['data_inicio'].initial = data_inicio
+            # Preenchendo automaticamente o campo de data de fim com a mesma data de início
+            self.fields['data_fim'].initial = data_inicio
 
 
-class HorarioCreateView(CreateView):
-    model = Horario
-    form_class = HorarioForm
+
+from django.views import View
+from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
+from django.contrib import messages
+from django.shortcuts import get_object_or_404, render
+from gestao_escolar.models import Horario, Turmas, Periodo
+
+class HorarioCreateView(View):
     template_name = 'Escola/inicio.html'
 
-    def form_valid(self, form):
+    def get(self, request, *args, **kwargs):
         turma_id = self.kwargs['turma_id']
         turma = get_object_or_404(Turmas, pk=turma_id)
-        turmaDisciplina = get_object_or_404(TurmaDisciplina, turma=turma_id)
-        form.instance.turma = turma
+        periodos = Periodo.objects.all()
+        forms_periodos = [(HorarioForm(initial={'turma': turma, 'periodo': periodo}, prefix=str(periodo.id)), periodo) for periodo in periodos]
+        context = {
+            'forms_periodos': forms_periodos,
+            'turma': turma,
+            'conteudo_page': "Gestão Turmas - GerarHorario",
+            'horarios': Horario.objects.filter(turma=turma)
+        }
+        return render(request, self.template_name, context)
 
-        periodo = form.cleaned_data.get('periodo')
-        disciplinas_dia = [form.cleaned_data.get(field) for field in ['segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'] if form.cleaned_data.get(field)]
+    def post(self, request, *args, **kwargs):
+        turma_id = self.kwargs['turma_id']
+        turma = get_object_or_404(Turmas, pk=turma_id)
+        periodos = Periodo.objects.all()
+        forms = [HorarioForm(request.POST, prefix=str(periodo.id)) for periodo in periodos]
 
-        for disciplina in disciplinas_dia:
-            if Horario.objects.filter(turma=turma, periodo=periodo, segunda=disciplina).exists():
-                messages.error(self.request, f"O professor já ocupa o período {periodo} na turma {turma}.")
-                return HttpResponseRedirect(reverse_lazy('Gestao_Escolar:criar_horario', kwargs={'turma_id': self.kwargs['turma_id']}))
-
-        for disciplina in disciplinas_dia:
-            if turmaDisciplina.quant_aulas_dia > 0:
-                if disciplinas_dia.count(disciplina) >= turmaDisciplina.quant_aulas_dia:
-                    messages.error(self.request, f"A quantidade máxima de aulas diárias para a disciplina {disciplina} foi atingida.")
-                    return HttpResponseRedirect(reverse_lazy('Gestao_Escolar:criar_horario', kwargs={'turma_id': self.kwargs['turma_id']}))
-
-        if turmaDisciplina.quant_aulas_semana > 0:
-            if Horario.objects.filter(turma=turma, segunda__in=disciplinas_dia).count() >= turmaDisciplina.quant_aulas_semana:
-                messages.error(self.request, f"A quantidade máxima de aulas semanais para a turma {turma} foi atingida.")
-                return HttpResponseRedirect(reverse_lazy('Gestao_Escolar:criar_horario', kwargs={'turma_id': self.kwargs['turma_id']}))
-
-        return super().form_valid(form)
-
-    def get_initial(self):
-        initial = super().get_initial()
-        initial['turma'] = self.kwargs['turma_id']
-        return initial
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['conteudo_page'] = "Gestão Turmas - GerarHorario"
-        context['horarios'] = Horario.objects.filter(turma=self.kwargs['turma_id'])
-        return context
+        if all(form.is_valid() for form in forms):
+            for form in forms:
+                periodo_id = request.POST.get(f'{form.prefix}-periodo')
+                periodo = get_object_or_404(Periodo, pk=periodo_id)
+                Horario.objects.update_or_create(
+                    turma=turma, periodo=periodo,
+                    defaults=form.cleaned_data
+                )
+            messages.success(request, 'Horários atualizados com sucesso.')
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            for form in forms:
+                if not form.is_valid():
+                    print(form.errors)
+            messages.error(request, 'Por favor, corrija os erros abaixo.')
+            forms_periodos = [(form, Periodo.objects.get(pk=form.prefix).nome_periodo) for form in forms]
+            context = {
+                'forms_periodos': forms_periodos,
+                'turma': turma,
+                'conteudo_page': "Gestão Turmas - GerarHorario",
+                'horarios': Horario.objects.filter(turma=turma)
+            }
+            return render(request, self.template_name, context)
 
     def get_success_url(self):
         return reverse_lazy('Gestao_Escolar:criar_horario', kwargs={'turma_id': self.kwargs['turma_id']})
-

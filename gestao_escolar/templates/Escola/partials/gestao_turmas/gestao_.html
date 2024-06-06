@@ -22,8 +22,7 @@
           <input type="radio" name="pcss3t" id="tab3" class="tab-content-3">
           <label for="tab3"><i class="icon-cogs"></i>Disciplinas</label>
           
-          <input type="radio" name="pcss3t" id="tab5" class="tab-content-last">
-          <label for="tab5"><i class="icon-globe"></i>Horário de Aula</label>
+          <a class='btn btn-light m-2 p-1 pe-3 px-3 fs-4 border border-secondary' href="{% url 'Gestao_Escolar:criarIDhorario' turmas.0.pk %}"><img src="{% static 'svg/grade_horario.svg' %}" alt=""> Grade de Horários da Turma</a>
         {% endif %}
         
         <ul>
@@ -93,22 +92,7 @@
               <p>German-born theoretical physicist who developed the general theory of relativity, one of the two pillars of modern physics (alongside quantum mechanics). While best known for his mass–energy equivalence formula E = mc2 (which has been dubbed "the world's most famous equation"), he received the 1921 Nobel Prize in Physics "for his services to theoretical physics, and especially for his discovery of the law of the photoelectric effect". The latter was pivotal in establishing quantum theory.</p>
               <p>Near the beginning of his career, Einstein thought that Newtonian mechanics was no longer enough to reconcile the laws of classical mechanics with the laws of the electromagnetic field. This led to the development of his special theory of relativity. He realized, however, that the principle of relativity could also be extended to gravitational fields, and with his subsequent theory of gravitation in 1916, he published a paper on the general theory of relativity.</p>
               <p class="text-right"><em>Find out more about Albert Einstein from <a href="http://en.wikipedia.org/wiki/Albert_Einstein" target="_blank">Wikipedia</a>.</em></p>				
-            </li>
-            
-            <li class="tab-content tab-content-last typography">
-              <div class="typography">
-                <h1>Horário de Aula das Disciplinas</h1>
-                
-                <a class='btn btn-primary' href="{% url 'Gestao_Escolar:criarIDhorario' turmas.0.pk %}">horário ID sss</a>
-
-                <a class='btn btn-primary' href="{% url 'Gestao_Escolar:criar_horario' turmas.0.pk %}">horário</a>
-                
-                
-                <p>English physicist and mathematician who is widely regarded as one of the most influential scientists of all time and as a key figure in the scientific revolution. His book Philosophiæ Naturalis Principia Mathematica ("Mathematical Principles of Natural Philosophy"), first published in 1687, laid the foundations for most of classical mechanics. Newton also made seminal contributions to optics and shares credit with Gottfried Leibniz for the invention of the infinitesimal calculus.</p>
-                <p>Newton's Principia formulated the laws of motion and universal gravitation that dominated scientists' view of the physical universe for the next three centuries. It also demonstrated that the motion of objects on the Earth and that of celestial bodies could be described by the same principles. By deriving Kepler's laws of planetary motion from his mathematical description of gravity, Newton removed the last doubts about the validity of the heliocentric model of the cosmos.</p>
-              <p class="text-right"><em>Find out more about Isaac Newton from <a href="http://en.wikipedia.org/wiki/Isaac_Newton" target="_blank">Wikipedia</a>.</em></p>		
-              </div>
-            </li>
+            </li>            
           {% endif %}
         </ul>
       </div>
