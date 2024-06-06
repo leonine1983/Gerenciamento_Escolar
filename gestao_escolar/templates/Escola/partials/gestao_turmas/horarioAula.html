@@ -7,71 +7,10 @@
 {% endblock script_head %} 
 {% block script_footer %}{% endblock script_footer %} 
 
-
-
-<style>
-    /* Estilos para o formulário no estilo do Windows 11 */
-    .win11-form {
-        width: 100%;
-        max-width: 80%;
-        margin: 1rem auto;
-        padding: 20px;
-        background-color: #f5f5f5;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        font-family: Arial, sans-serif;
-    }
-    
-    .win11-form-group {
-        margin-bottom: 20px;
-    }
-    
-    .win11-form-field label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-    
-    .win11-form-field input[type="text"],.win11-form-field input[type="number"],
-    .win11-form-field select {
-        width: calc(100% - 16px)!important;
-        padding: 12px !important;
-        font-size: 16px !important;
-        border: 1px solid #ccc !important;
-        border-radius: 5px !important;
-        box-sizing: border-box !important;
-        margin-top: 5px !important;
-    }
-    
-    .win11-button {
-        display: inline-block;
-        padding: 12px 20px;
-        background-color: #0078d4;
-        color: #fff;
-        font-size: 16px;
-        font-weight: bold;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    
-    .win11-button:hover {
-        background-color: #005a9e;
-    }
-    
-
-</style>
-
-
-
-
-
-
 <div class="modal fade" id="modal_escola"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     
     <div class="modal-dialog w-100">
-        <div class="modal-content bg-secondary-subtle">
+        <div class="modal-content bg-secondary-subtle p-5">
             {% include "Escola/partials/mensagens.html" %}
             <div class="modal-header w-100">
                 <div class="mx-5 border-bottom ">
@@ -80,53 +19,46 @@
                 </div>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-
-  <h2>{% if form.instance.pk %}Editar Horário{% else %}Criar Horário{% endif %}</h2>
-  
-  <!-- Tabela com o formulário -->
-  <!-- Escola/inicio.html -->
-<!-- Escola/inicio.html -->
-  
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-
-<h1>{{ conteudo_page }}</h1>
-<form method="post">
-  {% csrf_token %}
-
-  
-  fields = ['periodo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado']
-<table class="win11-table">
-  <thead class="bg-p-3">
-    <tr>
-      <td>Perído de aula</td>
-      <td>Segunda</td>
-      <td>Terça</td>
-      <td>Quarta</td>
-      <td>Quinta</td>
-      <td>Sexta</td>
-      <td>Sábado</td>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>{{form.periodo}}{{form.periodo.errors}}</th>
-      <th>{{form.segunda}}{{form.segunda.errors}}</th>
-      <th>{{form.terca}}{{form.terca.errors}}</th>
-      <th>{{form.quarta}}{{form.quarta.errors}}</th>
-      <th>{{form.quinta}}{{form.quinta.errors}}</th>
-      <th>{{form.sexta}}{{form.sexta.errors}}</th>
-      <th>{{form.sabado}}{{form.sabado.errors}}</th>      
-    </tr>    
-  </tbody>
-</table>
-  <button type="submit">Salvar</button>
-</form>
+            <h1>{% if form.instance.pk %}Editar Horário{% else %}Criar Horário {{object}}{% endif %}</h1> 
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <form method="post" class='win11-form'>
+              {% csrf_token %}
+              <table class="win11-table table-bordered">
+                <nav class='nav-win11'>
+                  <div>{{form.data_inicio.label_tag}}{{form.data_inicio}}{{form.data_inicio.errors}}</div>
+                  <div>{{form.data_fim.label_tag}}{{form.data_fim}}{{form.data_fim.errors}}</div>
+                </nav>
+                <thead class="bg-p-3">
+                  <tr>
+                    <td>Perído de aula</td>
+                    <td>Segunda</td>
+                    <td>Terça</td>
+                    <td>Quarta</td>
+                    <td>Quinta</td>
+                    <td>Sexta</td>
+                    <td>Sábado</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>{{form.periodo}}{{form.periodo.errors}}</th>
+                    <th>{{form.segunda}}{{form.segunda.errors}}</th>
+                    <th>{{form.terca}}{{form.terca.errors}}</th>
+                    <th>{{form.quarta}}{{form.quarta.errors}}</th>
+                    <th>{{form.quinta}}{{form.quinta.errors}}</th>
+                    <th>{{form.sexta}}{{form.sexta.errors}}</th>
+                    <th>{{form.sabado}}{{form.sabado.errors}}</th>      
+                  </tr>    
+                </tbody>
+              </table>
+                <button type="submit">Salvar</button>
+              </form>
 
 
 {% if messages %}
@@ -169,8 +101,8 @@
         <td>{{ horario.quinta }}</td>
         <td>{{ horario.sexta }}</td>
         <td>
-          <a href="{% url 'Gestao_Escolar:edit_horario' turma_id horario.id %}" class="btn btn-warning btn-sm">Editar</a>
-          <!-- Adicione um botão de excluir se necessário -->
+           <!-- <a href="" class="btn btn-warning btn-sm">Editar</a>
+         Adicione um botão de excluir se necessário -->
         </td>
       </tr>
       {% endfor %}
