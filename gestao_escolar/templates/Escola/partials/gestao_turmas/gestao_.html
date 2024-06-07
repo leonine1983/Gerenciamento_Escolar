@@ -98,7 +98,8 @@
             <li class="tab-content tab-content-4 typography">
               <div class= 'd-flex p-2 bg-p-5 justify-content-between'>
                 <h1 class=''><img src="{% static 'svg/grade_horario.svg' %}" alt=""> Horários do {{matriculas.0.turma}}</h1>  
-                <a class='btn btn-primary m-2 p-1 pe-3 px-3 fs-4 ' href="{% url 'Gestao_Escolar:criarIDhorario' turmas.0.pk %}">Adicionar Horário <i class="fa-solid fa-plus text-light"></i></a>                  
+                <div>Validade: {{horarios.0.data_inicio}}</div>
+                <a class='btn btn-primary m-2 p-1 pe-3 px-3 fs-4 ' href="{% url 'Gestao_Escolar:validadeHorario' turmas.0.pk %}">Adicionar Horário<i class="fa-solid fa-plus text-light"></i></a>                  
               </div>
               <table class="win11-table">
                 <thead class='bg-p-3 text-uppercase'>

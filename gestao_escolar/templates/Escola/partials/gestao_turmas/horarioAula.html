@@ -14,8 +14,10 @@
             {% include "Escola/partials/mensagens.html" %}
             
             <div class="modal-header w-100 d-flex border-bottom border-secondary">
-              
-            <h1><img src="{% static 'svg/grade_horario.svg' %}" alt=""> Horários do {{turma}}</h1>
+            <div class='d-flex justify-content-between w-100'> 
+                <div><h1><img src="{% static 'svg/grade_horario.svg' %}" alt=""> Horários do {{turma}}</h1></div>
+                <div><a class='btn btn-primary mt-3' href="{% url 'Gestao_Escolar:NotasAluno_one_create' turma.pk %}">Gestão Turmas</a></div>                
+            </div>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>                
             </div>
             <hr class="mb-0">           
@@ -63,9 +65,9 @@
               {% csrf_token %}
               <!-- Colocando os campos de data de início e fim fora da tabela -->
               <label>Data de Início:</label>
-              <input type="date" name="data_inicio" value="{{ data_inicio }}">
+              <input type="date" name="data_inicio" value="{{ data_inicio }}" required>
               <label>Data de Fim:</label>
-              <input type="date" name="data_fim" value="{{ data_fim }}">
+              <input type="date" name="data_fim" value="{{ data_fim }}" required>
               
               <!-- Exibindo as mensagens de erro do formulário -->
               {% for field in form %}

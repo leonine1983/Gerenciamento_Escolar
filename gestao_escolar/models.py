@@ -610,19 +610,26 @@ class Periodo(models.Model):
         """
         return self.hora_inicio < other.hora_inicio
 
+class Validade_horario(models.Model):    
+    turma = models.ForeignKey(Turmas,null=True, related_name='turma_Validade_related', on_delete=models.CASCADE)  
+    nome_validade = models.CharField(max_length=30)
+    data_inicio = models.DateField(null=True)
+    data_fim = models.DateTimeField(null=True)     
+
+    def __str__(self):
+        return (f'{self.nome_validade}: {self.data_inicio} a {self.data_fim}')
  
 
 class Horario(models.Model):
+    validade = models.ForeignKey(Validade_horario,null=True, related_name='turma_Horario_related', on_delete=models.CASCADE)  
     turma = models.ForeignKey(Turmas,null=True, related_name='turma_Horario_related', on_delete=models.CASCADE)  
     periodo = models.ForeignKey(Periodo, null=True,related_name='periodo_Horario_related', on_delete=models.CASCADE)       
-    segunda = models.ForeignKey(TurmaDisciplina, related_name='segunda_prof', null=True, blank=True, on_delete=models.SET_NULL)
-    terca = models.ForeignKey(TurmaDisciplina, related_name='terca_prof', null=True, blank=True, on_delete=models.SET_NULL)
-    quarta = models.ForeignKey(TurmaDisciplina, related_name='quarta_prof', null=True, blank=True, on_delete=models.SET_NULL)
-    quinta = models.ForeignKey(TurmaDisciplina, related_name='quinta_prof', null=True, blank=True, on_delete=models.SET_NULL)
-    sexta = models.ForeignKey(TurmaDisciplina, related_name='sexta_prof', null=True, blank=True, on_delete=models.SET_NULL)
-    sabado = models.ForeignKey(TurmaDisciplina, related_name='sabado_prof', null=True, blank=True, on_delete=models.SET_NULL)
-    data_inicio = models.DateField(null=True)
-    data_fim = models.DateTimeField(null=True)      
+    segunda = models.OneToOneField(TurmaDisciplina, related_name='segunda_prof', null=True, blank=True, on_delete=models.SET_NULL)
+    terca = models.OneToOneField(TurmaDisciplina, related_name='terca_prof', null=True, blank=True, on_delete=models.SET_NULL)
+    quarta = models.OneToOneField(TurmaDisciplina, related_name='quarta_prof', null=True, blank=True, on_delete=models.SET_NULL)
+    quinta = models.OneToOneField(TurmaDisciplina, related_name='quinta_prof', null=True, blank=True, on_delete=models.SET_NULL)
+    sexta = models.OneToOneField(TurmaDisciplina, related_name='sexta_prof', null=True, blank=True, on_delete=models.SET_NULL)
+    sabado = models.OneToOneField(TurmaDisciplina, related_name='sabado_prof', null=True, blank=True, on_delete=models.SET_NULL)     
 
     class Meta:
         ordering = ['periodo__nome_periodo']

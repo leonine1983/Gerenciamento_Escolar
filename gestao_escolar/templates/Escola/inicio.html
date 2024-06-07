@@ -448,7 +448,48 @@
 }
 
   
-  
+.errorlist {
+    border: 2px solid #d32f2f;
+    background-color: #ffebee;
+    color: #d32f2f;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    text-align:center
+}
+
+.errorlist h2 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.errorlist p {
+    font-size: 14px;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.errorlist .solution {
+    font-weight: bold;
+    color: #388e3c;
+}
+
+.errorlist .button {
+    background-color: #d32f2f;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 3px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.errorlist .button:hover {
+    background-color: #b71c1c;
+}
+
 </style>
 {% endblock script_head %} 
 
@@ -570,8 +611,11 @@
     {% if  conteudo_page ==  "Gestão Turmas - GerarHorario"   %}
         {% include 'Escola/partials/gestao_turmas/horarioAula.html' %}
     {% endif %} 
+    {% if  conteudo_page ==  "Gestão Turmas - DefineValidadeHorario"   %}
+        {% include 'Escola/partials/gestao_turmas/defineValidadeHorario.html' %}
+    {% endif %} 
 
-
+    
     <!--Impressos-->
     {% if  conteudo_page == "imprime_turma" %}
         {% include 'Escola/partials/impressos/impresso_turmas.html' %}
