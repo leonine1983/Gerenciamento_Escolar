@@ -1,4 +1,4 @@
-from gestao_escolar.models import Turmas, GestaoTurmas, Trimestre, Matriculas, TurmaDisciplina
+from gestao_escolar.models import Turmas, GestaoTurmas, Trimestre, Matriculas, TurmaDisciplina, Horario
 from rh.models import Encaminhamentos
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -46,7 +46,8 @@ class Create_Notas_pk(LoginRequiredMixin, CreateView):
         context['ativa'] = "Grades"
         #context['alunos'] = Matriculas.objects.all()
         
-        context['conteudo_page'] = "Gestão Turmas"
+        context['conteudo_page'] = "Gestão Turmas"        
+        context['horarios'] = Horario.objects.filter(turma=self.kwargs['pk'])
         context['turmas_disciplinas'] = self.get_queryset
         
         context['page_ajuda'] = "<div class='m-2'><b>Nessa área, definimos todos os dados para a"

@@ -21,8 +21,10 @@
           
           <input type="radio" name="pcss3t" id="tab3" class="tab-content-3">
           <label for="tab3"><i class="icon-cogs"></i>Disciplinas</label>
+          <input type="radio" name="pcss3t" id="tab4" class="tab-content-4">
+          <label for="tab4"><i class="icon-cogs"></i><img src="{% static 'svg/grade_horario.svg' %}" alt=""> Grade de Horários da Turma</label>
           
-          <a class='btn btn-light m-2 p-1 pe-3 px-3 fs-4 border border-secondary' href="{% url 'Gestao_Escolar:criarIDhorario' turmas.0.pk %}"><img src="{% static 'svg/grade_horario.svg' %}" alt=""> Grade de Horários da Turma</a>
+          
         {% endif %}
         
         <ul>
@@ -92,7 +94,42 @@
               <p>German-born theoretical physicist who developed the general theory of relativity, one of the two pillars of modern physics (alongside quantum mechanics). While best known for his mass–energy equivalence formula E = mc2 (which has been dubbed "the world's most famous equation"), he received the 1921 Nobel Prize in Physics "for his services to theoretical physics, and especially for his discovery of the law of the photoelectric effect". The latter was pivotal in establishing quantum theory.</p>
               <p>Near the beginning of his career, Einstein thought that Newtonian mechanics was no longer enough to reconcile the laws of classical mechanics with the laws of the electromagnetic field. This led to the development of his special theory of relativity. He realized, however, that the principle of relativity could also be extended to gravitational fields, and with his subsequent theory of gravitation in 1916, he published a paper on the general theory of relativity.</p>
               <p class="text-right"><em>Find out more about Albert Einstein from <a href="http://en.wikipedia.org/wiki/Albert_Einstein" target="_blank">Wikipedia</a>.</em></p>				
-            </li>            
+            </li>     
+            <li class="tab-content tab-content-4 typography">
+              <div class= 'd-flex p-2 bg-p-5 justify-content-between'>
+                <h1 class=''><img src="{% static 'svg/grade_horario.svg' %}" alt=""> Horários do {{matriculas.0.turma}}</h1>  
+                <a class='btn btn-primary m-2 p-1 pe-3 px-3 fs-4 ' href="{% url 'Gestao_Escolar:criarIDhorario' turmas.0.pk %}">Adicionar Horário <i class="fa-solid fa-plus text-light"></i></a>                  
+              </div>
+              <table class="win11-table">
+                <thead class='bg-p-3 text-uppercase'>
+                  <tr>
+                    <th>Período</th>
+                    <th>Segunda</th>
+                    <th>Terça</th>
+                    <th>Quarta</th>
+                    <th>Quinta</th>
+                    <th>Sexta</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for horario in horarios %}
+                  <tr>
+                    <td>{{ horario.periodo }}</td>
+                    <td>{{ horario.segunda }}</td>
+                    <td>{{ horario.terca }}</td>
+                    <td>{{ horario.quarta }}</td>
+                    <td>{{ horario.quinta }}</td>
+                    <td>{{ horario.sexta }}</td>
+                    <td>
+                      <!-- <a href="" class="btn btn-warning btn-sm">Editar</a>
+                    Adicione um botão de excluir se necessário -->
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </li>          
           {% endif %}
         </ul>
       </div>
