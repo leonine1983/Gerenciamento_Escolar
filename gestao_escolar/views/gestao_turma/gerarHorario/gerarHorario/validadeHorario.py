@@ -6,7 +6,7 @@ from django.forms.utils import ErrorList
 from django.views.generic import CreateView
 from gestao_escolar.models import Horario, Validade_horario, Turmas
 from django.urls import reverse_lazy
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 
 from django import forms
 from django.core.exceptions import ValidationError
@@ -90,8 +90,9 @@ class CriaValidadeHorario(CreateView):
             mensagem = "Já existe um horário vigente no período especificado. Se desejar adicionar um novo horário para esta data, é necessário reduzir o período de vigência do horário existente."
             form._errors.setdefault(forms.forms.NON_FIELD_ERRORS, ErrorList()).append(mensagem)
             return self.form_invalid(form)
-        
-        return super().form_valid(form)
+        else:        
+            messages.success(self.request, "O período de validade foi criado com sucesso. Você acaba de ser redirecionado para a criação do horário das turmas.")
+            return redirect(reverse_lazy('Gestao_Escolar:criar_horario', kwargs={'turma_id': self.kwargs['turma_id']}))
 
     def get_success_url(self):
-        return reverse_lazy('Gestao_Escolar:criar_horario')
+        return reverse_lazy('Gestao_Escolar:criar_horario', self.kwargs['turma_id'])
