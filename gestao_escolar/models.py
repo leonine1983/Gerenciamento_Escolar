@@ -615,6 +615,9 @@ class Validade_horario(models.Model):
     nome_validade = models.CharField(max_length=30)
     data_inicio = models.DateField(null=True)
     data_fim = models.DateTimeField(null=True)     
+    horario_ativo = models.BooleanField(default=False)
+
+
 
     def __str__(self):
         return (f'{self.nome_validade}: {self.data_inicio} a {self.data_fim}')

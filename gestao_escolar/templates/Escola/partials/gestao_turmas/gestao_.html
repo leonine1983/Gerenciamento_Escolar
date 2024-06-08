@@ -99,7 +99,10 @@
               <div class= 'd-flex p-2 bg-p-5 justify-content-between'>
                 <h1 class=''><img src="{% static 'svg/grade_horario.svg' %}" alt=""> Horários do {{matriculas.0.turma}}</h1>  
                 <div>Validade: {{horarios.0.data_inicio}}</div>
-                <a class='btn btn-primary m-2 p-1 pe-3 px-3 fs-4 ' href="{% url 'Gestao_Escolar:validadeHorario' turmas.0.pk %}">Adicionar Horário<i class="fa-solid fa-plus text-light"></i></a>                  
+                <div>
+                  <a class='btn btn-success fs-7 ' href="{% url 'Gestao_Escolar:criar_horario' turmas.0.pk %}">Editar horário atual <i class="fa-solid fa-pen-to-square text-light"></i></a>                  
+                  <a class='btn btn-primary fs-7' href="{% url 'Gestao_Escolar:validadeHorario' turmas.0.pk %}">Nova Grade de Horários para a turma <i class="fa-solid fa-plus text-light"></i></a>                  
+                </div>
               </div>
               <table class="win11-table">
                 <thead class='bg-p-3 text-uppercase'>

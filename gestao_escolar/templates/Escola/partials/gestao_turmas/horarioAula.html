@@ -58,68 +58,77 @@
                     <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
                 {% endfor %}
             </ul>
-            {% endif %}
-           
+            {% endif %}           
             
-            <form method="post">
-              {% csrf_token %}
-              <!-- Colocando os campos de data de início e fim fora da tabela -->
-              <label>Data de Início:</label>
-              <input type="date" name="data_inicio" value="{{ data_inicio }}" required>
-              <label>Data de Fim:</label>
-              <input type="date" name="data_fim" value="{{ data_fim }}" required>
-              
-              <!-- Exibindo as mensagens de erro do formulário -->
-              {% for field in form %}
-                  {% for error in field.errors %}
-                      <div class="error">{{ error }}</div>
-                  {% endfor %}
-              {% endfor %}
-          
-              <!-- Exibindo mensagens de erro gerais -->
-              {% for error in form.non_field_errors %}
-                  <div class="error">{{ error }}</div>
-              {% endfor %}
-              
-              <table>
-                  <thead>
-                      <tr>
-                          <th>Período</th>
-                          <th>Segunda</th>
-                          <th>Terça</th>
-                          <th>Quarta</th>
-                          <th>Quinta</th>
-                          <th>Sexta</th>
-                          <th>Sábado</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      {% for form, periodo_nome in forms_periodos %}
-                          <tr>
-                              <td>
-                                  {{ periodo_nome }}
-                                  <input type="hidden" name="{{ form.prefix }}-periodo" value="{{ form.prefix }}">
-                              </td>
-                              <td>{{ form.segunda }}</td>
-                              <td>{{ form.terca }}</td>
-                              <td>{{ form.quarta }}</td>
-                              <td>{{ form.quinta }}</td>
-                              <td>{{ form.sexta }}</td>
-                              <td>{{ form.sabado }}</td>
-                          </tr>
-                      {% endfor %}
-                  </tbody>
-              </table>
-              <button type="submit">Salvar</button>
-          </form>
-          
-
-  
-
-
-           
-
-         
+            <form method="post" class="win11-form">
+                {% csrf_token %}
+                
+                <!-- Exibindo mensagens de erro gerais -->
+                {% for error in form.non_field_errors %}
+                    <div class="error">{{ error }}</div>
+                {% endfor %}
+    
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Período</th>
+                            <th>Segunda</th>
+                            <th>Terça</th>
+                            <th>Quarta</th>
+                            <th>Quinta</th>
+                            <th>Sexta</th>
+                            <th>Sábado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for form, periodo_nome in forms_periodos %}
+                            <tr>
+                                <td>
+                                    {{ periodo_nome }} {{ form.validade.errors }}
+                                    <input type="hidden" name="{{ form.prefix }}-periodo" value="{{ form.prefix }}">
+                                </td>
+                                <td>
+                                    {{ form.segunda }}
+                                    {% for error in form.segunda.errors %}
+                                        <div class="error">{{ error }}</div>
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {{ form.terca }}
+                                    {% for error in form.terca.errors %}
+                                        <div class="error">{{ error }}</div>
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {{ form.quarta }}
+                                    {% for error in form.quarta.errors %}
+                                        <div class="error">{{ error }}</div>
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {{ form.quinta }}
+                                    {% for error in form.quinta.errors %}
+                                        <div class="error">{{ error }}</div>
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {{ form.sexta }}
+                                    {% for error in form.sexta.errors %}
+                                        <div class="error">{{ error }}</div>
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {{ form.sabado }}
+                                    {% for error in form.sabado.errors %}
+                                        <div class="error">{{ error }}</div>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button type="submit">Salvar</button>
+            </form>  
         </div>
     </div>
 </div>
