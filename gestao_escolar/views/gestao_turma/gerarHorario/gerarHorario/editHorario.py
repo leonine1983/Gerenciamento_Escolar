@@ -1,3 +1,4 @@
+"""
 from django import forms
 from gestao_escolar.models import Horario
 
@@ -107,3 +108,5 @@ class HorarioUpdateCreateView(View):
                 'horarios': horarios  # Pass all Horario instances to display errors
             }
             return render(request, self.template_name, context)
+
+"""

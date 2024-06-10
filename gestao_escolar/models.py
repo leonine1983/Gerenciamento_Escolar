@@ -293,8 +293,6 @@ class Disciplina(models.Model):
                 [Disciplina(nome = nomes, ordem_historico = histor) for nomes, histor in disciplina]
             )
 
-
-
     class Meta:
         ordering = ['ordem_historico']
 
@@ -621,7 +619,61 @@ class Validade_horario(models.Model):
 
     def __str__(self):
         return (f'{self.nome_validade}: {self.data_inicio} a {self.data_fim}')
+
+class DiaSemana(models.Model):
+    nome_dia = models.CharField(max_length=10)
+    numero_dia = models.IntegerField()
+
+    @receiver(post_migrate)
+    def cria_registroDia(sender, **kwargs):
+        if not DiaSemana.objects.exists():
+            dias_da_semana = [
+                (1, 'Segunda-feira'),
+                (2, 'Terça-feira'),
+                (3, 'Quarta-feira'),
+                (4, 'Quinta-feira'),
+                (5, 'Sexta-feira'),
+                (6, 'Sábado'),
+                (7, 'Domingo')
+            ]
+            for numero_dia, nome_dia in dias_da_semana:
+                DiaSemana.objects.get_or_create(numero_dia=numero_dia, defaults={'nome_dia':nome_dia})
+    class Meta:
+        ordering = ['numero_dia']
+
+    def __str__(self):
+        return self.nome_dia
+
+class Horario(models.Model):
+    validade = models.ForeignKey(Validade_horario, null=True, related_name='horarios', on_delete=models.CASCADE)
+    turma = models.ForeignKey(Turmas, null=True, related_name='horarios', on_delete=models.CASCADE)
+    periodo = models.ForeignKey(Periodo, null=True, related_name='horarios', on_delete=models.CASCADE)
+    dia_semana = models.ForeignKey(DiaSemana, null=True, related_name='horarios', on_delete=models.CASCADE)
+    data = models.DateField(null=True, blank=True)
+    turma_disciplina = models.ForeignKey(TurmaDisciplina, related_name='horarios', null=True, blank=True, on_delete=models.SET_NULL)
+
+    class Meta:
+        ordering = ['periodo__nome_periodo']
+
+    def __str__(self):
+        return f'{self.turma} - {self.periodo} - {self.dia_semana}'
+
+class Presenca(models.Model):
+    horario = models.ForeignKey(Horario, related_name='presencas', on_delete=models.CASCADE)
+    matricula = models.ForeignKey(Matriculas, related_name='presencas', on_delete=models.CASCADE)
+    presente = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f'{self.matricula.aluno.nome_completo} - {self.horario} - {"Presente" if self.presente else "Ausente"}'
+
+class SequenciaDidatica(models.Model):
+    horario = models.ForeignKey(Horario, related_name='sequencias_didaticas', on_delete=models.CASCADE)
+    descricao = models.TextField()
+
+    def __str__(self):
+        return f'Sequência didática em {self.horario.data} - {self.horario.turma_disciplina.disciplina.nome}'
  
+"""
 
 class Horario(models.Model):
     validade = models.ForeignKey(Validade_horario,null=True, related_name='turma_Horario_related', on_delete=models.CASCADE)  
@@ -633,13 +685,12 @@ class Horario(models.Model):
     quinta = models.OneToOneField(TurmaDisciplina, related_name='quinta_prof', null=True, blank=True, on_delete=models.SET_NULL)
     sexta = models.OneToOneField(TurmaDisciplina, related_name='sexta_prof', null=True, blank=True, on_delete=models.SET_NULL)
     sabado = models.OneToOneField(TurmaDisciplina, related_name='sabado_prof', null=True, blank=True, on_delete=models.SET_NULL)     
-
-    class Meta:
-        ordering = ['periodo__nome_periodo']
+  
 
     def __str__(self):
         return f"Horario - {self.turma} - {self.periodo}"
-
+    
+"""
 
 class GestaoTurmas(models.Model):
     aluno = models.ForeignKey(Matriculas, related_name='gestao_turmas_related', null=True, on_delete=models.CASCADE)
