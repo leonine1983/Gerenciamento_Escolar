@@ -78,6 +78,38 @@
                 <button type="submit">Salvar alterações</button>
               </form>
             
+{{formset}}
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Periodo</th>
+                    {% for d in dias_semana  %}
+                    <th>{{d.nome_dia}}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for p in periodos %}
+                  <tr>
+                    <td>{{p}}
+                      <select name="form-1-periodo" id="id_form-1-periodo" style='display:none'>                        
+                        <option value="{{p.id}}" selected="">{{p}}</option>                      
+                      </select>
+                    </td>
+                    {% for d in dias_semana  %}
+                    <td>
+                      <select name="form-1-dia_semana" id="id_form-1-dia_semana" style="display: none;">
+                        <option value="{{d.id}}" selected=""></option>
+                      </select>                      
+                    </td>
+                    {% endfor %}
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
         </div>
     </div>
 </div>
+
+
