@@ -1,10 +1,7 @@
-from typing import Any, Mapping
+
 from django import forms
-from django.core.files.base import File
-from django.db.models.base import Model
-from django.forms.utils import ErrorList
 from django.views.generic import CreateView
-from gestao_escolar.models import Horario, Validade_horario, Turmas
+from gestao_escolar.models import Validade_horario, Turmas
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404, redirect
 

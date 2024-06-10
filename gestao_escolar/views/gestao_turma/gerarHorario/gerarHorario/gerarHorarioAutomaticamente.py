@@ -78,77 +78,24 @@ from django.http import JsonResponse
 from django.forms import modelform_factory
 from django.contrib import messages
 from gestao_escolar.models import Turmas, Horario, TurmaDisciplina, Periodo, DiaSemana, Validade_horario
-from ortools.sat.python import cp_model
+from django.urls import reverse
 
 def alocar_aulas(request, turma_id):
-    turma = get_object_or_404(Turmas, id=turma_id)
-    turmas_disciplinas = TurmaDisciplina.objects.filter(turma=turma)
-    periodos = Periodo.objects.all()
-    dias_semana = DiaSemana.objects.all()
-
-    if request.method == "POST":
-        form = modelform_factory(Horario, exclude=[])
-        for field in request.POST:
-            if 'turma_disciplina' in field:
-                turma_disciplina_id = request.POST[field]
-                dia_semana_id = request.POST[field.replace('turma_disciplina', 'dia_semana')]
-                periodo_id = request.POST[field.replace('turma_disciplina', 'periodo')]
-
-                turma_disciplina = get_object_or_404(TurmaDisciplina, id=turma_disciplina_id)
-                dia_semana = get_object_or_404(DiaSemana, id=dia_semana_id)
-                periodo = get_object_or_404(Periodo, id=periodo_id)
-
-                conflito = Horario.objects.filter(
-                    turma_disciplina__professor=turma_disciplina.professor,
-                    dia_semana=dia_semana,
-                    periodo=periodo
-                ).exclude(turma=turma)
-
-                if conflito.exists():
-                    messages.error(request, f'O professor {turma_disciplina.professor} já está alocado no período {periodo.nome_periodo} de {dia_semana.nome_dia} na turma {conflito.first().turma.nome}')
-                    return redirect('alocar_aulas', turma_id=turma_id)
-
-                count_dia = Horario.objects.filter(
-                    turma_disciplina=turma_disciplina,
-                    dia_semana=dia_semana
-                ).count()
-
-                count_semana = Horario.objects.filter(
-                    turma_disciplina=turma_disciplina
-                ).count()
-
-                if count_dia >= turma_disciplina.quant_aulas_dia:
-                    messages.error(request, f'O limite de aulas por dia para a disciplina {turma_disciplina.disciplina.nome} foi alcançado.')
-                    return redirect('alocar_aulas', turma_id=turma_id)
-
-                if count_semana >= turma_disciplina.quant_aulas_semana:
-                    messages.error(request, f'O limite de aulas por semana para a disciplina {turma_disciplina.disciplina.nome} foi alcançado.')
-                    return redirect('alocar_aulas', turma_id=turma_id)
-
-                Horario.objects.update_or_create(
-                    turma=turma,
-                    dia_semana=dia_semana,
-                    periodo=periodo,
-                    defaults={'turma_disciplina': turma_disciplina}
-                )
-
-        messages.success(request, 'Horários atualizados com sucesso!')
-        return redirect('alocar_aulas', turma_id=turma_id)
+    turma = get_object_or_404(Turmas, id=turma_id)    
+    gradeHorario = Horario.objects.filter(turma=turma_id)
+    gradePeriodo = Periodo.objects.all()    
     
-    # Filtragem de horários por período e dia para passar para o template
-    horarios_filtrados = {}
-    for periodo in periodos:
-        horarios_filtrados[periodo] = {}
-        for dia in dias_semana:
-            horarios_filtrados[periodo][dia] = periodo.horarios.filter(dia_semana=dia, turma=turma).first()
+    for gP in gradePeriodo:
+        if not gradeHorario.filter(periodo = gP.id):
+            Horario.objects.update_or_create(
+                periodo = Periodo.objects.get(id = gP.id), 
+                turma = turma,)
 
-    context = {
-        'conteudo_page': "Gestão Turmas - GerarHorario",
-        'turma': turma,
-        'turmas_disciplinas': turmas_disciplinas,
-        'periodos': periodos,
-        'dias_semana': dias_semana,
-        'horarios_filtrados': horarios_filtrados,  # Passando os horários filtrados para o template
-    }
-    return render(request, 'Escola/inicio.html', context)
+    return redirect(reverse('Gestao_Escolar:edit_horario', kwargs={'turma_id': turma_id}))
 
+
+
+
+
+
+   

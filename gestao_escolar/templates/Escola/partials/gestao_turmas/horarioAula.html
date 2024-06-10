@@ -15,8 +15,8 @@
             
             <div class="modal-header w-100 d-flex border-bottom border-secondary">
             <div class='d-flex justify-content-between w-100'> 
-                <div><h1><img src="{% static 'svg/grade_horario.svg' %}" alt=""> Horários do {{turma}}</h1></div>
-                <div><a class='btn btn-primary mt-3' href="{% url 'Gestao_Escolar:NotasAluno_one_create' turma.pk %}">Gestão Turmas</a></div>                
+                <div><h1><img src="{% static 'svg/grade_horario.svg' %}" alt=""> Horários do {{horarios_filtrados.0.turma}}</h1></div>
+                             
             </div>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>                
             </div>
@@ -24,13 +24,13 @@
             <table class="win11-table">
               <thead class='bg-p-3'>
                 <tr>
-                  <th>Período</th>
-                  <th>Segunda</th>
-                  <th>Terça</th>
-                  <th>Quarta</th>
-                  <th>Quinta</th>
-                  <th>Sexta</th>
-                  <th>Ações</th>
+                  <th class='text-center'>Período</th>
+                  <th class='text-center'>Segunda</th>
+                  <th class='text-center'>Terça</th>
+                  <th class='text-center'>Quarta</th>
+                  <th class='text-center'>Quinta</th>
+                  <th class='text-center'>Sexta</th>
+                  <th class='text-center'>Ações</th>
                 </tr>
               </thead>
               <tbody>
@@ -59,37 +59,24 @@
                 {% endfor %}
             </ul>
             {% endif %}           
-            
-            <h2>Turma: {{ turma.nome }}</h2>
-            <form method="POST">
-              {% csrf_token %}
-              <table>
-                <thead>
-                  <tr>
-                    <th>Período</th>
-                    {% for dia in dias_semana %}
-                      <th>{{ dia.nome_dia }}</th>
-                    {% endfor %}
-                  </tr>
-                </thead>
-                <tbody>
-              {{form}}
-                  
-          
-                  
-                </tbody>
-              </table>
-              <button type="submit">Salvar</button>
-            </form>  
+           
 
-            <form method="POST">
+
+              <h2>Atualizar Horários - Turma: {{ turma.nome }}</h2>
+              <form method="post">
                 {% csrf_token %}
-                {% for form_periodo, periodo in forms_periodos %}
-                    <h2>{{ periodo }}</h2>
-                    {{ form_periodo.as_p }}
-                {% endfor %}
-                <button type="submit">Enviar</button>
-            </form>
+                {{ formset.management_form }}
+                <table>
+                  {% for form in formset %}
+                    <tr>
+                      {% for field in form %}
+                        <td>{{ field.label_tag }} {{ field }}</td>
+                      {% endfor %}
+                    </tr>
+                  {% endfor %}
+                </table>
+                <button type="submit">Salvar alterações</button>
+              </form>
             
         </div>
     </div>
