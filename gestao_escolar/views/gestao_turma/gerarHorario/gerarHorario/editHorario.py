@@ -1,5 +1,3 @@
-
-
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import modelformset_factory
 from django.contrib import messages
@@ -22,7 +20,6 @@ class HorarioForm(forms.ModelForm):
         self.fields['turma_disciplina'].required = False
 
 
-
 def UpdateAulas(request, turma_id):
     turma = get_object_or_404(Turmas, id=turma_id)
     gradeAulas = Horario.objects.filter(turma=turma)
@@ -36,15 +33,17 @@ def UpdateAulas(request, turma_id):
             formset.save()
             messages.success(request, 'Horários atualizados com sucesso.')
             context = {
-            'turma': turma,
-            'formset': formset,
-            'turmas_disciplinas': TurmaDisciplina.objects.filter(turma=turma),
-            'horarios' : Horario.objects.filter(turma = turma_id),
-            'periodos': Periodo.objects.all(),
-            'dias_semana': DiaSemana.objects.all(),
-            'conteudo_page': "Gestão Turmas - GerarHorario"}
+                            'turma': turma,
+                            'formset': formset,
+                            'turmas_disciplinas': TurmaDisciplina.objects.filter(turma=turma),
+                            'horarios': Horario.objects.filter(turma=turma_id),
+                            'periodos': Periodo.objects.all(),
+                            'dias_semana': DiaSemana.objects.all(),
+                            'conteudo_page': "Gestão Turmas - GerarHorario"
+                        }
 
             return render(request, 'Escola/inicio.html', context)
+
         else:
             messages.error(request, 'Corrija os erros no formulário.')
     else:
@@ -54,7 +53,7 @@ def UpdateAulas(request, turma_id):
         'turma': turma,
         'formset': formset,
         'turmas_disciplinas': TurmaDisciplina.objects.filter(turma=turma),
-        'horarios' : Horario.objects.filter(turma = turma_id),
+        'horarios': Horario.objects.filter(turma=turma_id),
         'periodos': Periodo.objects.all(),
         'dias_semana': DiaSemana.objects.all(),
         'conteudo_page': "Gestão Turmas - GerarHorario"

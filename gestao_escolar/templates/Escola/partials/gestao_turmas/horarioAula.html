@@ -58,56 +58,54 @@
                     <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
                 {% endfor %}
             </ul>
-            {% endif %}           
-           
-
-
-              <h2>Atualizar Horários - Turma: {{ turma.nome }}</h2>
-              <form method="post">
-                {% csrf_token %}
-                {{ formset.management_form }}
-                <table>
-                  {% for form in formset %}
-                    <tr>
-                      {% for field in form %}
-                        <td>{{ field.label_tag }} {{ field }}</td>
-                      {% endfor %}
-                    </tr>
-                  {% endfor %}
-                </table>
-                <button type="submit">Salvar alterações</button>
-              </form>
+            {% endif %} 
             
-{{formset}}
 
+            <h2>Atualizar Horários - Turma: {{ turma.nome }}</h2>
+            <form method="post">
+              {% csrf_token %}
+              {{ formset.management_form }}
               <table>
-                <thead>
-                  <tr>
-                    <th>Periodo</th>
-                    {% for d in dias_semana  %}
-                    <th>{{d.nome_dia}}</th>
-                    {% endfor %}
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for p in periodos %}
-                  <tr>
-                    <td>{{p}}
-                      <select name="form-1-periodo" id="id_form-1-periodo" style='display:none'>                        
-                        <option value="{{p.id}}" selected="">{{p}}</option>                      
-                      </select>
-                    </td>
-                    {% for d in dias_semana  %}
-                    <td>
-                      <select name="form-1-dia_semana" id="id_form-1-dia_semana" style="display: none;">
-                        <option value="{{d.id}}" selected=""></option>
-                      </select>                      
-                    </td>
-                    {% endfor %}
-                  </tr>
-                  {% endfor %}
-                </tbody>
+                  <thead>
+                      <tr>
+                          <th>Período</th>
+                          {% for dia in dias_semana %}
+                              <th>{{ dia.nome_dia }}</th>
+                          {% endfor %}
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {% for periodo in periodos %}
+                          <tr>
+                              <td>{{ periodo.nome_periodo }}
+
+                                <select name="form-{{forloop.counter0}}-periodo" id="id_form-{{forloop.counter0}}-periodo">          
+                                  <option value="{{perido.pk}}" selected="">{{forloop.counter0}}</option>                                
+                                </select>
+                              </td>
+                              {% for dia in dias_semana %}
+                                 
+                                      {% for form in formset %}
+                                      <td>
+                                              {{ form.turma_disciplina }}
+                                              {{ form.instance.pk }}
+                                              {{ form.id }}
+                                              {{ form.non_field_errors }} 
+                                              {{ form.errors }} <!-- Adicione esta linha para depuração -->
+                                            </td>
+                                       
+                                      {% endfor %}
+                                 
+                              {% endfor %}
+                          </tr>
+                      {% endfor %}
+                  </tbody>
               </table>
+              <button type="submit">Salvar alterações</button>
+          </form>
+          
+          
+
         </div>
     </div>
 </div>
