@@ -77,7 +77,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.forms import modelform_factory
 from django.contrib import messages
-from gestao_escolar.models import Turmas, Horario, TurmaDisciplina, Periodo, DiaSemana, Validade_horario
+from gestao_escolar.models import Turmas, Horario, TurmaDisciplina, Periodo, Validade_horario
 from django.urls import reverse
 
 def alocar_aulas(request, turma_id):
@@ -87,9 +87,10 @@ def alocar_aulas(request, turma_id):
     
     for gP in gradePeriodo:
         if not gradeHorario.filter(periodo = gP.id):
-            Horario.objects.update_or_create(
-                periodo = Periodo.objects.get(id = gP.id), 
-                turma = turma,)
+                Horario.objects.update_or_create(
+                        periodo = Periodo.objects.get(id = gP.id), 
+                        turma = turma,
+                        )
 
     return redirect(reverse('Gestao_Escolar:edit_horario', kwargs={'turma_id': turma_id}))
 

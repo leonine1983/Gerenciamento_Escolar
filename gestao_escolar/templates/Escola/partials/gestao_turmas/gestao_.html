@@ -107,30 +107,29 @@
               <table class="win11-table">
                 <thead class='bg-p-3 text-uppercase'>
                   <tr>
-                    <th>Período</th>
-                    <th>Segunda</th>
-                    <th>Terça</th>
-                    <th>Quarta</th>
-                    <th>Quinta</th>
-                    <th>Sexta</th>
-                    <th>Ações</th>
+                    <th class='text-center'>Período</th>
+                    <th class='text-center'>Segunda</th>
+                    <th class='text-center'>Terça</th>
+                    <th class='text-center'>Quarta</th>
+                    <th class='text-center'>Quinta</th>
+                    <th class='text-center'>Sexta</th>
+                    <th class='text-center'>Sábado</th>
+                    <th class='text-center'>Ação</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% for horario in horarios %}
+                  {% for horario in horarios %}                  
                   <tr>
-                    <td>{{ horario.periodo }}</td>
-                    <td>{{ horario.segunda }}</td>
-                    <td>{{ horario.terca }}</td>
-                    <td>{{ horario.quarta }}</td>
-                    <td>{{ horario.quinta }}</td>
-                    <td>{{ horario.sexta }}</td>
-                    <td>
-                      <!-- <a href="" class="btn btn-warning btn-sm">Editar</a>
-                    Adicione um botão de excluir se necessário -->
-                    </td>
+                    <td class='text-center'>{{ horario.periodo }}</td>
+                    <td class='text-center'>{{ horario.segunda}}</td>
+                    <td class='text-center'>{{ horario.terca}}</td>
+                    <td class='text-center'>{{ horario.quarta}}</td>
+                    <td class='text-center'>{{ horario.quinta}}</td>
+                    <td class='text-center'>{{ horario.sexta}}</td>
+                    <td class='text-center'>{{ horario.sabado}}</td>
+                    <td class='text-center'>Editar</td>
                   </tr>
-                  {% endfor %}
+                {% endfor %}
                 </tbody>
               </table>
             </li>          

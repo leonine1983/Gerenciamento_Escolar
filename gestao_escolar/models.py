@@ -643,7 +643,7 @@ class DiaSemana(models.Model):
 
     def __str__(self):
         return self.nome_dia
-
+"""
 class Horario(models.Model):
     validade = models.ForeignKey(Validade_horario, null=True, related_name='horarios', on_delete=models.CASCADE)
     turma = models.ForeignKey(Turmas, null=True, related_name='horarios', on_delete=models.CASCADE)
@@ -657,6 +657,22 @@ class Horario(models.Model):
 
     def __str__(self):
         return f'{self.turma} - {self.periodo} - {self.dia_semana}'
+"""
+class Horario(models.Model):
+    validade = models.ForeignKey(Validade_horario,null=True, related_name='turma_Horario_related', on_delete=models.CASCADE)  
+    turma = models.ForeignKey(Turmas,null=True, related_name='turma_Horario_related', on_delete=models.CASCADE)  
+    periodo = models.ForeignKey(Periodo, null=True,related_name='periodo_Horario_related', on_delete=models.CASCADE)       
+    segunda = models.OneToOneField(TurmaDisciplina, related_name='segunda_prof', null=True, blank=True, on_delete=models.SET_NULL)
+    terca = models.OneToOneField(TurmaDisciplina, related_name='terca_prof', null=True, blank=True, on_delete=models.SET_NULL)
+    quarta = models.OneToOneField(TurmaDisciplina, related_name='quarta_prof', null=True, blank=True, on_delete=models.SET_NULL)
+    quinta = models.OneToOneField(TurmaDisciplina, related_name='quinta_prof', null=True, blank=True, on_delete=models.SET_NULL)
+    sexta = models.OneToOneField(TurmaDisciplina, related_name='sexta_prof', null=True, blank=True, on_delete=models.SET_NULL)
+    sabado = models.OneToOneField(TurmaDisciplina, related_name='sabado_prof', null=True, blank=True, on_delete=models.SET_NULL)     
+  
+
+    def __str__(self):
+        return f"Horario - {self.turma} - {self.periodo}"
+    
 
 class Presenca(models.Model):
     horario = models.ForeignKey(Horario, related_name='presencas', on_delete=models.CASCADE)
@@ -675,21 +691,7 @@ class SequenciaDidatica(models.Model):
  
 """
 
-class Horario(models.Model):
-    validade = models.ForeignKey(Validade_horario,null=True, related_name='turma_Horario_related', on_delete=models.CASCADE)  
-    turma = models.ForeignKey(Turmas,null=True, related_name='turma_Horario_related', on_delete=models.CASCADE)  
-    periodo = models.ForeignKey(Periodo, null=True,related_name='periodo_Horario_related', on_delete=models.CASCADE)       
-    segunda = models.OneToOneField(TurmaDisciplina, related_name='segunda_prof', null=True, blank=True, on_delete=models.SET_NULL)
-    terca = models.OneToOneField(TurmaDisciplina, related_name='terca_prof', null=True, blank=True, on_delete=models.SET_NULL)
-    quarta = models.OneToOneField(TurmaDisciplina, related_name='quarta_prof', null=True, blank=True, on_delete=models.SET_NULL)
-    quinta = models.OneToOneField(TurmaDisciplina, related_name='quinta_prof', null=True, blank=True, on_delete=models.SET_NULL)
-    sexta = models.OneToOneField(TurmaDisciplina, related_name='sexta_prof', null=True, blank=True, on_delete=models.SET_NULL)
-    sabado = models.OneToOneField(TurmaDisciplina, related_name='sabado_prof', null=True, blank=True, on_delete=models.SET_NULL)     
-  
 
-    def __str__(self):
-        return f"Horario - {self.turma} - {self.periodo}"
-    
 """
 
 class GestaoTurmas(models.Model):
