@@ -14,5 +14,4 @@ def visualizaHorarioTuram(request, turma_id):
         'conteudo_page': "Gestão Turmas - GerarHorario"
          }
 
-
     return render(request, 'Escola/inicio.html', context)

@@ -1,28 +1,15 @@
-"""from typing import Any
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import modelformset_factory
 from django.contrib import messages
-from gestao_escolar.models import Turmas, Horario, TurmaDisciplina, Periodo
 from django.views.generic import UpdateView
 from django.urls import reverse_lazy
-
 from django import forms
-from gestao_escolar.models import Horario
-
+from gestao_escolar.models import Turmas, Horario, TurmaDisciplina, Periodo
 
 class HorarioForm(forms.ModelForm):
     class Meta:
         model = Horario
-        fields = ['turma_disciplina']
-    
-    def __init__(self, *args, **kwargs):
-        super(HorarioForm, self).__init__(*args, **kwargs)
-        # Torne os campos não obrigatórios
-        #self.fields['periodo'].required = False
-        self.fields['turma_disciplina'].required = False
-
-
-from django.urls import reverse_lazy
+        fields = ['segunda', 'terca', 'quarta', 'quinta', 'sexta']
 
 class HorarioUpdateView(UpdateView):
     model = Horario
@@ -47,45 +34,62 @@ class HorarioUpdateView(UpdateView):
         })
         return context
 
-def UpdateAulas(request, turma_id):
-    turma = get_object_or_404(Turmas, id=turma_id)
-    gradeAulas = Horario.objects.filter(turma=turma)
+    def form_valid(self, form):
+        horario = form.instance
+        turma_id = self.kwargs['turma_id']
+        periodo = horario.periodo
 
-    # Criar um formset usando o formulário personalizado HorarioForm, sem a opção de deletar
-    HorarioFormSet = modelformset_factory(Horario, form=HorarioForm, extra=1)
-    
-    if request.method == 'POST':
-        formset = HorarioFormSet(request.POST, queryset=gradeAulas)
-        if formset.is_valid():
-            formset.save()
-            messages.success(request, 'Horários atualizados com sucesso.')
-            context = {
-                            'turma': turma,
-                            'formset': formset,
-                            'turmas_disciplinas': TurmaDisciplina.objects.filter(turma=turma),
-                            'horarios': Horario.objects.filter(turma=turma_id),
-                            'periodos': Periodo.objects.all(),
-                            'dias_semana': DiaSemana.objects.all(),
-                            'conteudo_page': "Gestão Turmas - GerarHorario"
-                        }
+        dias_semana = ['segunda', 'terca', 'quarta', 'quinta', 'sexta']
+        errors = []
+        """"""
+        # Verificação de duplicação no mesmo período para diferentes turmas
+        for dia in dias_semana:
+            turma_disciplina = getattr(horario, dia)
+            if turma_disciplina:
+                # Verifica se a mesma instância de TurmaDisciplina está sendo usada no mesmo período em outra turma
+                if Horario.objects.filter(
+                    **{dia: turma_disciplina},
+                    periodo=periodo
+                ).exclude(turma=horario.turma).exists():
+                    outra_turma = Horario.objects.filter(
+                        **{dia: turma_disciplina},
+                        periodo=periodo
+                    ).exclude(turma=horario.turma).first().turma
+                    errors.append(
+                        f'A instância {turma_disciplina} já está vinculada na turma {outra_turma} para este mesmo período em {dia}.'
+                    )
 
-            return render(request, 'Escola/inicio.html', context)
+        # Verificação de limites de aulas por dia e por semana
+        for dia in dias_semana:
+            turma_disciplina = getattr(horario, dia)
+            if turma_disciplina:
+                # Verificação do limite diário
+                total_aulas_dia = Horario.objects.filter(
+                    **{dia: turma_disciplina},
+                    turma=horario.turma
+                ).count()
+                if total_aulas_dia >= turma_disciplina.quant_aulas_dia:
+                    errors.append(
+                        f'O limite diário de {turma_disciplina.quant_aulas_dia} aulas para {turma_disciplina} em {dia} foi atingido.'
+                    )
 
-        else:
-            messages.error(request, 'Corrija os erros no formulário.')
-    else:
-        formset = HorarioFormSet(queryset=gradeAulas)
+                # Verificação do limite semanal
+                total_aulas_semana = sum(
+                    Horario.objects.filter(
+                        **{d: turma_disciplina},
+                        turma=horario.turma
+                    ).count() for d in dias_semana
+                )
+                if total_aulas_semana >= turma_disciplina.quant_aulas_semana:
+                    errors.append(
+                        f'O limite semanal de {turma_disciplina.quant_aulas_semana} aulas para {turma_disciplina} foi atingido.'
+                    )
 
-    context = {
-        'turma': turma,
-        'formset': formset,
-        'turmas_disciplinas': TurmaDisciplina.objects.filter(turma=turma),
-        'horarios': Horario.objects.filter(turma=turma_id),
-        'periodos': Periodo.objects.all(),
-        'dias_semana': DiaSemana.objects.all(),
-        'conteudo_page': "Gestão Turmas - GerarHorario"
-    }
-
-    return render(request, 'Escola/inicio.html', context)
-
-"""
+        # Se houver erros, adiciona as mensagens de erro e retorna o formulário inválido
+        if errors:
+            for error in errors:
+                messages.error(self.request, error)
+            return self.form_invalid(form)
+        
+        # Se não houver erros, processa o formulário normalmente
+        return super().form_valid(form)
