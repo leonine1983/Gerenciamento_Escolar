@@ -30,83 +30,33 @@
                   <th class='text-center'>Quarta</th>
                   <th class='text-center'>Quinta</th>
                   <th class='text-center'>Sexta</th>
-                  <th class='text-center'>Ações</th>
+                  <th class='text-center'>Sábado</th>
+                  <th class='text-center'>Ação</th>
+
                 </tr>
               </thead>
               <tbody>
-                {% for horario in horarios %}
-                <tr>
-                  <td>{{ horario.periodo }}</td>
-                  <td>{{ horario.segunda }}</td>
-                  <td>{{ horario.terca }}</td>
-                  <td>{{ horario.quarta }}</td>
-                  <td>{{ horario.quinta }}</td>
-                  <td>{{ horario.sexta }}</td>
-                  <td>
-                    <!-- <a href="" class="btn btn-warning btn-sm">Editar</a>
-                  Adicione um botão de excluir se necessário -->
-                  </td>
-                </tr>
+                {% for horario in horarios %}                  
+                  <tr>
+                    <td class='text-center'>{{ horario.periodo }}</td>
+                    <td class='text-center'>{{ horario.segunda}}</td>
+                    <td class='text-center'>{{ horario.terca}}</td>
+                    <td class='text-center'>{{ horario.quarta}}</td>
+                    <td class='text-center'>{{ horario.quinta}}</td>
+                    <td class='text-center'>{{ horario.sexta}}</td>
+                    <td class='text-center'>{{ horario.sabado}}</td>
+                    <td class='text-center'>Editar</td>
+                  </tr>
                 {% endfor %}
               </tbody>
             </table>
-            
-            <h2 class="mt-5">{% if form.instance.pk %}Editar Horário{% else %}Criar Horário {{object}}{% endif %}</h2> 
-            {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %} 
-            
-
-            <h2>Atualizar Horários - Turma: {{ turma.nome }}</h2>
-            <form method="post">
+            {% if form %}
+            <form action="" method="post" class="win11-form">
               {% csrf_token %}
-              {{ formset.management_form }}
-              <table>
-                  <thead>
-                      <tr>
-                          <th>Período</th>
-                          {% for dia in dias_semana %}
-                              <th>{{ dia.nome_dia }}</th>
-                          {% endfor %}
-                      </tr>
-                  </thead>
-                  <tbody>
-                      {% for periodo in periodos %}
-                          <tr>
-                              <td>{{ periodo.nome_periodo }}
-
-                                <select name="form-{{forloop.counter0}}-periodo" id="id_form-{{forloop.counter0}}-periodo">          
-                                  <option value="{{perido.pk}}" selected="">{{forloop.counter0}}</option>                                
-                                </select>
-                              </td>
-                              {% for dia in dias_semana %}
-                                 
-                                      {% for form in formset %}
-                                      <td>
-                                              {{ form.turma_disciplina }}
-                                              {{ form.instance.pk }}
-                                              {{ form.id }}
-                                              {{ form.non_field_errors }} 
-                                              {{ form.errors }} <!-- Adicione esta linha para depuração -->
-                                            </td>
-                                       
-                                      {% endfor %}
-                                 
-                              {% endfor %}
-                          </tr>
-                      {% endfor %}
-                  </tbody>
-              </table>
-              <button type="submit">Salvar alterações</button>
-          </form>
-          
-          
-
-        </div>
+              {{form.as_div}}
+              <button type="submit">Atualizar Horário</button>
+            </form>
+            {% endif %}         
     </div>
 </div>
 

@@ -1,7 +1,10 @@
+"""from typing import Any
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import modelformset_factory
 from django.contrib import messages
-from gestao_escolar.models import Turmas, Horario, TurmaDisciplina, Periodo, DiaSemana
+from gestao_escolar.models import Turmas, Horario, TurmaDisciplina, Periodo
+from django.views.generic import UpdateView
+from django.urls import reverse_lazy
 
 from django import forms
 from gestao_escolar.models import Horario
@@ -10,15 +13,39 @@ from gestao_escolar.models import Horario
 class HorarioForm(forms.ModelForm):
     class Meta:
         model = Horario
-        fields = ['periodo', 'dia_semana', 'turma_disciplina']
+        fields = ['turma_disciplina']
     
     def __init__(self, *args, **kwargs):
         super(HorarioForm, self).__init__(*args, **kwargs)
         # Torne os campos não obrigatórios
-        self.fields['periodo'].required = False
-        self.fields['dia_semana'].required = False
+        #self.fields['periodo'].required = False
         self.fields['turma_disciplina'].required = False
 
+
+from django.urls import reverse_lazy
+
+class HorarioUpdateView(UpdateView):
+    model = Horario
+    form_class = HorarioForm
+    template_name = 'Escola/inicio.html'
+
+    def get_object(self, queryset=None):
+        horario_id = self.kwargs['pk']
+        turma_id = self.kwargs['turma_id']
+        return get_object_or_404(Horario, id=horario_id, turma_id=turma_id)
+    
+    def get_success_url(self):
+        return reverse_lazy('Gestao_Escolar:edit_horario', kwargs={'turma_id': self.kwargs['turma_id']})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = self.get_form()
+        context.update({
+            'horarios': Horario.objects.filter(turma=self.kwargs['turma_id']),
+            'periodos': Periodo.objects.all(),
+            'conteudo_page': "Gestão Turmas - GerarHorario"
+        })
+        return context
 
 def UpdateAulas(request, turma_id):
     turma = get_object_or_404(Turmas, id=turma_id)
@@ -60,3 +87,5 @@ def UpdateAulas(request, turma_id):
     }
 
     return render(request, 'Escola/inicio.html', context)
+
+"""
