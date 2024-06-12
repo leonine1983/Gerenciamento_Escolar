@@ -61,7 +61,10 @@
       <span class="material-symbols-outlined txt-p"> <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M476-280q21 0 35.5-14.5T526-330q0-21-14.5-35.5T476-380q-21 0-35.5 14.5T426-330q0 21 14.5 35.5T476-280Zm-36-154h74q0-17 1.5-29t6.5-23q5-11 12.5-20.5T556-530q35-35 49.5-58.5T620-642q0-53-36-85.5T487-760q-55 0-93.5 27T340-658l66 26q7-27 28-43.5t49-16.5q27 0 45 14.5t18 38.5q0 17-11 36t-37 42q-17 14-27.5 27.5T453-505q-7 15-10 31.5t-3 39.5Zm40 394L360-160H200q-33 0-56.5-23.5T120-240v-560q0-33 23.5-56.5T200-880h560q33 0 56.5 23.5T840-800v560q0 33-23.5 56.5T760-160H600L480-40ZM200-240h192l88 88 88-88h192v-560H200v560Zm280-280Z"/></svg></span>     
       <div class="dropdown txt-p">
         <div class="button material-symbols-outlined"><a href="">apps</a></div>
-        <div class="menu_google bg-p-2">
+
+
+
+        <div class="menu_google shadow bg-p-5 ">
           <div class="button">
             <a href="#" class="d-block  text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
               <img src="{% if user.foto is not None %}{% static user.foto %}{% else %}{% static 'man.png' %}{% endif %}" alt="mdo" width="32" height="32" class="rounded-circle">     
@@ -74,7 +77,7 @@
           </div>
           <div class="button">  
             <a href="{% url 'admin_acessos:painel_acesso' %}">
-            <span style="background-position: 0 -1794px"></span>
+              <img src="{% static 'svg/grade_horario.svg' %}" alt="mdo" width="32" class="rounded-circle">     
             <span>
                Área de Acessos
             </span>  
@@ -82,8 +85,8 @@
           </div>
           <div class="button">
             <a href="">
-              <span style="background-position: 0 -3174px"></span>
-              <span>YouTube</span>
+              <img src="{% static 'svg/grade_horario.svg' %}" alt="mdo" width="50" class="rounded-circle">     
+              <span>Horários</span>
             </a>
           </div>
           <div class="button">
