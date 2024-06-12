@@ -86,11 +86,17 @@ def alocar_aulas(request, turma_id):
     gradePeriodo = Periodo.objects.all()    
     
     for gP in gradePeriodo:
-        if not gradeHorario.filter(periodo = gP.id):
-                Horario.objects.update_or_create(
-                        periodo = Periodo.objects.get(id = gP.id), 
-                        turma = turma,
-                        )
+        if Validade_horario.objects.exists():
+            if not gradeHorario.filter(periodo = gP.id):  
+                    valida = Validade_horario.objects.get(horario_ativo = True).id             
+                    Horario.objects.update_or_create(
+                            validade = Validade_horario.objects.get(id = valida ),
+                            periodo = Periodo.objects.get(id = gP.id), 
+                            turma = turma,
+                            )
+        else:
+                messages.error(request, "🔔 Você ainda não criou o período de vigência.")
+                return redirect(reverse('Gestao_Escolar:validadeHorario', kwargs={'turma_id': turma_id}))
 
     return redirect(reverse('Gestao_Escolar:edit_horario', kwargs={'turma_id': turma_id}))
 

@@ -50,8 +50,14 @@
               </tbody>
             </table>
             {% if form %}
-            <form action="" method="post" >
+            <form action="" method="post" class="win11-form" >
+              <div class='p-1 mt-3'> 
+                <h4 class="text-uppercase">{{object.validade.nome_validade}}</h4>
+                <h5 class="h5 fs-7"><span class="fs-8">VALIDADE:</span> {{object.validade.data_inicio}} a {{object.validade.data_fim}} </h5>
+                <h6><span class="fs-8">PERÍODO EM EDIÇÃO:</span> <span class="text-danger">{{object.periodo.nome_periodo}} - {{object.periodo}}</span></h6>                
+              </div>
               <div class="win11-form w-100 d-flex gap-2">
+                
                 {% csrf_token %}
                 {{form.as_div}}
               </div>

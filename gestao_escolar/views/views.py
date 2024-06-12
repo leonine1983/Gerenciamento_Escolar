@@ -7,53 +7,47 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
 
-
-def exibir_registros(request):
-    anos_letivos = AnoLetivo.objects.all()
-    profissionais = Profissionais.objects.all()
-    escolas = Escola.objects.all()
-    alunos = Alunos.objects.all()
-    turmas = Turmas.objects.all()
-    disciplinas = Disciplina.objects.all()
-    matriculas = Matriculas.objects.all()
-    atividades = Atividade.objects.all()
-    perguntas_abertas = PerguntasAbertas.objects.all()
-    perguntas_multipla_escolha = PerguntasMultiplaEscolha.objects.all()
-    opcoes_multipla_escolha = OpcaoMultiplaEscolha.objects.all()
-    perguntas_objetivas = PerguntaObjetiva.objects.all()
-    notas = Notas.objects.all()
-    trimestres = Trimestre.objects.all()
-    atividades_reutilizadas = AtividadeReutilizada.objects.all()
-
-    return render(request, 'Turmas/inicio.html', {
-        'anos_letivos': anos_letivos,
-        'profissionais': profissionais,
-        'escolas': escolas,
-        'alunos': alunos,
-        'turmas': turmas,
-        'disciplinas': disciplinas,
-        'matriculas': matriculas,
-        'atividades': atividades,
-        'perguntas_abertas': perguntas_abertas,
-        'perguntas_multipla_escolha': perguntas_multipla_escolha,
-        'opcoes_multipla_escolha': opcoes_multipla_escolha,
-        'perguntas_objetivas': perguntas_objetivas,
-        'notas': notas,
-        'trimestres': trimestres,
-        'atividades_reutilizadas': atividades_reutilizadas,
-        'condicional_aluno' : Alunos.objects.all(),
-        'condicional_professor' : 'Alunos.objects.all()'
-    })
-
-
 class Pagina_inicio(LoginRequiredMixin, TemplateView):
     model = Escola
     template_name = 'Escola/inicio.html'
 
     def get(self, request, *args, **kwargs):
-        if 'escola_id' in request.session:
-            # Se a sessão é verdadeira, continue normalmente
-            return super().get(request, *args, **kwargs)
+        if 'escola_id' in request.session:      
+                if not Periodo.objects.exists():            
+                    sessao = self.request.session['escola_id']
+                    Periodo.objects.create(
+                        escola = Escola.objects.get(id = sessao),
+                        nome_periodo="1º Periodo",
+                        hora_inicio=timezone.datetime.strptime('08:00', '%H:%M').time(),
+                        hora_fim=timezone.datetime.strptime('08:45', '%H:%M').time()
+                    )
+                    Periodo.objects.create(
+                        escola = Escola.objects.get(id = sessao),
+                        nome_periodo="2º Período",
+                        hora_inicio=timezone.datetime.strptime('08:45', '%H:%M').time(),
+                        hora_fim=timezone.datetime.strptime('09:50', '%H:%M').time()
+                    )
+                    
+                    Periodo.objects.create(
+                        escola = Escola.objects.get(id = sessao),
+                        nome_periodo="3º Período",
+                        hora_inicio=timezone.datetime.strptime('09:50', '%H:%M').time(),
+                        hora_fim=timezone.datetime.strptime('10:15', '%H:%M').time()
+                    )
+                    Periodo.objects.create(
+                        escola = Escola.objects.get(id = sessao),
+                        nome_periodo="4º Período",
+                        hora_inicio=timezone.datetime.strptime('10:30', '%H:%M').time(),
+                        hora_fim=timezone.datetime.strptime('11:15', '%H:%M').time()
+                    )
+                    
+                    Periodo.objects.create(
+                        escola = Escola.objects.get(id = sessao),
+                        nome_periodo="5º Período",
+                        hora_inicio=timezone.datetime.strptime('11:15', '%H:%M').time(),
+                        hora_fim=timezone.datetime.strptime('12:00', '%H:%M').time()
+                    )            
+                return super().get(request, *args, **kwargs)
         else:
             # Se a sessão é falsa, redirecione para a página desejada
             return redirect('Gestao_Escolar:GE_inicio')

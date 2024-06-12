@@ -1,7 +1,7 @@
 
 from django import forms
 from django.views.generic import CreateView
-from gestao_escolar.models import Validade_horario, Turmas
+from gestao_escolar.models import Validade_horario, Turmas, Escola
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404, redirect
 
@@ -38,6 +38,7 @@ class HorarioCriaForm(forms.ModelForm):
         self.fields['turma'].queryset = queryset_turma
         if initial_turma:
             self.fields['turma'].initial = initial_turma
+            self.fields['horario_ativo'].required = True
 
     def clean(self):
         cleaned_data = super().clean()
@@ -79,6 +80,9 @@ class CriaValidadeHorario(CreateView):
         if form.cleaned_data['horario_ativo']:
             Validade_horario.objects.filter(turma=turma, horario_ativo=True).update(horario_ativo=False)
         
+        sessio = self.request.session['escola_id']
+        id_escola = Escola.objects.get(id = sessio).id
+        form.instance.escola = Escola.objects.get(id = id_escola)
         messages.success(self.request, "O período de validade foi criado com sucesso. Você acaba de ser redirecionado para a criação do horário das turmas.")
         return super().form_valid(form)
 

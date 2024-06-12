@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
-from django.db.models.signals import post_migrate
+from django.db.models.signals import post_migrate, post_save
 from django.dispatch import receiver
 from rh.models import Ano, Encaminhamentos, Escola, Uf_Unidade_Federativa, Sexo
 from ckeditor_uploader.fields import RichTextUploadingField
@@ -561,40 +561,11 @@ class Trimestre(models.Model):
     
 
 class Periodo(models.Model):
+    escola = models.ForeignKey(Escola, on_delete=models.CASCADE, null=True)
     nome_periodo = models.CharField(max_length=30, null=True)
     hora_inicio = models.TimeField(null=True)
     hora_fim = models.TimeField(null=True)
 
-    @receiver(post_migrate)
-    def cria_registro (sender, **kwargs):
-        if not Periodo.objects.exists():
-            Periodo.objects.create(
-                nome_periodo="1º Periodo",
-                hora_inicio=timezone.datetime.strptime('08:00', '%H:%M').time(),
-                hora_fim=timezone.datetime.strptime('08:45', '%H:%M').time()
-            )
-            Periodo.objects.create(
-            nome_periodo="2º Período",
-            hora_inicio=timezone.datetime.strptime('08:45', '%H:%M').time(),
-            hora_fim=timezone.datetime.strptime('09:50', '%H:%M').time()
-             )
-            
-            Periodo.objects.create(
-            nome_periodo="3º Período",
-            hora_inicio=timezone.datetime.strptime('09:50', '%H:%M').time(),
-            hora_fim=timezone.datetime.strptime('10:15', '%H:%M').time()
-             )
-            Periodo.objects.create(
-            nome_periodo="4º Período",
-            hora_inicio=timezone.datetime.strptime('10:30', '%H:%M').time(),
-            hora_fim=timezone.datetime.strptime('11:15', '%H:%M').time()
-             )
-            
-            Periodo.objects.create(
-            nome_periodo="5º Período",
-            hora_inicio=timezone.datetime.strptime('11:15', '%H:%M').time(),
-            hora_fim=timezone.datetime.strptime('12:00', '%H:%M').time()
-             )
     def __str__(self):
         return f'{self.hora_inicio} - {self.hora_fim}'
     
@@ -609,10 +580,11 @@ class Periodo(models.Model):
         return self.hora_inicio < other.hora_inicio
 
 class Validade_horario(models.Model):    
+    escola = models.ForeignKey(Escola, related_name='escola_validade_related', on_delete=models.CASCADE, null=True)
     turma = models.ForeignKey(Turmas,null=True, related_name='turma_Validade_related', on_delete=models.CASCADE)  
     nome_validade = models.CharField(max_length=30)
     data_inicio = models.DateField(null=True)
-    data_fim = models.DateTimeField(null=True)     
+    data_fim = models.DateField(null=True)     
     horario_ativo = models.BooleanField(default=False)
 
 

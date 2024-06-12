@@ -70,7 +70,11 @@ class HorarioUpdateView(UpdateView):
                 ).count()
                 if total_aulas_dia >= turma_disciplina.quant_aulas_dia:
                     errors.append(
-                        f'O limite diário de {turma_disciplina.quant_aulas_dia} aulas para {turma_disciplina} em {dia} foi atingido.'
+                        f'O limite diário de {turma_disciplina.quant_aulas_dia}\
+                              aulas para {turma_disciplina.disciplina.nome.upper()}\
+                                  com o professor {turma_disciplina.professor.nome.encaminhamento.contratado.nome.upper()}\
+                                      em {dia} foi atingido. Se precisar acrescentar mais aulas para esse professor, \
+                                        vá em GRADES DE DISCIPLINAS e aumente a quantidade de "Aulas Dia" dessa disciplina com esse professor.'
                     )
 
                 # Verificação do limite semanal
@@ -82,8 +86,11 @@ class HorarioUpdateView(UpdateView):
                 )
                 if total_aulas_semana >= turma_disciplina.quant_aulas_semana:
                     errors.append(
-                        f'O limite semanal de {turma_disciplina.quant_aulas_semana} aulas para {turma_disciplina} foi atingido.'
-                    )
+                        f'O limite semanal de {turma_disciplina.quant_aulas_semana} aulas para {turma_disciplina.disciplina.nome.upper()}\
+                              com o professor {turma_disciplina.professor.nome.encaminhamento.contratado.nome.upper()} foi atingido.\
+                                Se precisar acrescentar mais aulas para esse professor, \
+                                        vá em GRADES DE DISCIPLINAS e aumente a quantidade de "Aulas por Semana" dessa disciplina com esse professor.'
+                    )                
 
         # Se houver erros, adiciona as mensagens de erro e retorna o formulário inválido
         if errors:
@@ -92,4 +99,5 @@ class HorarioUpdateView(UpdateView):
             return self.form_invalid(form)
         
         # Se não houver erros, processa o formulário normalmente
+        messages.success(self.request, '✅ Período de aula atualizado com sucesso!')
         return super().form_valid(form)
