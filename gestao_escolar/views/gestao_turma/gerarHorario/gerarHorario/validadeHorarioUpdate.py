@@ -1,12 +1,12 @@
 
 from django import forms
-from django.views.generic import CreateView
+from django.views.generic import UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from gestao_escolar.models import Validade_horario, Turmas, Escola
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
 from django.contrib import messages
-from django.utils.html import format_html
 
 
 class HorarioCriaForm(forms.ModelForm):
@@ -37,7 +37,7 @@ class HorarioCriaForm(forms.ModelForm):
         return cleaned_data
 
 
-class CriaValidadeHorario(CreateView):
+class CriaValidadeHorarioUpdate( LoginRequiredMixin, UpdateView):
     model = Validade_horario
     form_class = HorarioCriaForm
     template_name = 'Escola/inicio.html'
@@ -60,19 +60,9 @@ class CriaValidadeHorario(CreateView):
         turma = form.cleaned_data['turma']
         horarios_vigentes = Validade_horario.objects.filter(turma=turma, data_fim__gte=data_inicio, data_inicio__lte=data_fim)
 
-       
         if horarios_vigentes.exists():
-            # Cria a mensagem com o link
-            ultimo_horario = Validade_horario.objects.latest('id')
-            mensagem = format_html(
-                'Já existe um horário vigente no período especificado. Se desejar adicionar um novo horário para esta data, é necessário reduzir o período de vigência do horário existente. <a href="{}">Clique aqui para ajustar o horário existente</a>.',                
-                reverse('Gestao_Escolar:validadeHorarioUpdate', kwargs={'pk': ultimo_horario.id})
-            )
-        
-            # Adiciona a mensagem ao formulário
+            mensagem = "Já existe um horário vigente no período especificado. Se desejar adicionar um novo horário para esta data, é necessário reduzir o período de vigência do horário existente."
             form._errors.setdefault(forms.forms.NON_FIELD_ERRORS, forms.utils.ErrorList()).append(mensagem)
-            
-            # Retorna o formulário inválido
             return self.form_invalid(form)
         
         if form.cleaned_data['horario_ativo']:

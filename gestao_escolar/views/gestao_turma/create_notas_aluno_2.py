@@ -14,20 +14,6 @@ class Create_Notas_pk(LoginRequiredMixin, CreateView):
     template_name = 'Escola/inicio.html'
     success_url = reverse_lazy('Gestao_Escolar:GE_Escola_inicio')
 
-    """
-    def get_queryset(self):
-        buscar_turma = self.request.GET.get ('busca-turma')
-        if buscar_turma:
-            turmas = TurmaDisciplina.objects.filter(
-                                Q(discipina__nome__icontains = buscar_turma)
-                                and Q(turma__ano_letivo = self.request.session("anoLetivo_id")) 
-                                and Q(turma = self.kwargs['pk']))
-        else:
-            turmas = TurmaDisciplina.objects.filter(turma = self.kwargs['pk'])
-
-        return turmas
-    """
-
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['aluno_query'] = Matriculas.objects.filter(turma = self.kwargs['pk'])

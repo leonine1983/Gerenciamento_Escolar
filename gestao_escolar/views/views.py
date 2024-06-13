@@ -12,41 +12,7 @@ class Pagina_inicio(LoginRequiredMixin, TemplateView):
     template_name = 'Escola/inicio.html'
 
     def get(self, request, *args, **kwargs):
-        if 'escola_id' in request.session:      
-                if not Periodo.objects.exists():            
-                    sessao = self.request.session['escola_id']
-                    Periodo.objects.create(
-                        escola = Escola.objects.get(id = sessao),
-                        nome_periodo="1º Periodo",
-                        hora_inicio=timezone.datetime.strptime('08:00', '%H:%M').time(),
-                        hora_fim=timezone.datetime.strptime('08:45', '%H:%M').time()
-                    )
-                    Periodo.objects.create(
-                        escola = Escola.objects.get(id = sessao),
-                        nome_periodo="2º Período",
-                        hora_inicio=timezone.datetime.strptime('08:45', '%H:%M').time(),
-                        hora_fim=timezone.datetime.strptime('09:50', '%H:%M').time()
-                    )
-                    
-                    Periodo.objects.create(
-                        escola = Escola.objects.get(id = sessao),
-                        nome_periodo="3º Período",
-                        hora_inicio=timezone.datetime.strptime('09:50', '%H:%M').time(),
-                        hora_fim=timezone.datetime.strptime('10:15', '%H:%M').time()
-                    )
-                    Periodo.objects.create(
-                        escola = Escola.objects.get(id = sessao),
-                        nome_periodo="4º Período",
-                        hora_inicio=timezone.datetime.strptime('10:30', '%H:%M').time(),
-                        hora_fim=timezone.datetime.strptime('11:15', '%H:%M').time()
-                    )
-                    
-                    Periodo.objects.create(
-                        escola = Escola.objects.get(id = sessao),
-                        nome_periodo="5º Período",
-                        hora_inicio=timezone.datetime.strptime('11:15', '%H:%M').time(),
-                        hora_fim=timezone.datetime.strptime('12:00', '%H:%M').time()
-                    )            
+        if 'escola_id' in request.session: 
                 return super().get(request, *args, **kwargs)
         else:
             # Se a sessão é falsa, redirecione para a página desejada

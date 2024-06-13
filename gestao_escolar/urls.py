@@ -90,6 +90,7 @@ urlpatterns = [
     # GErar horario
 
     path('horario/validade/<int:turma_id>/', CriaValidadeHorario.as_view(), name='validadeHorario'),
+    path('horario/validade/update/<int:pk>/', CriaValidadeHorarioUpdate.as_view(), name='validadeHorarioUpdate'),
     path('horario/add/<int:turma_id>/', alocar_aulas, name='criar_horario'),
     path('horario/edit/<int:turma_id>/', visualizaHorarioTuram, name='edit_horario'),
     path('horario/<int:pk>/turma/<int:turma_id>/update/', HorarioUpdateView.as_view(), name='horario_update'),

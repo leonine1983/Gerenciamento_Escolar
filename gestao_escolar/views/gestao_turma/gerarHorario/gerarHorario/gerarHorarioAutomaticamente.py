@@ -77,13 +77,54 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.forms import modelform_factory
 from django.contrib import messages
-from gestao_escolar.models import Turmas, Horario, TurmaDisciplina, Periodo, Validade_horario
+from gestao_escolar.models import Turmas, Horario, Escola, Periodo, Validade_horario
 from django.urls import reverse
+from django.utils import timezone
 
 def alocar_aulas(request, turma_id):
     turma = get_object_or_404(Turmas, id=turma_id)    
-    gradeHorario = Horario.objects.filter(turma=turma_id)
-    gradePeriodo = Periodo.objects.all()    
+    gradeHorario = Horario.objects.filter(turma=turma_id)    
+    gradePeriodo = Periodo.objects.filter(turma = turma_id) 
+
+    if not gradePeriodo.exists():            
+                    sessao = request.session['escola_id']
+                    Periodo.objects.create(
+                        escola = Escola.objects.get(id = sessao),
+                        turma = Turmas.objects.get(id = turma_id),
+                        nome_periodo="1º Periodo",
+                        hora_inicio=timezone.datetime.strptime('08:00', '%H:%M').time(),
+                        hora_fim=timezone.datetime.strptime('08:45', '%H:%M').time()
+                    )
+                    Periodo.objects.create(
+                        escola = Escola.objects.get(id = sessao),
+                        turma = Turmas.objects.get(id = turma_id),
+                        nome_periodo="2º Período",
+                        hora_inicio=timezone.datetime.strptime('08:45', '%H:%M').time(),
+                        hora_fim=timezone.datetime.strptime('09:50', '%H:%M').time()
+                    )
+                    
+                    Periodo.objects.create(
+                        escola = Escola.objects.get(id = sessao),
+                        turma = Turmas.objects.get(id = turma_id),
+                        nome_periodo="3º Período",
+                        hora_inicio=timezone.datetime.strptime('09:50', '%H:%M').time(),
+                        hora_fim=timezone.datetime.strptime('10:15', '%H:%M').time()
+                    )
+                    Periodo.objects.create(
+                        escola = Escola.objects.get(id = sessao),
+                        turma = Turmas.objects.get(id = turma_id),
+                        nome_periodo="4º Período",
+                        hora_inicio=timezone.datetime.strptime('10:30', '%H:%M').time(),
+                        hora_fim=timezone.datetime.strptime('11:15', '%H:%M').time()
+                    )
+                    
+                    Periodo.objects.create(
+                        escola = Escola.objects.get(id = sessao),
+                        turma = Turmas.objects.get(id = turma_id),
+                        nome_periodo="5º Período",
+                        hora_inicio=timezone.datetime.strptime('11:15', '%H:%M').time(),
+                        hora_fim=timezone.datetime.strptime('12:00', '%H:%M').time()
+                    )      
     
     for gP in gradePeriodo:
         if Validade_horario.objects.exists():

@@ -562,6 +562,7 @@ class Trimestre(models.Model):
 
 class Periodo(models.Model):
     escola = models.ForeignKey(Escola, on_delete=models.CASCADE, null=True)
+    turma = models.ForeignKey(Turmas, on_delete=models.CASCADE, null=True)
     nome_periodo = models.CharField(max_length=30, null=True)
     hora_inicio = models.TimeField(null=True)
     hora_fim = models.TimeField(null=True)
