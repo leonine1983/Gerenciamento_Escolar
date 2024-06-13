@@ -118,8 +118,8 @@
               </thead>
               <tbody>
                 {% for horario in horarios %}  
-                  <td class='text-center'>{{ horario.periodo }}</td>
-                  <td class='text-center'>{{ horario.segunda}}</td>
+                  <td class='text-center'>{{ horario.periodo }} {{ horario.turma }}</td>
+                  <td class='text-center'>{{ horario.turma_Horario_relatedsegunda}}</td>
                   <td class='text-center'>{{ horario.terca}}</td>
                   <td class='text-center'>{{ horario.quarta}}</td>
                   <td class='text-center'>{{ horario.quinta}}</td>

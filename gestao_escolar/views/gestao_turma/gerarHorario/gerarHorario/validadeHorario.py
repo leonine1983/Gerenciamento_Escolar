@@ -63,7 +63,7 @@ class CriaValidadeHorario(CreateView):
        
         if horarios_vigentes.exists():
             # Cria a mensagem com o link
-            ultimo_horario = Validade_horario.objects.latest('id')
+            ultimo_horario = horarios_vigentes.get(horario_ativo = True, turma = self.kwargs.get('turma_id'))
             mensagem = format_html(
                 'Já existe um horário vigente no período especificado. Se desejar adicionar um novo horário para esta data, é necessário reduzir o período de vigência do horário existente. <a href="{}">Clique aqui para ajustar o horário existente</a>.',                
                 reverse('Gestao_Escolar:validadeHorarioUpdate', kwargs={'pk': ultimo_horario.id})
