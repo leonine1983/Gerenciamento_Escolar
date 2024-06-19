@@ -393,6 +393,7 @@ class Turmas(models.Model):
     turno = models.CharField(choices=turno, null=False, default=1, max_length=12)    
     quantidade_vagas = models.CharField(max_length=2, default=36)
     turma_multiserie = models.BooleanField(null=True, default=False)
+    turma_concluida = models.BooleanField(null=True, default=False)
 
     def __str__(self):
         return f'{self.nome.upper()} {self.descritivo_turma.upper()}'
