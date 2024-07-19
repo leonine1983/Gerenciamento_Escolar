@@ -1,23 +1,16 @@
-
-<!-- Bootstrap Datepicker CSS -->
-<!-- Modal -->
 {% load static %}
 {% load meus_filtros %}
 {% block css %}
 <link rel="stylesheet" href="{% static "global/css/search.css" %}">
-<style>.hidden-details{
-  display:none;
-  }</style>
+<style>.hidden-details{display:none;}</style>
 {% endblock css %}
-<div class="modal fade" id="modal_escola"   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-   
+<div class="modal fade" id="modal_escola"   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">   
   <div class="modal-dialog">
     <div class="modal-content bg-secondary-subtle ">
       <div class="modal-header">
         <h4 class="modal-title  fs-6"><span class="text-uppercase ml-5 fs-3 "><i class="fa-sharp fa-solid fa-people fs-5"></i> {{titulo_page}}</span></h4>        
         <button type="button" class="close" data-dismiss="modal">&times;</button>      
-      </div>
-      
+      </div>      
       <img src="{% static 'aluno-.png' %}" style='position:absolute; z-index:-0,1;top:3rem; left:0.3rem'  alt="">
       <div class="modal-body shadow-sm bg-light-subtle" style='margin-left:10.5rem;' >
         <div class="modal_windows_title mb-3 p-2 ">
@@ -29,7 +22,7 @@
             <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true"><i class="fa-sharp fa-solid fa-people fs-5"></i> Toda os alunos</button>
           </li>
           <li class="nav-item bg-secondary-subtle " role="presentation">
-            <button class="nav-link {% if oculta_tab %}active{% endif %} " id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Criar cadastro do aluno <i class="fa-sharp fa-solid fa-plus"></i> </button>
+            <button class="nav-link {% if oculta_tab %}active{% endif %} btn btn-sm btn-orange text-uppercase  fs-family-nunito" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Novo Aluno <i class="fa-sharp fa-solid fa-plus"></i> </button>
           </li>  
         </ul>                         
         <div class="tab-content" id="myTabContent">          
@@ -47,12 +40,10 @@
                       {% if matriculas.has_previous %}
                           <a href="?page=1" class="win11-pagination-link">&laquo; Primeiro</a>
                           <a href="?page={{ matriculas.previous_page_number }}" class="win11-pagination-link">Anterior</a>
-                      {% endif %}
-              
+                      {% endif %}              
                       <span class="win11-current">
                           Página {{ matriculas.number }} de {{ matriculas.paginator.num_pages }}.
-                      </span>
-              
+                      </span>              
                       {% if matriculas.has_next %}
                           <a href="?page={{ matriculas.next_page_number }}" class="win11-pagination-link">Próximo</a>
                           <a href="?page={{ matriculas.paginator.num_pages }}" class="win11-pagination-link">Último &raquo;</a>
@@ -87,8 +78,7 @@
                       <td>{{n.sexo}}</td>
                       <td>{{n.data_nascimento}}</td>
                       <td class='text-center'>{{n.nome_mae}}</td>   
-                      <td class='text-center '>  
-                        
+                      <td class='text-center '>                          
                         {% if n.related_matricula_alunos.first.turma.ano_letivo.ano.id == request.session.anoLetivo_id %}
                           {% for matricula in n.related_matricula_alunos.all %}   
                             <div>
@@ -123,7 +113,7 @@
             </style>
             {% endblock script_head %}  
             <h1><i class="fa-thin fa-id-card"></i>{{conteudo_page}}</h1>
-            <form method="post"class='m-3' >
+            <form method="post"class='m-3 ' >
               {{ form.non_field_errors }}
               {% csrf_token %}
               <div style='background-color: rgb(248, 242, 242);' class="pt-4  rounded-3">
@@ -134,9 +124,11 @@
                   {{form.as_p}}  
                 </div>
               </div> 
-              <button class="btn btn-sm btn-primary p-1 w-100" type="submit">Criar registro do aluno<i class="fa-sharp fa-solid fa-people fs-5"></i></button>
+              <div class="d-flex justify-content-center">
+                <button type="submit" class='fs-family-nunito btn btn-orange m-auto'>Clique aqui para iniciar a criação do novo aluno <img style='margin:-10rem 0' src="{% static 'animations/paperAvion.gif' %}" class='anime-h' srcset=""></button>
+              </div>              
             </form> 
-          </div>                   
+          </div> 
         </div>
         {% else %}
           <!-- form de atualização do registro do aluno - ALUNO UPDATE -->
@@ -146,69 +138,4 @@
   </div>
 </div>
 </div>  
-
 {% load static %}
-
-<!-- Mascara para formularios-->
-<script src="{% static 'global/js/jquery.mask.min.js' %}"></script>
-<script>
-    $(document).ready(function(){
-        $("#id_tel_celular_aluno").mask("(00) 0 0000 0000")
-    })
-    $(document).ready(function(){
-        $("#id_tel_celular_mae").mask("(00) 0 0000 0000")
-    })
-    $(document).ready(function(){
-        $("#id_tel_celular_pai").mask("(00) 0 0000 0000")
-    })
-    
-</script>
-
-<script src="{% static 'global/js/cheatsheet.js' %}"></script>
-<!--Drag e Drop-->
-{% include "Escola/partials/utils/dragDrop.html" %}
-
-<script>
-  // Adicione um ouvinte de evento de mudança ao <select>
-document.getElementById("mySelect").addEventListener("change", function() {
-  // Remove a classe 'selected' de todas as opções
-  var options = this.getElementsByTagName("option");
-  for (var i = 0; i < options.length; i++) {
-    options[i].classList.remove("selected");
-  }
-
-  // Adiciona a classe 'selected' à opção selecionada
-  var selectedOption = this.options[this.selectedIndex];
-  selectedOption.classList.add("selected");
-});
-</script>
-<!--FIM Mascara para formularios-->
-
-
-<!--
-<script src="{% static 'base_static/select2/select2.min.css' %}"></script>
-    <script>
-        // In your Javascript (external .js resource or <script> tag)
-    $(document).ready(function() {
-        $('#id_paciente_envio_triagem').select2();
-  
-    });
-    </script>
--->
-
-
-<script>
-  // Adicione um ouvinte de evento de mudança ao <select>
-document.getElementById("mySelect").addEventListener("change", function() {
-  // Remove a classe 'selected' de todas as opções
-  var options = this.getElementsByTagName("option");
-  for (var i = 0; i < options.length; i++) {
-    options[i].classList.remove("selected");
-  }
-
-  // Adiciona a classe 'selected' à opção selecionada
-  var selectedOption = this.options[this.selectedIndex];
-  selectedOption.classList.add("selected");
-});
-
-</script>

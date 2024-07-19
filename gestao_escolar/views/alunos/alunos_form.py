@@ -31,12 +31,10 @@ class Alunos_form(forms.ModelForm):
         label=mark_safe('<i class="fa-solid fa-user-tie-hair"></i> Mãe'),
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 text-info col m-2 rounded-1'}),
     )
-
     class Meta:
         model = Alunos
         fields = ['nome_completo', 'nome_mae']
-
-
+        
 choice_estado_civil = {
     ('1', 'Solteiro'),
     ('2', 'Casado'),
@@ -67,7 +65,6 @@ class Aluno_documento_form(forms.ModelForm):
         if aluno_create is not None:
             self.fields['aluno'].queryset = aluno_create
             self.fields['aluno'].initial = aluno_create.first()
-
     
     class Meta:
         model = Alunos
@@ -116,7 +113,8 @@ class Aluno_documento_form(forms.ModelForm):
     )
     cidade= forms.CharField(
         label="Cidade",
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'})        
+        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),  
+        required=False      
     )
     renda_familiar = forms.CharField(
         label='Renda Familiar',
