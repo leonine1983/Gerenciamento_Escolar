@@ -210,6 +210,7 @@ class Alunos(models.Model):
     tel_celular_pai = models.CharField(max_length=30, null=True, default='Telefone do pai')    
     naturalidade = models.CharField(max_length=30, null=False, default='Cidade onde nasceu')
     nacionalidade = models.ForeignKey(Nacionalidade, on_delete=models.CASCADE, default=1, verbose_name='Nacionalidade*')
+    aluno_exterior = models.BooleanField(default=False, verbose_name="Marque se o aluno veio do Exterior")
     pais_origem = models.ForeignKey(Pais_origem, blank=True, null=True, on_delete=models.CASCADE)
     data_entrada_no_pais= models.DateField(null=True, blank=True)  
     documento_estrangeiro = models.CharField(max_length=30, null=True, blank=True)
@@ -228,7 +229,7 @@ class Alunos(models.Model):
     # Documentação
     RG = models.CharField(max_length=14, null=True, blank=True, default='000.000.00-00')    
     RG_emissao = models.DateField(null=True, blank=True, default=timezone.now)  
-    RG_UF = models.ForeignKey(Uf_Unidade_Federativa, on_delete=models.CASCADE, null=True)
+    RG_UF = models.ForeignKey(Uf_Unidade_Federativa, on_delete=models.CASCADE, null=True, blank=True)
     orgao_emissor = models.CharField(max_length=5, null=True, blank=True)
 
     renda_familiar = models.CharField(max_length=7, null=True, blank=True)

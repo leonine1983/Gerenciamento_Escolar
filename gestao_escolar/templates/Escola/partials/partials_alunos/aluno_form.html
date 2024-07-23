@@ -1,0 +1,31 @@
+{% load static %}
+<!--Etapa 1 Nome completo e nome da mae-->
+<form method="post"class='m-3 ' > 
+    <div>
+      {% csrf_token %}
+      {{form.as_p}}  
+      {{ form.non_field_errors }}  
+    </div> 
+    <button type="submit" class='fs-family-nunito btn btn-orange m-auto'>Clique aqui para iniciar a criação do novo aluno <img style='margin:-10rem 0' src="{% static 'animations/paperAvion.gif' %}" class='anime-h' srcset=""></button>                             
+</form> 
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var checkbox = document.getElementById('id_aluno_exterior');
+    var paisOrigem = document.getElementById('id_pais_origem');
+    var dataEntrada = document.getElementById('id_data_entrada_no_pais');
+    var documentoEstrangeiro = document.getElementById('id_documento_estrangeiro');
+
+    checkbox.addEventListener('change', function() {
+        if (checkbox.checked) {
+            paisOrigem.disabled = false;
+            dataEntrada.disabled = false;
+            documentoEstrangeiro.disabled = false;
+        } else {
+            paisOrigem.disabled = true;
+            dataEntrada.disabled = true;
+            documentoEstrangeiro.disabled = true;
+        }
+    });
+});
+</script>

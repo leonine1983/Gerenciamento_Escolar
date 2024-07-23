@@ -113,21 +113,12 @@
             </style>
             {% endblock script_head %}  
             <h1><i class="fa-thin fa-id-card"></i>{{conteudo_page}}</h1>
-            <form method="post"class='m-3 ' >
-              {{ form.non_field_errors }}
-              {% csrf_token %}
-              <div style='background-color: rgb(248, 242, 242);' class="pt-4  rounded-3">
-                <div class="border p-2 m-2 rounded-3 bg-light-subtle">
-                  <h2 class="fs-4"><i class="fa-thin fa-message-smile fa-flip-horizontal"></i> {{sub_Info_page}}</h2>
-                </div>
-                <div  class="form-group p-4 row row-cols-3">
-                  {{form.as_p}}  
-                </div>
-              </div> 
-              <div class="d-flex justify-content-center">
-                <button type="submit" class='fs-family-nunito btn btn-orange m-auto'>Clique aqui para iniciar a criação do novo aluno <img style='margin:-10rem 0' src="{% static 'animations/paperAvion.gif' %}" class='anime-h' srcset=""></button>
-              </div>              
-            </form> 
+            <div style='background-color: rgb(248, 242, 242);' class="pt-4  rounded-3">
+              <div class="border p-2 m-2 rounded-3 bg-light-subtle">
+                <h2 class="fs-4"><i class="fa-thin fa-message-smile fa-flip-horizontal"></i> {{sub_Info_page}}</h2>
+              </div>      
+              {% include "Escola/partials/partials_alunos/aluno_form.html" %}
+            </div>
           </div> 
         </div>
         {% else %}

@@ -1,14 +1,13 @@
 from gestao_escolar.models import Alunos
-from django.http import HttpResponseBadRequest
 from django.views.generic import UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from datetime import datetime, date
+from datetime import date
 from django.urls import reverse_lazy
-from gestao_escolar.views.alunos.alunos_form import Alunos_form
 from django.db.models import Q
 from django.shortcuts import redirect
 from gestao_escolar.views.alunos.aluno_form.alun_2_forms import Alunos_form_etapa2
+
 
 class CreateAlunosConfirmaEtapa2(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Alunos
@@ -19,7 +18,6 @@ class CreateAlunosConfirmaEtapa2(LoginRequiredMixin, SuccessMessageMixin, Update
     def get_success_url(self):
         aluno_id = self.object.id 
         return reverse_lazy('Gestao_Escolar:alunos_create_etapa3', kwargs={'pk': aluno_id})  
-
 
     def get_queryset(self):
         txt_nome = self.request.GET.get('busca-aluno')
@@ -37,8 +35,7 @@ class CreateAlunosConfirmaEtapa2(LoginRequiredMixin, SuccessMessageMixin, Update
         context['sub_Info_page_h4'] = "INFORMAÇÕES BÁSICAS DO ALUNO"       
         context['oculta_tab'] = "true"
         context['table'] = True   
-        context['bottom'] = "Salvar Informações Básicas"
-      
+        context['bottom'] = "Salvar Informações Básicas"      
         return context   
     
     def form_valid(self, form):        
@@ -46,6 +43,5 @@ class CreateAlunosConfirmaEtapa2(LoginRequiredMixin, SuccessMessageMixin, Update
         ano_atual = date.today().year
         idade = ano_atual - data_nascimento.year - ((ano_atual, data_nascimento.month, data_nascimento.day) < (ano_atual, date.today().month, date.today().day))
         form.instance.idade = idade
-        print(f'Essa é a idade do aluno: {idade}')
-        
+        print(f'Essa é a idade do aluno: {idade}')        
         return super().form_valid(form)

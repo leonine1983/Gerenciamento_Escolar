@@ -43,9 +43,12 @@ class Alunos_form_etapa2(forms.ModelForm):
     )
     tel_celular_aluno = forms.CharField(   
         label=mark_safe('<i class="fa-brands fa-whatsapp text-success"></i> Telefone celular do aluno'),   
-        widget=forms.TextInput(attrs={'class': 'form-control  border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
+        widget=forms.TextInput(attrs={
+            'class': 'form-control  border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1',
+            'input_type': 'tel'}),
         required=True
     )
+    
     email = forms.CharField(        
         widget=forms.EmailInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
         required=False

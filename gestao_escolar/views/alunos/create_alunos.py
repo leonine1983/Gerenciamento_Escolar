@@ -13,16 +13,12 @@ from django.shortcuts import redirect
 class Create_Alunos(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Alunos
     form_class = Alunos_form
-    #form_class = Turma_form
     template_name = 'Escola/inicio.html'
     success_message = "Aluno registrado com sucesso!!"
     success_url = reverse_lazy('Gestao_Escolar:GE_Escola_inicio')
 
     def get_success_url(self):
-        # Obtém o ID do registro criado
         aluno_id = self.object.id 
-
-        # Redireciona para a nova view com o ID do aluno
         return reverse_lazy('Gestao_Escolar:alunos_create_etapa2', kwargs={'pk': aluno_id})  
 
     def get_queryset(self):
@@ -45,19 +41,8 @@ class Create_Alunos(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         context['Alunos'] = aluno_query
         context['now'] = datetime.now()    
         context['bottom'] = 'Avançar'          
-        context['page_ajuda'] = "<div class='m-2'><b>Nessa área, definimos todos os dados para a celebração do contrato com o profissional."     
-     
-      
+        context['page_ajuda'] = "<div class='m-2'><b>Nessa área, definimos todos os dados para a celebração do contrato com o profissional."        
         return context   
-    """
-    def form_valid(self, form):
-        # Calcular a idade
-        data_nascimento = form.cleaned_data['data_nascimento']
-        ano_atual = date.today().year
-        idade = ano_atual - data_nascimento.year - ((ano_atual, data_nascimento.month, data_nascimento.day) < (ano_atual, date.today().month, date.today().day))
-        form.instance.idade = idade
-        print(f'Essa é a idade do aluno: {idade}')
-        return super().form_valid(form)"""
     
     def form_valid(self, form):
         # Verifica se já existe um aluno com o mesmo nome
@@ -69,6 +54,6 @@ class Create_Alunos(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         if self.request.user.first_name:        
             form.instance.res_cadastro = f'{self.request.user.first_name} {self.request.user.last_name}'
         else:
-            form.instance.res_cadastro = self.request.user
-        
+            form.instance.res_cadastro = self.request.user        
         return super().form_valid(form)
+    
