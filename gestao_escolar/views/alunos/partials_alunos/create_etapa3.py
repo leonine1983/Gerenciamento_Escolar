@@ -35,10 +35,11 @@ class CreateAlunosConfirmaEtapa3(LoginRequiredMixin, SuccessMessageMixin, Update
         context['sub_Info_page_h4'] = "ALUNO ORIUNDO DO EXTERIOR"       
         context['oculta_tab'] = "true"
         context['table'] = True         
-        context['bottom'] = "Salvar Informações"
+        context['bottom'] = "Registrar País de Origem do Aluno"
+        context['bottom_ativo'] = "True"
       
         return context   
-    
+    """
     def form_valid(self, form):        
         data_nascimento = form.cleaned_data['data_nascimento']
         ano_atual = date.today().year
@@ -47,3 +48,4 @@ class CreateAlunosConfirmaEtapa3(LoginRequiredMixin, SuccessMessageMixin, Update
         print(f'Essa é a idade do aluno: {idade}')
         
         return super().form_valid(form)
+    """

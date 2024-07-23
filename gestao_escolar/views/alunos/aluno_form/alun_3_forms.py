@@ -2,8 +2,7 @@
 from django import forms
 from django.utils.safestring import mark_safe
 from rh.models import Sexo
-from gestao_escolar.models import (Alunos, Etnia, Nacionalidade,
-                                     Pais_origem, Deficiencia_aluno)
+from gestao_escolar.models import (Alunos, Pais_origem)
 
 
 choices = {

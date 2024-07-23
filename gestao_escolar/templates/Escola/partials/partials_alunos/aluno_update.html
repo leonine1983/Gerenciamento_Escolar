@@ -5,7 +5,7 @@
             <div class=" border p-2 m-2 rounded-3 bg-light-subtle  {{danger}} d-flex ">     
             <h2 class="fs-4"><i class="fa-thin fa-message-smile fa-flip-horizontal"></i> {{sub_Info_page}}  </h2>                  
             {% if sub_Info_page == 'Só preencha os campos se o aluno veio do exterior. Caso contrário, clique em avançar!' %}                  
-                <a href='{% url "Gestao_Escolar:alunos_create_etapa4" object.id %}' class='btn btn-sm btn-success mx-5 pt-2'>Avançar <i class="fa-thin fa-hand-back-point-right"></i> <i class="fa-thin fa-hand-back-point-right"></i></a>
+                <a id='avanca' href='{% url "Gestao_Escolar:alunos_create_etapa4" object.id %}' class='btn btn-sm btn-success mx-5 pt-2'>Avançar <i class="fa-thin fa-hand-back-point-right"></i> <i class="fa-thin fa-hand-back-point-right"></i></a>
             {% endif %}
             </div>
         {% endif %}

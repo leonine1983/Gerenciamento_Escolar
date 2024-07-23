@@ -33,27 +33,28 @@
                   .form-group div p{margin-bottom: -0.5rem;}
                 </style>
                 {% endblock script_head %}  
-
+                <h2 class="h2 mt-3">Informações Básicas</h2>
                 <form method="post"class='m-3' >
                   {{ form.non_field_errors }}
                   {% csrf_token %}
-                  <div class="form-group p-4" style='background-color: rgb(248, 242, 242);'>
-                  <span>Informações Básicas</span>
-                    <div class="border p-3 row row-cols-3 rounded-3 bg-light-subtle mb-5">
-                      <div class="col">                            
-                        <p class="p-1">Aluno*:</p>
-                        <span class="fs-4">{{form.aluno}}</span>
-                      </div>  
-                    </div>
+                  <div>
+                    <section>                      
+                      <div class="border rounded-3 bg-light-subtle w-100">                         
+                          <label>Aluno*:</label>
+                          {{form.aluno}}
+                      </div>
+                    </section>
+                  </div>
 
-                    <span class=" mt-2">Dados do RG*</span>
+                  <section>
+                    <h2 class="h2 mt-2">Dados do RG*</h2>
                     <div class="border p-3 row row-cols-4 rounded-3 bg-light-subtle mb-5">                          
-                      <div class="col-5">
-                        <p>N° RG:*</p>
+                      <div class="col-4">
+                        {{form.RG.label_tag}}
                         {{form.RG}}
                         {{form.RG.errors}}
                       </div>
-                      <div class="col-2">
+                      <div class="col-3">
                         <p>Data de Emissão*:</p>
                         {{form.RG_emissao}}
                         {{form.RG_emissao.errors}}
@@ -69,18 +70,22 @@
                         {{form.orgao_emissor.errors}}
                       </div>
                     </div>
+                  </section>
 
-                    <span class=" mt-2">Situação Financeira*</span>
-                    <div class="border p-3 row row-cols-4 rounded-3 bg-light-subtle mb-5">                          
-                      <div class="col-5">
+                  <section class="mt-0">
+                    <h2 class="h2 mt-2">Situação Financeira*</h2>
+                    <div class="border p-3 rounded-3 bg-light-subtle mb-5">                          
+                      <div>
                         <p>Renda Familiar (Soma de todos os valores que compõem a renda mensal da familia):* <i class="fa-duotone fa-piggy-bank"></i></p>
                         {{form.renda_familiar}}
                         {{form.renda_familiar.errors}}
                       </div>                   
                     </div>
-
-                    <span class=" mt-2">Dados de conexão*</span>
-                    <div class="border p-3 row row-cols-4 rounded-3 bg-light-subtle mb-5">                          
+                  </section>
+                 
+                  <section>
+                    <h2 class="h2 mt-2">Dados de conexão*</h2>
+                    <div class="border p-3 row row-cols-4 rounded-3 bg-light-subtle mb-5 g-0 gap-0">                          
                       <div class="col">
                         <p>CPF do aluno: </p>
                         {{form.CPF}}
@@ -97,8 +102,10 @@
                         {{form.senha.errors}}
                       </div>                     
                     </div>
+                  </section>
 
-                    <span class=" mt-2">Outros documentos*</span>
+                  <section>
+                    <h2 class="h2 mt-2">Outros documentos*</h2>
                     <div class="border p-3 row row-cols-4 rounded-3 bg-light-subtle mb-5">                          
                       <div class="col">
                         <p>Cartão Nacional da Saúde (CNS): </p>
@@ -116,31 +123,33 @@
                         {{form.inep.errors}}
                       </div>                     
                     </div>
+                  </section>
 
-                    <span class=" mt-2">CERTIDÃO DE NASCIMENTO*</span>
-                    <div class="border p-3 row row-cols-4 rounded-3 bg-light-subtle mb-5">                          
+                  <section>
+                    <h2 class="h2 mt-2">Certidão de Nascimento</h2>
+                    <div class="border p-1 row row-cols-6 rounded-3 bg-light-subtle ">                          
                       <div class="col">
                         <p>Estado Civil: </p>
                         {{form.estado_civil}}
                         {{form.estado_civil.errors}}
                       </div>
                       <div class="col">
-                         Tipo de Certidão*:</p>
+                        <p>Tipo de Certidão*:</p>
                         {{form.tipo_certidao}}
                         {{form.tipo_certidao.errors}}
                       </div>  
                       <div class="col">
-                        N° da Certidão*:</p>
+                        <p>N° da Certidão*:</p>
                         {{form.numero_certidao}}
                         {{form.numero_certidao.errors}}
                       </div>                        
                       <div class="col">
-                        Livro*:</p>
+                        <p>Livro*:</p>
                         {{form.livro}}
                         {{form.livro.errors}}
                       </div> 
                       <div class="col">
-                        Folha*:</p>
+                        <p>Folha*:</p>
                         {{form.folha}}
                         {{form.folha.errors}}
                       </div> 
@@ -186,9 +195,11 @@
                         {{form.local_diferenciado.errors}}
                       </div>                      
                     </div>
+                  </section>
 
-                    <span class=" mt-2">Falecimento do Aluno / Veio a óbito</span>
-                    <div class="border p-3 row row-cols-4 rounded-3 bg-light-subtle mb-5 bg-danger-subtle fs-3">                          
+                  <section>
+                    <h2 class="h2 mt-2">Falecimento do Aluno / Veio a óbito</h2>
+                    <div class="border row row-cols-2 rounded-3 mb-5 bg-danger-subtle fs-3">                          
                       <div class="col text-center">
                         <p>Óbito: </p>
                         {{form.obito}}
@@ -200,9 +211,9 @@
                         {{form.data_obito.errors}}
                       </div>              
                     </div>
-                  
-                  </div> 
-                  <button class="btn btn-sm btn-primary p-1 w-100" type="submit">Salvar registro do aluno <i class="fa-sharp fa-solid fa-people fs-5"></i></button>
+                  </section>
+                </div>
+                <button class="btn btn-sm btn-primary p-1 w-100" type="submit">Salvar registro do aluno <i class="fa-sharp fa-solid fa-people fs-5"></i></button>
               </form> 
 
             </div> 

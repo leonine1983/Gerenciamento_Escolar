@@ -35,7 +35,7 @@ class CreateAlunosConfirmaEtapa2(LoginRequiredMixin, SuccessMessageMixin, Update
         context['sub_Info_page_h4'] = "INFORMAÇÕES BÁSICAS DO ALUNO"       
         context['oculta_tab'] = "true"
         context['table'] = True   
-        context['bottom'] = "Salvar Informações Básicas"      
+        context['bottom'] = "Salvar Informações Básicas"    
         return context   
     
     def form_valid(self, form):        

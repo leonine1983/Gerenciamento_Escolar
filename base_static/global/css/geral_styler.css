@@ -444,7 +444,7 @@ background-color: #b71c1c;
 /* Estilo base para o formulário */
 form div {
   font-family: Segoe UI, Arial, sans-serif !important;
-  padding: 20px !important;
+  padding: 10px !important;
   background-color: #f0f0f0 !important;
   border: 1px solid #ccc !important;
   border-radius: 5px !important;
@@ -453,7 +453,7 @@ form div {
   max-width: 100% !important; /* Largura máxima ocupando todo o espaço disponível */
   margin: auto !important;
   display: grid; /* Utiliza display grid para controlar a disposição dos campos */
-  grid-gap: 10px; /* Espaçamento entre os campos */
+  grid-gap: 5px; /* Espaçamento entre os campos */
   grid-template-columns: repeat(2, 1fr)!important; /* 3 colunas para telas maiores */
 }
 
