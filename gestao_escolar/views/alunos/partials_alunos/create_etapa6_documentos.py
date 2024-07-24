@@ -31,8 +31,6 @@ class Update_Alunos_Document(LoginRequiredMixin, SuccessMessageMixin, UpdateView
     def get_form_kwargs(self) :
         kwargs = super().get_form_kwargs()
         kwargs['aluno_create'] = Alunos.objects.filter(pk=self.kwargs['pk'])
-        a= kwargs['senha_aluno'] = "12345678"
-        print(f'tessssssssssssss {a}')
         return kwargs
     
     """

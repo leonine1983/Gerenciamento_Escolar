@@ -28,7 +28,7 @@ choice_justifica_falta_document= {
     ('2', 'A escola não dispõe ou não recebeu os docum. pessoais do(a) aluno(a)')    
 }
 
-
+"""
 class Aluno_documento_form(forms.ModelForm):   
     class Meta:
         model = Alunos  # Certifique-se de usar o nome correto do modelo aqui
@@ -149,22 +149,12 @@ class Aluno_documento_form(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         aluno_create = kwargs.pop('aluno_create', None)
-        senha_aluno = kwargs.pop('senha_aluno', None)
         super().__init__(*args, **kwargs)
 
         if aluno_create is not None:
             self.fields['aluno'].queryset = aluno_create
             self.fields['aluno'].initial = aluno_create.first()
-
-        self.fields['login_aluno'].initial = self.generate_login()           
-        self.fields['senha'].initial = senha_aluno
-            
-
-    def generate_login(self):
-        while True:
-            login = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
-            if not Alunos.objects.filter(login_aluno=login).exists():
-                return login
+            """
 
 
 class Aluno_documentoUpadate_form(forms.ModelForm):
@@ -176,26 +166,6 @@ class Aluno_documentoUpadate_form(forms.ModelForm):
         if aluno_create is not None:
             self.fields['aluno'].queryset = aluno_create
             self.fields['aluno'].initial = aluno_create.first()
-
-
-    def __init__(self, *args, **kwargs):
-        aluno_create = kwargs.pop('aluno_create', None)
-        super().__init__(*args, **kwargs)
-
-        if aluno_create is not None:
-            self.fields['aluno'].queryset = aluno_create
-            self.fields['aluno'].initial = aluno_create.first()
-            a = self.fields['login_aluno'].initial = self.generate_login()
-            print(f'olaaaa {a}')            
-            b=self.fields['senha'].initial = "12345678"
-            print(f'senha {b}')
-
-    def generate_login(self):
-        while True:
-            login = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
-            if not Alunos.objects.filter(login_aluno=login).exists():
-                return login
-
             
     
     class Meta:
@@ -242,19 +212,8 @@ class Aluno_documentoUpadate_form(forms.ModelForm):
         label='Renda Familiar',
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
         required=False
-    )
-    login_aluno = forms.CharField(
-        label='Login',
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False,
-        disabled = True
-    )   
-    senha = forms.CharField(
-        label='Senha do aluno',
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-black text-info col m-2 rounded-1'}),
-        required=False,
-        disabled=True
-    )
+    )      
+    
     cartao_nacional_saude_cns = forms.CharField(
         label='Cartão Nacional de Saúde / CNS',
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
