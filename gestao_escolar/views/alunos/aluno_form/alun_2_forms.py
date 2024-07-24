@@ -45,18 +45,18 @@ class Alunos_form_etapa2(forms.ModelForm):
         label=mark_safe('<i class="fa-brands fa-whatsapp text-success"></i> Telefone celular do aluno'),   
         widget=forms.TextInput(attrs={
             'class': 'form-control  border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1',
-            'input_type': 'tel'}),
+            'type': 'tel'}),
         required=True
     )
     
     email = forms.CharField(        
-        widget=forms.EmailInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
+        widget=forms.EmailInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1', 'type': 'email'}),
         required=False
     )
    
     tel_celular_mae = forms.CharField(  
         label=mark_safe('<i class="fa-brands fa-whatsapp text-success"></i> Telefone celular da mãe'),      
-        widget=forms.TextInput(attrs={'class': 'form-control  border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
+        widget=forms.TextInput(attrs={'class': 'form-control  border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1', 'type': 'tel'}),
         required=False
     )
     nome_pai = forms.CharField(        
@@ -66,7 +66,7 @@ class Alunos_form_etapa2(forms.ModelForm):
     
     tel_celular_pai = forms.CharField(      
         label=mark_safe('<i class="fa-brands fa-whatsapp text-success"></i> Telefone celular do pai'),    
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
+        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1', 'type': 'tel'}),
         required=False
     )
     naturalidade = forms.CharField(        

@@ -191,6 +191,36 @@ choice_local_diferenciado= {
 }
 
 
+class Cidade(models.Model):
+    nome_estado = models.ForeignKey(Uf_Unidade_Federativa, on_delete=models.CASCADE)
+    nome_cidade = models.CharField(max_length=30)
+    def __str__(self) -> str:
+        return self.nome_cidade
+    
+    @receiver(post_migrate)
+    def create_register(sender, **kwargs):
+        if not Cidade.objects.exists():
+            Cidade.objects.create(
+                nome_estado = Uf_Unidade_Federativa.objects.get(id = 5),
+                nome_cidade = "Vera Cuz",
+            )
+
+
+class Bairro(models.Model):    
+    nome_cidade = models.ForeignKey(Cidade, on_delete=models.CASCADE)
+    nome_bairro = models.CharField(max_length=50)
+    def __str__(self) -> str:
+        return f'{self.nome_bairro}, {self.nome_cidade}'
+
+    @receiver(post_migrate)
+    def create_register(sender, **kwargs):
+        if not Bairro.objects.exists():
+            Bairro.objects.create(
+                nome_cidade = Cidade.objects.get(id = 1),
+                nome_bairro = "Coroa",
+            )
+
+
 class Alunos(models.Model):
     nome_completo = models.CharField(max_length=120, null=False, default='Nome completo do aluno', verbose_name='Nome completo do aluno*')    
     nome_social = models.CharField(max_length=30, null=True, blank=True, default='')
@@ -202,8 +232,10 @@ class Alunos(models.Model):
     tel_celular_aluno = models.CharField(max_length=30, null=False, default='Celular 01', verbose_name='Nº de telefone do aluno*')    
     email = models.EmailField(max_length=200, null=False, verbose_name='Email*')
     rua = models.CharField(max_length=30, null=False, default='Av., Rua, Travessa')
-    bairro = models.CharField(max_length=30, null=False, default='Bairro, Localidade')
-    cidade = models.CharField(max_length=30, null=False, default='Cidade onde mora')
+    bairro = models.ForeignKey(Bairro, null=True, on_delete=models.CASCADE)
+    cidade = models.ForeignKey(Cidade, null=True, on_delete=models.CASCADE)    
+    cidade_nascimento = models.ForeignKey(Cidade, related_name="cidade_nascimento",verbose_name='Cidade onde nasceu', null=True, on_delete=models.CASCADE)
+    estado = models.ForeignKey(Uf_Unidade_Federativa, related_name="estado_nascimento",verbose_name='Estado onde nasceu', null=True, on_delete=models.CASCADE)
     nome_mae = models.CharField(max_length=120, null=False, default='Nome completo da Mãe', verbose_name='Nome da Mãe*')
     tel_celular_mae = models.CharField(max_length=30, null=True, default='Telefone da mae', verbose_name='Nº do celular do mãe*')
     nome_pai = models.CharField(max_length=120, null=True, default='Nome completo da Pai')

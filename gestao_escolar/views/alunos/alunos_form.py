@@ -2,10 +2,9 @@
 from django import forms
 from django.utils.safestring import mark_safe
 import random
+import string
 from rh.models import Uf_Unidade_Federativa, Sexo
-from gestao_escolar.models import (Alunos, Etnia, Nacionalidade,
-                                     Pais_origem, Deficiencia_aluno)
-
+from gestao_escolar.models import (Alunos, Cidade)
                                      
 
 choices = {
@@ -43,7 +42,6 @@ choice_estado_civil = {
     ('5', 'Viúvo'),
     ('6', 'União Estável'),
 }
-
 choice_modelo_certidao = {
     ('1', 'Antigo'),
     ('2', 'Novo'),
@@ -56,19 +54,11 @@ choice_justifica_falta_document= {
 }
 
 
-class Aluno_documento_form(forms.ModelForm):
-    
-    def __init__(self, *args, **kwargs):
-        aluno_create = kwargs.pop('aluno_create', None)
-        super().__init__(*args, **kwargs)
-
-        if aluno_create is not None:
-            self.fields['aluno'].queryset = aluno_create
-            self.fields['aluno'].initial = aluno_create.first()
+class Aluno_documento_form(forms.ModelForm):   
     
     class Meta:
         model = Alunos
-        fields = ['aluno', 'CPF', 'RG', 'RG_emissao', 'RG_UF', 'orgao_emissor','renda_familiar', 'login_aluno', 'senha', 'cartao_nacional_saude_cns', 'nis', 'inep',
+        fields = ['aluno', 'CPF', 'RG', 'RG_emissao', 'RG_UF', 'orgao_emissor','cidade_nascimento','estado','renda_familiar','cidade',  'bairro', 'login_aluno', 'senha', 'cartao_nacional_saude_cns', 'nis', 'inep',
                 'estado_civil', 'tipo_certidao', 'numero_certidao', 'livro', 'folha', 'termo', 'emissao', 'distrito_certidao', 'cartorio', 'comarca', 'cartorio_uf',
                 'justificativa_falta_documento', 'local_diferenciado', 'obito', 'data_obito'  ]    
     
@@ -89,8 +79,8 @@ class Aluno_documento_form(forms.ModelForm):
     )
     RG_emissao = forms.DateField(
         label = "Data de emissão do RG",
-        widget= forms.DateInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
+        widget=forms.DateInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col2 m-2 rounded-1', 'type': 'date'}), 
+        required=False 
     )
     RG_UF = forms.ModelChoiceField(
         label="UF do RG",
@@ -107,14 +97,15 @@ class Aluno_documento_form(forms.ModelForm):
         label="Rua, Av., Travessa",
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'})        
     )
-    bairro = forms.CharField(
-        label="Bairro",
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'})        
+    estado = forms.ModelChoiceField(
+        queryset = Uf_Unidade_Federativa.objects.all(),
+        widget=forms.Select(attrs={'class': ' border border-info p-2 pb-1 bg-transparent text-info col m-2 rounded-1'}),
+        required=False   
     )
-    cidade= forms.CharField(
-        label="Cidade",
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),  
-        required=False      
+    cidade_nascimento = forms.ModelChoiceField(
+        queryset = Cidade.objects.all(),
+        widget=forms.Select(attrs={'class': ' border border-info p-2 pb-1 bg-transparent text-info col m-2 rounded-1'}),
+        required=False   
     )
     renda_familiar = forms.CharField(
         label='Renda Familiar',
@@ -124,12 +115,14 @@ class Aluno_documento_form(forms.ModelForm):
     login_aluno = forms.CharField(
         label='Login',
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
+        required=False,
+        disabled=True
     )   
     senha = forms.CharField(
         label='Senha do aluno',
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
+        required=False,
+        disabled=True
     )
     cartao_nacional_saude_cns = forms.CharField(
         label='Cartão Nacional de Saúde / CNS',
@@ -225,4 +218,23 @@ class Aluno_documento_form(forms.ModelForm):
         widget= forms.DateInput(attrs={'class': 'form-control border border-info p-3 pb-3  text-info col m-2 rounded-1', 'type': 'date'}),
         required=False  
     )
+
+    def __init__(self, *args, **kwargs):
+        aluno_create = kwargs.pop('aluno_create', None)
+        super().__init__(*args, **kwargs)
+
+        if aluno_create is not None:
+            self.fields['aluno'].queryset = aluno_create
+            self.fields['aluno'].initial = aluno_create.first()    
+            self.fields['login_aluno'].initial = self.generate_login()           
+            self.fields['senha'].initial = "12345678"
+                    
+    
+    def generate_login(self):
+        while True:
+            letra = random.choice(string.ascii_lowercase)
+            numero = ''.join(random.choices(string.digits + string.digits, k=5))
+            login = f'{letra}/{numero}'
+            if not Alunos.objects.filter(login_aluno=login).exists():
+                return login
 

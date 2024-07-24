@@ -2,6 +2,7 @@
 from django import forms
 from django.utils.safestring import mark_safe
 import random
+import string
 from rh.models import Uf_Unidade_Federativa, Sexo
 from gestao_escolar.models import (Alunos)
 
@@ -28,57 +29,18 @@ choice_justifica_falta_document= {
 }
 
 
-class Aluno_documento_form(forms.ModelForm):
-    
-    def __init__(self, *args, **kwargs):
-        aluno_create = kwargs.pop('aluno_create', None)
-        super().__init__(*args, **kwargs)
-
-        if aluno_create is not None:
-            self.fields['aluno'].queryset = aluno_create
-            self.fields['aluno'].initial = aluno_create.first()
-
-    
+class Aluno_documento_form(forms.ModelForm):   
     class Meta:
-        model = Alunos
+        model = Alunos  # Certifique-se de usar o nome correto do modelo aqui
         fields = "__all__"
-    
+
+    # Definição dos campos do formulário
     aluno = forms.ModelChoiceField(
         queryset=Alunos.objects.none(),
-        widget=forms.Select(attrs={'class': 'border border-info p-2 pb-1 bg-transparent text-info col m-2 rounded-1',  'readonly': 'readonly'}),
+        widget=forms.Select(attrs={'class': 'border border-info p-4 fs-3 pb-1 bg-transparent text-info col m-2 rounded-1', 'readonly': 'readonly'}),
         required=False
     )
-    CPF = forms.CharField(
-        label='Número do CPF',
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    )
-    RG = forms.CharField(
-        label='Número do RG',
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    )
-    RG_emissao = forms.DateField(
-        label = "Data de emissão do RG",
-        widget= forms.DateInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    )
-    RG_UF = forms.ModelChoiceField(
-        label="UF do RG",
-        queryset=Uf_Unidade_Federativa.objects.all(),
-        widget=forms.Select(attrs={'class': ' border border-info p-2 pb-1 bg-transparent text-info col m-2 rounded-1'}),  
-        required=False   
-    )
-    orgao_emissor = forms.CharField(
-        label="Órgão Emissor",
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    )
-    renda_familiar = forms.CharField(
-        label='Renda Familiar',
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
-    )
+    # Outros campos do formulário...
     login_aluno = forms.CharField(
         label='Login',
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
@@ -89,6 +51,7 @@ class Aluno_documento_form(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
         required=False
     )
+
     cartao_nacional_saude_cns = forms.CharField(
         label='Cartão Nacional de Saúde / CNS',
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
@@ -184,6 +147,25 @@ class Aluno_documento_form(forms.ModelForm):
         required=False  
     )
 
+    def __init__(self, *args, **kwargs):
+        aluno_create = kwargs.pop('aluno_create', None)
+        senha_aluno = kwargs.pop('senha_aluno', None)
+        super().__init__(*args, **kwargs)
+
+        if aluno_create is not None:
+            self.fields['aluno'].queryset = aluno_create
+            self.fields['aluno'].initial = aluno_create.first()
+
+        self.fields['login_aluno'].initial = self.generate_login()           
+        self.fields['senha'].initial = senha_aluno
+            
+
+    def generate_login(self):
+        while True:
+            login = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+            if not Alunos.objects.filter(login_aluno=login).exists():
+                return login
+
 
 class Aluno_documentoUpadate_form(forms.ModelForm):
     
@@ -195,10 +177,30 @@ class Aluno_documentoUpadate_form(forms.ModelForm):
             self.fields['aluno'].queryset = aluno_create
             self.fields['aluno'].initial = aluno_create.first()
 
+
+    def __init__(self, *args, **kwargs):
+        aluno_create = kwargs.pop('aluno_create', None)
+        super().__init__(*args, **kwargs)
+
+        if aluno_create is not None:
+            self.fields['aluno'].queryset = aluno_create
+            self.fields['aluno'].initial = aluno_create.first()
+            a = self.fields['login_aluno'].initial = self.generate_login()
+            print(f'olaaaa {a}')            
+            b=self.fields['senha'].initial = "12345678"
+            print(f'senha {b}')
+
+    def generate_login(self):
+        while True:
+            login = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+            if not Alunos.objects.filter(login_aluno=login).exists():
+                return login
+
+            
     
     class Meta:
         model = Alunos
-        fields = ['aluno', 'CPF', 'RG', 'RG_emissao', 'RG_UF', 'orgao_emissor','renda_familiar', 'login_aluno', 'senha', 'cartao_nacional_saude_cns', 'nis', 'inep',
+        fields = ['aluno', 'CPF', 'RG', 'RG_emissao', 'RG_UF', 'orgao_emissor','renda_familiar', 'cartao_nacional_saude_cns', 'nis', 'inep',
                 'estado_civil', 'tipo_certidao', 'numero_certidao', 'livro', 'folha', 'termo', 'emissao', 'distrito_certidao', 'cartorio', 'comarca', 'cartorio_uf',
                 'justificativa_falta_documento', 'local_diferenciado', 'obito', 'data_obito'  ]    
         
@@ -220,7 +222,7 @@ class Aluno_documentoUpadate_form(forms.ModelForm):
     )
     RG_emissao = forms.DateField(
         label = "Data de emissão do RG",
-        widget= forms.DateInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
+        widget= forms.DateInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1', 'type':'date'}),
         required=False
     )
     
@@ -244,14 +246,15 @@ class Aluno_documentoUpadate_form(forms.ModelForm):
     login_aluno = forms.CharField(
         label='Login',
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
+        required=False,
+        disabled = True
     )   
     senha = forms.CharField(
         label='Senha do aluno',
-        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),
-        required=False
+        widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-black text-info col m-2 rounded-1'}),
+        required=False,
+        disabled=True
     )
-    
     cartao_nacional_saude_cns = forms.CharField(
         label='Cartão Nacional de Saúde / CNS',
         widget=forms.TextInput(attrs={'class': 'form-control border border-info p-3 pb-3 bg-transparent text-info col m-2 rounded-1'}),

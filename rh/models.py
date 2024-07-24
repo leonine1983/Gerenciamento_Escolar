@@ -59,7 +59,7 @@ class Uf_Unidade_Federativa(models.Model):
        
 
     def __str__(self):
-        return self.sigla
+        return f'{self.estado}/{self.sigla}'
     
 
 class Prefeitura (models.Model):
