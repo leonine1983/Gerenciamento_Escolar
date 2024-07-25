@@ -108,17 +108,17 @@ class Contrato_form(forms.ModelForm):
     contratado = forms.ModelChoiceField(
         label='Nome do profissional:',
         queryset=Pessoas.objects.none(),  # Query to fetch all Pessoas objects
-        widget=forms.Select(attrs={'class': ' p-1 mb-3 bg-transparent  text-light'}),
+        widget=forms.Select(attrs={'class': ' p-1 mb-3 bg-transparent'}),
     )
     ano_contrato = forms.ModelChoiceField(
         label='Ano:',
         queryset=Ano.objects.none(),  # Query to fetch all Ano objects
-        widget=forms.Select(attrs={'class': 'border p-1 mb-3 bg-transparent  text-light'}),
+        widget=forms.Select(attrs={'class': 'border p-1 mb-3 bg-transparent'}),
     )  
     nome_escola = forms.ModelChoiceField(
         label='Escola',
         queryset=Escola.objects.all(),  # Query to fetch all Ano objects
-        widget=forms.Select(attrs={'class': 'border p-1 mb-3 bg-transparent  text-light'}),
+        widget=forms.Select(attrs={'class': 'border p-1 mb-3 bg-transparent'}),
     )    
     nome_profissao = forms.ModelChoiceField(
         label='Defina a função que o profissional irá desempenhar na escola. Deve escolher somente uma:',

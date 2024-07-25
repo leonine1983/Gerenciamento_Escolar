@@ -2,80 +2,55 @@
 <!-- Bootstrap Datepicker CSS -->
 
 {% load static %}
-
-
-
-
-
-
-
-
 <!-- Modal -->
 <div class="modal fade" id="modal_escola" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    
   <div class="modal-dialog w-100">
-  <div class="modal-content bg-secondary-subtle ">
+    <div class="modal-content bg-secondary-subtle ">
       <div class="modal-header">
-      <h4 class="modal-title  fs-6"><span class="text-uppercase ml-5 fs-3 "><i class="fa-solid fa-people-roof"></i> {{titulo_page}}</span></h4>        
-      <button type="button" class="close" data-dismiss="modal">&times;</button>
-      
+        <h4 class="modal-title  fs-6"><span class="text-uppercase ml-5 fs-3 "><i class="fa-solid fa-people-roof"></i> {{titulo_page}}</span></h4>        
+        <button type="button" class="close" data-dismiss="modal">&times;</button>      
       </div>
       <div class="modal-body shadow-sm bg-light-subtle">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Criar Vínculo </button>
-              </li>                         
-            </ul>
-            <div class="tab-content" id="myTabContent">
-              <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
-                <div class='p-2 fs-6 border-danger-subtle border-right d-flex text-light' style= 'box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset; background-color:rgb(116, 145, 140)'>
-                  
-                 
-
-                  <form method="post"class='m-3 p-3 row row-cols-2' >
-                    <style>
-                      .fs-6{font-size: 1.1rem !important; color:rgb(183, 204, 200)}
-                    </style>
-                    {{ form.non_field_errors }}
-                    {% csrf_token %}
-                    <div>
-                      <div >
-                        <p class="p-0 m-0 fs-6 ">Nome do profissional: </p>
-                          {{ form.contratado }}
-                          {{ form.errors }}
-                      </div>
-                      <div >
-                        <p class="p-0 m-0 fs-6 ">Ano do Contrato: </p>
-                          {{ form.ano_contrato }}
-                          {{ form.errors }}
-                      </div>
-                      <div>
-                        <p class="p-0 m-0 fs-6 ">Escola para onde o profissional irá desempenhar suas funções: </p>
-                          {{ form.nome_escola }}
-                          {{ form.errors }}
-                      </div>
-                    </div>
-                    <div>
-                      <p class="p-0 m-0 fs-6">Função desse profissional na Escola. Escolha somente uma opção: </p>
-                        {{ form.nome_profissao }}
-                        {{ form.errors }}
-                    </div>
-                    
-                    <button class="btn btn-sm btn-primary w-100 p-2" type="submit">Confirmar o tipo de vínculo com a instituição</button>
-                </form> 
-              </div>
-
-                
-
-
-
-
-              </div>
-              
-
-
-      </div>        
-  </div>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Criar Vínculo </button>
+          </li>                         
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+            <div class='p-2 fs-6 border-danger-subtle border-right d-flex text-light' style= 'box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset; background-color:rgb(116, 145, 140)'>
+              <form method="post" class='form-win11' >
+                {{ form.non_field_errors }}
+                {% csrf_token %}
+                <div class='text-dark'>
+                  <section>
+                    <p>Nome do profissional: </p>
+                      {{ form.contratado }}
+                      {{ form.errors }}
+                  </section>
+                  <section>
+                    <p class="p-0 m-0 fs-6 ">Ano do Contrato: </p>
+                      {{ form.ano_contrato }}
+                      {{ form.errors }}
+                  </section>
+                  <section>
+                    <p class="p-0 m-0 fs-6 ">Escola para onde o profissional irá desempenhar suas funções: </p>
+                      {{ form.nome_escola }}
+                      {{ form.errors }}
+                  </section>                    
+                  <section>
+                    <p class="p-0 m-0 fs-6">Função desse profissional na Escola. Escolha somente uma opção: </p>
+                      {{ form.nome_profissao }}
+                      {{ form.errors }}
+                  </section>
+                </div>                    
+                <button class="btn btn-sm btn-primary w-100 p-2" type="submit">Confirmar o tipo de vínculo com a instituição</button>
+              </form> 
+            </div>
+          </div>   
+        </div>        
+      </div>
+    </div>
   </div>
 </div>
 

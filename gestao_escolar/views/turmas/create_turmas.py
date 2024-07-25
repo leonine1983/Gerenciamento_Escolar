@@ -28,6 +28,7 @@ class Create_turmas(LoginRequiredMixin, CreateView):
         context['turmas'] = Turmas.objects.filter(escola = self.request.session['escola_id'], ano_letivo = self.request.session['anoLetivo_id'] )
         context['now'] = datetime.now()
         context['conteudo_page'] = 'Criar Turmas'       
+        context['sub_title_context'] = 'Formulário de Registro de Turma para Gestão Escolar'    
         
         context['page_ajuda'] = "<div class='m-2'><b>Nessa área, definimos todos os dados para a celebração do contrato com o profissional. </b>\
             <hr>\

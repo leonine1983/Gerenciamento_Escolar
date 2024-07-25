@@ -1,5 +1,4 @@
 :root {
-    --primary: #5F5DFE;
     --primary-darker: #4F4DFE;
     --bg: #EFF3F4;
     --white: #FFF;
@@ -20,11 +19,7 @@
     --scrollbar-bg: #F2F6F5;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+
 
 *:focus {
     outline: 1px solid var(--primary);
@@ -48,16 +43,6 @@
     border-radius: 9.99rem;
 }
 
-body {
-    font-family: 'Manrope', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    height: 100vh;
-    user-select: none;
-}
 
 .profile {
     background: var(--profile-bg);
@@ -181,27 +166,7 @@ body {
     stroke: var(--active);
 }
 
-.btn {
-    background: var(--primary);
-    color: var(--white);
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    width: 100%;
-    font-size: 1rem;
-    font-weight: 600;
-    min-height: 3rem;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s;
-}
 
-.btn--primary {
-    background: var(--primary);
-}
-
-.btn--primary:hover {
-    background: var(--primary-darker);
-}
 
 .profile main {
     display: flex;

@@ -36,12 +36,12 @@
                     {{ form.non_field_errors }}
                     {% csrf_token %}
                     {% for field in form %}
-                    <div class="form-group fs-7">
+                    <section class="form-group fs-7">
                         {{ field.label_tag }}
                         {{ field }}
                         {{ form.errors }}
                      
-                    </div>
+                    </section>
                     {% endfor %}   
                     
 

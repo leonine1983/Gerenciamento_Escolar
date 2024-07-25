@@ -12,7 +12,7 @@
       {{form.as_p}}  
       {{ form.non_field_errors }}  
     </div> 
-    <button id="botao" type="submit" class='fs-family-nunito btn btn-orange m-auto'> {{bottom}} <img style='margin:-10rem 0' src="{% static 'animations/paperAvion.gif' %}" class='anime-h' srcset=""></button>                             
+    <button id="botao" type="submit" class='fs-family-nunito btn btn-orange m-auto {{btn_bg}}'> {{bottom}} {{object}} {{btn_bg}}<img style='margin:-10rem 0' src="{% static 'animations/paperAvion.gif' %}" class='anime-h' srcset=""></button>                             
 </form> 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

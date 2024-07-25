@@ -81,8 +81,8 @@
                 <div class="tab-pane fade bg-secondary-subtle" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
                     <form class='m-3 p-3' action="" method="post">
                         {% csrf_token %}
-                        <div class="row row-cols-2">
-                        {{form.as_div}}   
+                        <div class="border ">
+                        {{form.as_p}}   
                         </div>
                         <button type="submit" class="btn btn-sm btn-success w-100">Criar Turma <i class="fa-solid fa-people-roof"></i></button>     
                     </form>
@@ -93,7 +93,7 @@
               <form class='m-3 p-3' action="" method="post">
                 {% csrf_token %}
                 <div class="row row-cols-2">
-                {{form.as_div}}   
+                {{form.as_div}}  
                 </div>
                 <button type="submit" class="btn btn-sm btn-success w-100 mt-5">Criar Turma <i class="fa-solid fa-people-roof"></i></button>     
               </form>              

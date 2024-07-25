@@ -38,22 +38,13 @@ td, tr {
         }
 
 </style>
-
-
 {% endblock script_head %}  
-<!-- Modal -->
-
-    
-
-<!-- Bootstrap Datepicker CSS -->
-<!-- Modal -->
 {% load static %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'global/css/search.css' %}">
 {% endblock css %}
-<div class="modal fade" id="modal_escola"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    
-    <div class="modal-dialog w-100">
+<div class="modal fade" id="modal_escola"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">    
+  <div class="modal-dialog w-100">
     <div class="modal-content bg-secondary-subtle mx-auto ">
         <div class="modal-header">
         <h4 class="modal-title  fs-6"><span class="text-uppercase ml-5 fs-3 "><i class="fa-solid fa-person-through-window"></i> {{titulo_page}}</span></h4>        
@@ -151,8 +142,7 @@ td, tr {
                 </div>
               </div>
 
-              <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-                  
+              <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">                  
                 <h3 class="mt-3">Definir cargo para o funcionário</h3> 
                   <div class="form-group ">
                     <form method="post"class='m-3 p-3 row row-cols-3' >
@@ -168,15 +158,10 @@ td, tr {
                       <button class="btn btn-sm btn-primary" type="submit">Salvar registros </button>
                   </form> 
                 </div>             
-              </div>            
-
-
-
-
+              </div> 
         </div>        
     </div>
-    </div>
-   
+  </div>   
 </div>     
     
 
