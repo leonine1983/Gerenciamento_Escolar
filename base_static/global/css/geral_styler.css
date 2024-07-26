@@ -1,6 +1,60 @@
+
+@import url("https://fonts.googleapis.com");
+@import url("https://fonts.gstatic.com");
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 :root{
     --f-nunico: 'Nunito', sans-serif !important;
+    --f-Montserrat: "Montserrat", sans-serif !important;
+    --f-Nanugot: "Nanum Gothic", sans-serif !important;
+
+}
+
+/* Estilo para h1 */
+body,h1,h2, h3, h4, h5, h6{font-family: var(--f-Nanugot);}
+h1 {
+  font-size: 2rem !important; /* Tamanho de fonte grande */
+  font-weight: 600 !important; /* Peso médio */
+  color: #1d1d1d !important; /* Cor de texto escura */
+  margin: 0.5rem 0 !important; /* Margem vertical */
+}
+
+/* Estilo para h2 */
+h2 {
+  font-size: 1.75rem !important; /* Tamanho de fonte menor que h1 */
+  font-weight: 500 !important; /* Peso médio */
+  color: #2a2a2a !important; /* Cor de texto um pouco mais clara que h1 */
+  margin: 0.5rem 0 !important; /* Margem vertical */
+}
+
+/* Estilo para h3 */
+h3 {
+  font-size: 1.5rem !important; /* Tamanho de fonte menor que h2 */
+  font-weight: 450 !important; /* Peso leve */
+  color: #3c3c3c !important; /* Cor de texto intermediária */
+  margin: 0.5rem 0 !important; /* Margem vertical */
+}
+
+/* Estilo para h4 */
+h4 {
+  font-size: 1.25rem !important; /* Tamanho de fonte menor que h3 */
+  font-weight: 300 !important; /* Peso leve */
+  color: #4e4e4e !important; /* Cor de texto clara */
+  margin: 0.5rem 0 !important; /* Margem vertical */
+}
+
+/* Estilo para h5 */
+h5 {
+  font-size: 1.05rem !important; /* Tamanho de fonte menor que h4 */
+  font-weight: 250 !important; /* Peso normal */
+  color: #606060 !important; /* Cor de texto suave */
+  margin: 0.5rem 0 !important; /* Margem vertical */
+}
+
+/* Adiciona sombra sutil para um efeito moderno */
+h1, h2, h3, h4, h5 {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
 }
 .fs-family-nunito {
     font-family:var(--f-nunico);

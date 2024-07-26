@@ -11,7 +11,6 @@ from rh.models import Config_plataforma
 
 class Create_Pessoa_Professores(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Pessoas
-    #fields = '__all__'
     form_class = Pessoa_form
     template_name = 'Escola/inicio.html'
     success_url = reverse_lazy('Gestao_Escolar:GE_Escola_inicio')    
@@ -45,44 +44,17 @@ class Create_Pessoa_Professores(LoginRequiredMixin, SuccessMessageMixin, CreateV
         contratados_anoLetivo = Contrato.objects.values_list('id', flat=True)
         context['lista_pessoas'] = Pessoas.objects.exclude(pessoa_contratada__id__in= contratados_anoLetivo)
 
-        # Realize a consulta para obter informações do Contrato com base nas condições e exclua aqueles que atendem às condições de Encaminhamentos      
-
-
+        # Realize a consulta para obter informações do Contrato com base nas condições e exclua aqueles que atendem às condições de Encaminhamentos 
         if Config_plataforma.objects.exists():
             config = Config_plataforma.objects.first()
             if config.rh_Ativo:
                 context['rh_ativo'] = "True"
             else:
-                context['rh_ativo'] = "False"
-      
-            
+                context['rh_ativo'] = "False"            
 
         #context['now'] = datetime.now()     
-        context['conteudo_page'] = "Professores-Pessoas"       
-        
-        context['page_ajuda'] = "<div class='m-2'><b>Nessa área, definimos todos os dados para a celebração do contrato com o profissional. </b>\
-            <hr>\
-                <div class='border bg-secondary p-2'>\
-                    <h2>Pessoar a ser contratada</h2>\
-                    <p>Espaço onde é selecionado no nome da pessoa que será contratada. Se por alguma razão estiver vazio, clique aqui: <a class='btn btn-sm btn-primary' href='pessoas/create/'>Clique aqui para cadastrar uma pessoa no sistema</a></p>\
-                </div>\
-                <div class=' p-2'>\
-                    <p><h2>Ano de contrato</h2>\
-                    <p>Espaço onde é selecionado o ano em que o profissional será contratado. Se por alguma razão estiver vazio, clique aqui: <a class='btn btn-sm btn-secondary' href='ano/create/'>Clique aqui para cadastrar um ANO no sistema</a></p>\
-                </div>\
-                <div class='border bg-secondary p-2'>\
-                    <p><h2>Tipo de contrato</h2>\
-                    <p>Espaço onde é selecionado o modelo de contrato que será utilizado para a contratação. Se estiver vazio,  clique aqui: <a class='btn btn-sm btn-primary' href='ano/create/'>Clique aqui para criar um MODELO DE CONTRATO no sistema</a></p>\
-                </div>\
-                <div class=' p-2'>\
-                    <p><h2>Função que irá desempenhar na escola</h2>\
-                    <p>Local em que é definido a função pela qual o profissional está sendo contratado</p>\
-                </div>\
-                <div class='border bg-secondary p-2'>\
-                    <p><h2>Escola onde o profissional irá desempenhar suas funções</h2>\
-                    <p>Espaço onde é selecionado a instituição que o profissional desempenhará suas funções. Se estiver vazio,  clique aqui: <a class='btn btn-sm btn-primary' href='escola/create/'>Clique aqui para Adicionar uma Escola</a></p>\
-                </div>"
-        
+        context['conteudo_page'] = "Professores-Pessoas"               
+        context['page_ajuda'] = "<div class='m-2'><b>Nessa área, definimos todos os dados para a celebração do contrato com o profissional."        
         return context
 
     def form_valid(self, form):

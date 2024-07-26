@@ -91,12 +91,15 @@
             </div>
 
             <div class="tab-pane fade  p-3" id="profile-tab-pane2" role="tabpanel" aria-labelledby="profile-tab2" tabindex="0">
-              <div class='row row-cols-2 border-success border-bottom mt-4'>
-                <h3 class='col-8'><i class="fs-6 fa-duotone fa-person-chalkboard"></i> CARGOS/PROFISSIONAIS na escola </h3>
-                <a class='btn btn-outline-success btn-sm col-3 pt-2' href="{% url 'Gestao_Escolar:Professores_Profissionais_create' %}" class="nav-link">Adicionar | Excluir profissionais à escola <i class="fa-sharp fa-solid fa-plus text-info"></i></a>
+              <div class='border-success border-bottom mt-4'>
+                <h3 class='p-2 bg-primary-subtle'><i class="fs-6 fa-duotone fa-person-chalkboard"></i> CARGOS/PROFISSIONAIS | Relação de profissionais cadastrado na escola: Ano Letivo {{request.session.anoLetivo_nome}}  </h3>
+                <div class="text-end">
+                  <h4 class="mx-5">Relação de todos os profissionais e seus respectivos cargos nessa instituição <b>{{request.session.escola_nome}}</b></h4>                 
+                  <a class='btn btn-secondary btn-sm m-1' href="{% url 'Gestao_Escolar:Professores_Profissionais_create' %}" class="nav-link">Novo | Atualizar <i class="fa-sharp fa-solid fa-plus text-info"></i></a>              
+                </div>
               </div>
                 
-              <table class='table table-striped'>
+              <table class='win11-table'>
                 <thead>
                   <tr>
                     <th>ICON</th>

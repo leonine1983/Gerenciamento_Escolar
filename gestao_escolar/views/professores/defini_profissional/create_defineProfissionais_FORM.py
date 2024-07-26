@@ -13,7 +13,6 @@ class Form_defineProfissionais(forms.ModelForm):
     cargo = forms.ModelChoiceField(
         queryset=Cargo.objects.all(),        
         widget=forms.Select(attrs={'class':' border border-info p-3 pb-3 bg-transparent text-info col-8 m-2 rounded-1'})    
-#widget=forms.DateInput(attrs={'class':  'type': 'date'}), 
     )
     area_especializacao = forms.CharField(        
         widget=forms.TextInput(attrs={'class':' border border-info p-3 pb-3 bg-transparent text-info col-7 m-2 rounded-1'})      
@@ -31,11 +30,7 @@ class Form_defineProfissionais(forms.ModelForm):
             self.fields['nome'].label_from_instance = lambda obj: f'{obj.encaminhamento.contratado.nome} {obj.encaminhamento.contratado.sobrenome}'
 
 
-
-
-            """
-            
-               # Atualize o rótulo do campo 'nome' para exibir o nome completo
-            self.fields['nome'].label_from_instance..label_from_instance  = lambda obj: f'{obj.nome} {obj.sobrenome}'
-            
-            """
+class Form_defineProfissionais_update(forms.ModelForm):
+    class Meta:
+        model =  Profissionais
+        fields = ['area_especializacao', 'cargo']

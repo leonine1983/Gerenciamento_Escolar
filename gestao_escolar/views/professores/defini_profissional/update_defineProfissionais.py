@@ -1,31 +1,20 @@
-from rh.models import Pessoas, Encaminhamentos, Ano, Contrato
-from gestao_escolar.models import AnoLetivo, Profissionais, Cargo
-from django.views.generic import CreateView
+from rh.models import Pessoas, Encaminhamentos
+from gestao_escolar.models import Profissionais, Cargo
+from django.views.generic import UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from datetime import datetime
+from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
-from django.core.paginator import Paginator
-from .create_defineProfissionais_FORM import Form_defineProfissionais
+from .create_defineProfissionais_FORM import Form_defineProfissionais_update
 
-
-# DEFINE O CARGO QUE O PROFISSIONAL IRÁ EXERCER NA ESCOLA --------------------------------
-class Create_Define_Profissional(LoginRequiredMixin, CreateView):
+# ATUALIZA O CARGO QUE O PROFISSIONAL IRÁ EXERCER NA ESCOLA --------------------------------
+class Update_Define_Profissional(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Profissionais
-    #fields = '__all__'
-    form_class = Form_defineProfissionais
+    form_class = Form_defineProfissionais_update
     template_name = 'Escola/inicio.html'
     success_url = reverse_lazy('Gestao_Escolar:GE_Escola_inicio')    
 
     def get_success_url(self):
-        return reverse_lazy('Gestao_Escolar:Professores_Profissionais_create')    
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()  
-        escola = self.request.session['escola_id']  
-        profissionais_list = Profissionais.objects.values_list('nome__id', flat=True)
-        encaminhamento_esc = Encaminhamentos.objects.filter(destino = escola, encaminhamento__ano_contrato__anoletivo = self.request.session['anoLetivo_id'] )
-        kwargs['nome_query'] = encaminhamento_esc.exclude(id__in = profissionais_list )
-        return kwargs
+        return reverse_lazy('Gestao_Escolar:Professores_Profissionais_create')   
     
     def get_context_data(self, **kwargs):
         escola = self.request.session['escola_id']
@@ -38,6 +27,7 @@ class Create_Define_Profissional(LoginRequiredMixin, CreateView):
         context['lista_all'] = Profissionais.objects.filter(nome__destino = escola, nome__encaminhamento__ano_contrato__anoletivo = self.request.session['anoLetivo_id'] )       
         context['cargo_all'] = Cargo.objects.all()       
         context['conteudo_page'] = "cargos/funcionarios" 
+        context['active'] = 'active'
         context['page_ajuda'] = "<h3>Definir cargo para o funcionário</h3>\
                 <hr>\
                 <h4 >Para otimizar a gestão escolar e aprimorar o controle dos colaboradores,\

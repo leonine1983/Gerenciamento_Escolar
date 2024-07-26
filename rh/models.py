@@ -341,13 +341,7 @@ class Encaminhamentos(models.Model):
     profissao = models.ForeignKey(Profissao, null=False, verbose_name="Atividade a ser realizada pelo profissional", on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.encaminhamento.contratado.nome
-
-    # Sobrescrever o metodo save para verificar se existe registros com as mesmas informações no BD, se
-    # tiver, ele impede o salvamento e emite uma mensagem
-
-   
-
+        return self.encaminhamento.contratado.nome  
 
     def save(self, *args, **kwargs):
         # Verifica se já existe um contrato com as mesmas informações

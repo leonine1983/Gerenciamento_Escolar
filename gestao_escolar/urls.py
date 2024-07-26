@@ -78,8 +78,9 @@ urlpatterns = [
     path('gestao_escolar/Professores/Pessoas/encaminhamento/<int:pk>,<int:destino>,<int:profissao>', Create_Pessoa_Encaminhamento.as_view(), name="Professores_Encaminhamento"), 
     path('gestao_escolar/Professores/', Create_Professores.as_view(), name="GE_Professores_create"),     
 
-    # Definir Profissionais
-    path('gestao_escolar/Profissionais/', Create_Define_Profissional.as_view(), name="Professores_Profissionais_create"),  
+    # Definir o cargo que o profissional irá exercer na escola
+    path('gestao_escolar/Profissionais/', Create_Define_Profissional.as_view(), name="Professores_Profissionais_create"),      
+    path('gestao_escolar/Profissionais/<int:pk>', Update_Define_Profissional.as_view(), name="Professores_Profissionais_atualiza"),  
 
     # Gestão de Turmas
     path('gestao_escolar/Gestao_Turmas/', Create_Notas.as_view(), name="NotasAluno_all_create"),  
