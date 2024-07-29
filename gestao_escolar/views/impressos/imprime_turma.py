@@ -1,6 +1,7 @@
 from typing import Any
 from django.views.generic import ListView
-from gestao_escolar.models import Turmas, Escola
+from rh.models import Escola
+from gestao_escolar.models import Turmas
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin

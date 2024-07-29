@@ -1,5 +1,6 @@
 from django import forms
-from gestao_escolar.models import Profissionais, Encaminhamentos, Cargo
+from rh.models import Encaminhamentos
+from gestao_escolar.models import Profissionais,  Cargo
 
 class Form_defineProfissionais(forms.ModelForm):
     class Meta:

@@ -30,9 +30,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # meus apps
-    'controle_estoque',
-    'gestao_escolar',
     'rh',
+    'controle_estoque',
+    'gestao_escolar',    
     'admin_acessos',
     'ckeditor',
     'ckeditor_uploader'

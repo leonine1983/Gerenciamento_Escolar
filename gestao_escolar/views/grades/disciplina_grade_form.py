@@ -1,5 +1,6 @@
 from django import forms
-from gestao_escolar.models import Disciplina, Turmas, Encaminhamentos, TurmaDisciplina, Profissionais
+from rh.models import Encaminhamentos
+from gestao_escolar.models import Disciplina, Turmas,  TurmaDisciplina, Profissionais
 
 # widget personalizado que usa as classes (form-control, border, p-3, pb-3 e bg-transparent) para ser atribuido ao campo 'tempo_meses' 
 

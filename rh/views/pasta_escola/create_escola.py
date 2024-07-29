@@ -5,7 +5,7 @@ from django.views.generic import CreateView
 from .forms import Contrato_form
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import redirect
-from gestao_escolar.models import Escola
+from rh.models import Escola
 
 
 class Escola_createView(LoginRequiredMixin, SuccessMessageMixin, CreateView):

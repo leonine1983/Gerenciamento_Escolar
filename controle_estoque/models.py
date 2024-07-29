@@ -1,6 +1,6 @@
 from django.db import models
 from rh.models import Prefeitura
-from gestao_escolar.models import Escola as Escolas_model
+from rh.models import Escola as Escolas_model
 from django.db.models.signals import post_migrate, post_save
 from django.dispatch import receiver 
 import random

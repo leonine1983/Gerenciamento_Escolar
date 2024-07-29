@@ -120,7 +120,10 @@ Caso o módulo RH não esteja ativo, o app Gestão_Escolar tem acesso à criaç�
 """
 from django.db import connection
 
-if Config_plataforma in connection.introspection.table_names():
+def config_plataforma_table_exists():
+    return 'config_plataforma' in connection.introspection.table_names()
+
+if config_plataforma_table_exists():
     if Config_plataforma.objects.exists():
         config = Config_plataforma.objects.first()
         if config.rh_Ativo:
@@ -130,8 +133,4 @@ if Config_plataforma in connection.introspection.table_names():
     else:
         urlpatterns.append(path('gestao_escolar/Pessoas/Criar/', Create_Pessoa_Professores.as_view(), name="GE_Create_Professores"))
 else:
-        urlpatterns.append(path('gestao_escolar/Pessoas/Criar/', Create_Pessoa_Professores.as_view(), name="GE_Create_Professores"))
-
-
-
-
+    urlpatterns.append(path('gestao_escolar/Pessoas/Criar/', Create_Pessoa_Professores.as_view(), name="GE_Create_Professores"))

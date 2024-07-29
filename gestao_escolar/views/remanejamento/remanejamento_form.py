@@ -1,5 +1,6 @@
 from django import forms
-from gestao_escolar.models import Turmas, Escola, Alunos, Remanejamento, Serie_Escolar, Matriculas
+from rh.models import Escola
+from gestao_escolar.models import Turmas, Alunos, Remanejamento, Serie_Escolar, Matriculas
 
 # widget personalizado que usa as classes (form-control, border, p-3, pb-3 e bg-transparent) para ser atribuido ao campo 'tempo_meses' 
 

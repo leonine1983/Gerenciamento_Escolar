@@ -1,4 +1,4 @@
-from gestao_escolar.models import Escola
+from rh.models import Escola
 from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime

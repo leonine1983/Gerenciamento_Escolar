@@ -1,4 +1,5 @@
-from gestao_escolar.models import Escola, Matriculas, Alunos, Turmas
+from rh.models import Escola
+from gestao_escolar.models import Matriculas, Alunos, Turmas
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages

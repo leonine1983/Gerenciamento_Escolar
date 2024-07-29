@@ -77,7 +77,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.forms import modelform_factory
 from django.contrib import messages
-from gestao_escolar.models import Turmas, Horario, Escola, Periodo, Validade_horario
+from rh.models import Escola
+from gestao_escolar.models import Turmas, Horario, Periodo, Validade_horario
 from django.urls import reverse
 from django.utils import timezone
 

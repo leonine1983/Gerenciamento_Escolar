@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 from django.db.models.signals import post_migrate, post_save
 from django.dispatch import receiver
-from rh.models import Ano, Encaminhamentos, Escola, Uf_Unidade_Federativa, Sexo
+from rh.models import Ano, Uf_Unidade_Federativa, Sexo, Bairro, Cidade
 from ckeditor_uploader.fields import RichTextUploadingField
 
 
@@ -191,34 +191,6 @@ choice_local_diferenciado= {
 }
 
 
-class Cidade(models.Model):
-    nome_estado = models.ForeignKey(Uf_Unidade_Federativa, on_delete=models.CASCADE)
-    nome_cidade = models.CharField(max_length=30)
-    def __str__(self) -> str:
-        return self.nome_cidade
-    
-    @receiver(post_migrate)
-    def create_register(sender, **kwargs):
-        if not Cidade.objects.exists():
-            Cidade.objects.create(
-                nome_estado = Uf_Unidade_Federativa.objects.get(id = 5),
-                nome_cidade = "Vera Cuz",
-            )
-
-
-class Bairro(models.Model):    
-    nome_cidade = models.ForeignKey(Cidade, on_delete=models.CASCADE)
-    nome_bairro = models.CharField(max_length=50)
-    def __str__(self) -> str:
-        return f'{self.nome_bairro}, {self.nome_cidade}'
-
-    @receiver(post_migrate)
-    def create_register(sender, **kwargs):
-        if not Bairro.objects.exists():
-            Bairro.objects.create(
-                nome_cidade = Cidade.objects.get(id = 1),
-                nome_bairro = "Coroa",
-            )
 
 
 class Alunos(models.Model):
@@ -420,7 +392,7 @@ turno = {
 class Turmas(models.Model):
     nome = models.CharField(max_length=10)
     descritivo_turma = models.CharField(max_length=10, default='única')
-    escola = models.ForeignKey(Escola, on_delete=models.CASCADE)
+    escola = models.ForeignKey('rh.Escola', on_delete=models.CASCADE)
     ano_letivo = models.ForeignKey(AnoLetivo, on_delete=models.CASCADE)
     serie =  models.ForeignKey(Serie_Escolar, on_delete=models.CASCADE)
     turno = models.CharField(choices=turno, null=False, default=1, max_length=12)    
@@ -454,7 +426,7 @@ from django.db.models.signals import post_migrate
 
 # ---- Esta sessão inicia herdando do model Encaminhamentos do App RH.Models -------------------------------------
 class Profissionais(models.Model):
-    nome = models.ForeignKey(Encaminhamentos, on_delete=models.CASCADE, null=True)
+    nome = models.ForeignKey('rh.Encaminhamentos', on_delete=models.CASCADE, null=True)
     cargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
     area_especializacao = models.CharField(max_length=100, null=True)
 
@@ -595,7 +567,7 @@ class Trimestre(models.Model):
     
 
 class Periodo(models.Model):
-    escola = models.ForeignKey(Escola, on_delete=models.CASCADE, null=True)
+    escola = models.ForeignKey('rh.Escola', on_delete=models.CASCADE, null=True)
     turma = models.ForeignKey(Turmas, on_delete=models.CASCADE, null=True)
     nome_periodo = models.CharField(max_length=30, null=True)
     hora_inicio = models.TimeField(null=True)
@@ -615,7 +587,7 @@ class Periodo(models.Model):
         return self.hora_inicio < other.hora_inicio
 
 class Validade_horario(models.Model):    
-    escola = models.ForeignKey(Escola, related_name='escola_validade_related', on_delete=models.CASCADE, null=True)
+    escola = models.ForeignKey('rh.Escola', related_name='escola_validade_related', on_delete=models.CASCADE, null=True)
     turma = models.ForeignKey(Turmas,null=True, related_name='turma_Validade_related', on_delete=models.CASCADE)  
     nome_validade = models.CharField(max_length=30)
     data_inicio = models.DateField(null=True)

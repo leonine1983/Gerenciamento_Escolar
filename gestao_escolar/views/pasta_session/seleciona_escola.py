@@ -2,7 +2,7 @@
 from gestao_escolar.models import *
 from django.shortcuts import  redirect
 from django.urls import reverse
-from gestao_escolar.models import Escola
+from rh.models import Escola
 from admin_acessos.models import NomeclaturaJanelas
 from django.contrib.auth.decorators import login_required
 

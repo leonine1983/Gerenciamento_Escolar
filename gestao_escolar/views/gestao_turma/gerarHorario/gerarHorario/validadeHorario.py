@@ -1,7 +1,8 @@
 
 from django import forms
 from django.views.generic import CreateView
-from gestao_escolar.models import Validade_horario, Turmas, Escola
+from rh.models import Escola
+from gestao_escolar.models import Validade_horario, Turmas
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError

@@ -4,7 +4,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import UpdateView
 from .forms import Contrato_form
 from django.urls import reverse_lazy
-from gestao_escolar.models import Escola
+from rh.models import Escola
 
 
 class Escola_updateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):

@@ -61,6 +61,34 @@ class Uf_Unidade_Federativa(models.Model):
     def __str__(self):
         return f'{self.estado}/{self.sigla}'
     
+class Cidade(models.Model):
+    nome_estado = models.ForeignKey(Uf_Unidade_Federativa, on_delete=models.CASCADE)
+    nome_cidade = models.CharField(max_length=30)
+    def __str__(self) -> str:
+        return self.nome_cidade
+    
+    @receiver(post_migrate)
+    def create_register(sender, **kwargs):
+        if not Cidade.objects.exists():
+            Cidade.objects.create(
+                nome_estado = Uf_Unidade_Federativa.objects.get(id = 5),
+                nome_cidade = "Vera Cuz",
+            )
+
+
+class Bairro(models.Model):    
+    nome_cidade = models.ForeignKey(Cidade, on_delete=models.CASCADE)
+    nome_bairro = models.CharField(max_length=50)
+    def __str__(self) -> str:
+        return f'{self.nome_bairro}, {self.nome_cidade}'
+
+    @receiver(post_migrate)
+    def create_register(sender, **kwargs):
+        if not Bairro.objects.exists():
+            Bairro.objects.create(
+                nome_cidade = Cidade.objects.get(id = 1),
+                nome_bairro = "Coroa",
+            )
 
 class Prefeitura (models.Model):
     prefeitura_nome = models.CharField(max_length=50, null=False, default='Prefeitura')
@@ -154,6 +182,7 @@ class Sexo(models.Model):
     def __str__(self):
         return self.nome
 
+from gestao_escolar.models import Bairro, Cidade
 
 
 class Pessoas(models.Model):
@@ -168,10 +197,9 @@ class Pessoas(models.Model):
     rua= models.CharField(max_length=50, null=True, verbose_name='Nome da rua, avenida etc.')
     complemento= models.CharField(max_length=30, null=True, verbose_name='casa, apartamento etc.')
     numero_casa= models.CharField(max_length=10, null=True, verbose_name='Numero da casa ou s/n')
-    bairro = models.CharField(max_length=30, null=True, verbose_name='Bairro')     
-    cidade = models.CharField(max_length=30, null=True, verbose_name='Cidade')
-    cep= models.CharField(max_length=30, null=True, verbose_name='CEP')   
-    
+    bairro = models.ForeignKey(Bairro, on_delete=models.CASCADE, related_name='pessoas_bairro_related', null=True, verbose_name='Bairro')     
+    cidade = models.ForeignKey(Bairro, on_delete=models.CASCADE, related_name='pessoas_cidade_related', null=True, verbose_name='Cidade')
+    cep= models.CharField(max_length=30, null=True, verbose_name='CEP')       
 
     def calcula_idade (self):
         if self.data_nascimento:
@@ -181,12 +209,9 @@ class Pessoas(models.Model):
             return str(anos) + " anos"
         else:
             return None
-
         
     def save(self, *args, **kwargs):
         self.idade = self.calcula_idade()
-        # Verificar se existe registros com as mesmas informações no BD,
-        # se já tiver, ele impede o salvamento e emite uma mensagem
         existing_pessoas = Pessoas.objects.filter(
             nome = self.nome,
             cpf = self.cpf,
@@ -198,8 +223,6 @@ class Pessoas(models.Model):
         if existing_pessoas.exists():
             raise ValidationError ("Já existe um registro com essas informações")
         super(Pessoas, self).save(*args, **kwargs)
-
-
     
     def __str__(self):
         return f'{self.nome} {self.sobrenome}'  

@@ -1,7 +1,7 @@
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from rh.models import Vinculo_empregaticio, Pessoas, Encaminhamentos, Contrato, Profissao
-from gestao_escolar.models import Escola
+from rh.models import Escola
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
