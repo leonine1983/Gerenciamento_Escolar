@@ -11,105 +11,37 @@ from ckeditor_uploader.fields import RichTextUploadingField
 class AnoLetivo(models.Model):
     ano = models.ForeignKey(Ano, on_delete=models.CASCADE)
     data_inicio = models.DateField(blank=True, null=True)
-    data_fim = models.DateField(blank=True, null=True)
-    
-    @receiver(post_migrate)
-    def criar_registro(sender, *args, **kwargs):
-        if not AnoLetivo.objects.exists():
-            AnoLetivo.objects.create(
-                ano = Ano.objects.get(id=1)
-            )
-
+    data_fim = models.DateField(blank=True, null=True)   
     def __str__(self):
         return str(self.ano.ano)
 
 
 class Cargo(models.Model):
     nome = models.CharField(max_length=30)
-
-    @receiver(post_migrate)
-    def create_register(sender, *args, **kwargs):
-        cargos = [
-                'Diretor',
-                'Vice-Diretor',
-                'Coordenador',
-                'Professor',
-                'Auxiliar-Administrativo-I',
-                'Auxiliar-Administrativo-II',
-                'Tecnico-em-Multimeitos-Didáticos',
-                'Tecnico-em-Merenda-Escolar',
-                'Auxiliar-de-Classe',
-                'Servente-de-limpeza',
-                'Monitor-de-Informática',                
-                'Merendeira',
-                'Porteiro',
-                'Estagiário'
-                 ]
-        if not Cargo.objects.exists():            
-            Cargo.objects.bulk_create(
-                [Cargo(nome = n) for n in cargos]
-            )
-
     def __str__(self):
-        return self.nome  
+        return self.nome
     
     
 class Etnia(models.Model):
-    nome = models.CharField(max_length=30)
-
-    @receiver(post_migrate)
-    def cria_registro(sender, *args, **kwargs):
-        etnias = ['Branca', 'Negra', 'Parda', 'Amarela', 'Indigena', 'Não declado']
-        if not Etnia.objects.exists():            
-            Etnia.objects.bulk_create(
-            [Etnia(nome = etnia) for etnia in etnias]
-            )
-
+    nome = models.CharField(max_length=30)   
     def __str__(self):
         return self.nome
     
 
 class Nacionalidade(models.Model):
-    nome = models.CharField(max_length=30)
-
-    @receiver(post_migrate)
-    def cria_registro(sender, *args, **kwargs):
-        nacionalidades = ['Brasileira', 'Brasileiro nascido no exterior', 'Mexicano']
-        if not Nacionalidade.objects.exists():            
-            Nacionalidade.objects.bulk_create(
-            [Nacionalidade(nome = nacionalidade) for nacionalidade in nacionalidades]
-            )
-
+    nome = models.CharField(max_length=30)   
     def __str__(self):
         return self.nome
     
 
 class Pais_origem(models.Model):
-    nome = models.CharField(max_length=30)
-
-    @receiver(post_migrate)
-    def cria_registro(sender, *args, **kwargs):
-        paises= ['Brasil', 'Japao', 'Mexico']
-        if not Pais_origem.objects.exists():            
-            Pais_origem.objects.bulk_create(
-            [Pais_origem(nome = pais) for pais in paises]
-            )
-
+    nome = models.CharField(max_length=30)  
     def __str__(self):
         return self.nome
     
 
 class Deficiencia_aluno(models.Model):
-    nome = models.CharField(max_length=30)
-
-    @receiver(post_migrate)
-    def cria_registro(sender, *args, **kwargs):
-        deficiencias= ['Física', 'Mental', 'Auditiva', 'Visual', 'Nenhuma']
-        if not Deficiencia_aluno.objects.exists():            
-            Deficiencia_aluno.objects.bulk_create(
-            [Deficiencia_aluno(nome = deficiencia) for deficiencia in deficiencias]
-            )
-
+    nome = models.CharField(max_length=30)  
     def __str__(self):
         return self.nome
     
@@ -190,9 +122,6 @@ choice_local_diferenciado= {
     ('5', 'Área de povos e comunidades tradicionais'),  
 }
 
-
-
-
 class Alunos(models.Model):
     nome_completo = models.CharField(max_length=120, null=False, default='Nome completo do aluno', verbose_name='Nome completo do aluno*')    
     nome_social = models.CharField(max_length=30, null=True, blank=True, default='')
@@ -270,33 +199,11 @@ class Disciplina(models.Model):
     nome = models.CharField(max_length=100)
     ordem_historico = models.FloatField(null=True)
     n_A = models.BooleanField(verbose_name="Destacar como N/S (Não avaliado) nos impressos", default=False, null=True)
-    #carga_horaria_anual = models.IntegerField()
-    #categoria_grupo = pass
     faltas = models.BooleanField(verbose_name="Não permitir lançamento de faltas", default=False, null=True)
     notas = models.BooleanField(verbose_name="Não permitir lançamento de notas", default=False, null=True)
     historico_escolar = models.BooleanField(verbose_name="Não mostrar no histórico escolar", default=False, null=True)
     papeletas = models.BooleanField(verbose_name="Não mostrar em papeletas", default=False, null=True)
-    ata_final = models.BooleanField(verbose_name="Não mostrar em Atas Finais", default=False, null=True)
-    #educacacenso = models.Charfield(verbose_name="Integração com Educacenso")
-    #unidade_curricular = models.Charfield(verbose_name="Unidade Curricular - Educacenso")
-
-    @receiver(post_migrate)
-    def create_register(sender, *args, **kwargs):
-        disciplina = [
-                ('Língua Portuguesa', 1),
-                ('Língua Inglesa', 2),
-                ('Matemática', 3),
-                ('Ciências', 4),
-                ('Geografia', 5),
-                ('História', 6),
-                ('Educação Ambiental', 7),
-                ('Educação Artística', 8),
-                ('Educação Física', 9), 
-            ]
-        if not Disciplina.objects.exists():
-            Disciplina.objects.bulk_create(
-                [Disciplina(nome = nomes, ordem_historico = histor) for nomes, histor in disciplina]
-            )
+    ata_final = models.BooleanField(verbose_name="Não mostrar em Atas Finais", default=False, null=True)   
 
     class Meta:
         ordering = ['ordem_historico']
@@ -307,46 +214,16 @@ class Disciplina(models.Model):
 
 class Compatibilidade_EducaCenso(models.Model):
     nome = models.CharField(max_length=100)
-
-    @receiver(post_migrate)
-    def cria_registro(sender, *args, **kwargs):
-        areas = [
-            'Ensino Fundamental de 9 anos - 1ºano',
-            'Ensino Fundamental de 9 anos - 2ºano',
-            'Ensino Fundamental de 9 anos - 3ºano',
-            'Ensino Fundamental de 9 anos - 4ºano',
-            'Ensino Fundamental de 9 anos - 5ºano',
-            'Ensino Fundamental de 9 anos - 6ºano',
-            'Ensino Fundamental de 9 anos - 7ºano',
-            'Ensino Fundamental de 9 anos - 8ºano',
-            'Ensino Fundamental de 9 anos - 9ºano',
-            'EJA - Ensino Fundamental - Anos Iniciais',
-            'EJA - Ensino Fundamental - Anos Finais',
-            'Educação Infantil']
-
-        if not Compatibilidade_EducaCenso.objects.exists():
-            Compatibilidade_EducaCenso.objects.bulk_create(
-                [Compatibilidade_EducaCenso(nome = area) for area in areas]
-            )   
-
     def __str__(self):
         return self.nome
 
         
 class GrauEscolar(models.Model):
-    nome = models.CharField(max_length=30, verbose_name="Grau/Nível Escolar" )
-
-    @receiver(post_migrate)
-    def cria_registro(sender, *args, **kwargs):
-        graus = ['Ensino Fundamental', 'Ensino Infantil']
-        if not GrauEscolar.objects.exists():
-            GrauEscolar.objects.bulk_create(
-                [GrauEscolar(nome = grau) for grau in graus]
-            )
-
+    nome = models.CharField(max_length=30, verbose_name="Grau/Nível Escolar")
     def __str__(self):
-        return self.nome        
+        return self.nome
 
+    
 
 class Serie_Escolar(models.Model):
     nome = models.CharField(max_length=30)
@@ -782,3 +659,133 @@ class AtividadeAluno(models.Model):
 
 
 """  
+
+@receiver(post_migrate)
+def criar_registro_AnoLetivo(sender, **kwargs):
+    if sender.name == 'rh':  # Verifica se a migração é para o app 'rh'
+        if not AnoLetivo.objects.exists():
+            try:
+                ano = Ano.objects.get(id=1)  # Ajuste o ID conforme necessário
+                AnoLetivo.objects.create(
+                    ano=ano,
+                    data_inicio='2024-01-01',  # Ajuste a data conforme necessário
+                    data_fim='2024-12-31',    # Ajuste a data conforme necessário
+                )
+            except Ano.DoesNotExist:
+                print("Ano com ID 1 não encontrado.")
+
+    
+@receiver(post_migrate)
+def create_register_Cargo(sender, *args, **kwargs):
+    if sender.name == 'gestao_escolar':  # Certifique-se de que o app 'rh' está sendo migrado
+        if not Cargo.objects.exists():
+            cargos = [
+                'Diretor',
+                'Vice-Diretor',
+                'Coordenador',
+                'Professor',
+                'Auxiliar-Administrativo-I',
+                'Auxiliar-Administrativo-II',
+                'Tecnico-em-Multimeitos-Didáticos',
+                'Tecnico-em-Merenda-Escolar',
+                'Auxiliar-de-Classe',
+                'Servente-de-limpeza',
+                'Monitor-de-Informática',                
+                'Merendeira',
+                'Porteiro',
+                'Estagiário'
+            ]
+            Cargo.objects.bulk_create(
+                [Cargo(nome=n) for n in cargos]
+            )
+
+@receiver(post_migrate)
+def cria_registro_Etnia(sender, **kwargs):
+    if sender.name == 'gestao_escolar':  # Verifica se o app é 'gestao_escolar'
+        if not Etnia.objects.exists():
+            etnias = ['Branca', 'Negra', 'Parda', 'Amarela', 'Indigena', 'Não declarado']
+            Etnia.objects.bulk_create(
+                [Etnia(nome=etnia) for etnia in etnias]
+            )
+    
+@receiver(post_migrate)
+def cria_registro_Nacionalidade(sender, **kwargs):
+    if sender.name == 'gestao_escolar':  # Verifica se é o app correto
+        if not Nacionalidade.objects.exists():
+            nacionalidades = [
+                'Brasileira',
+                'Brasileiro nascido no exterior',
+                'Mexicano'
+            ]
+            Nacionalidade.objects.bulk_create(
+                [Nacionalidade(nome=nacionalidade) for nacionalidade in nacionalidades]
+            )
+    
+@receiver(post_migrate)
+def cria_registro_Pais_Origem(sender, **kwargs):
+    if sender.name == 'gestao_escolar':  # Garante que o sinal só execute para o app correto
+        if not Pais_origem.objects.exists():
+            paises = ['Brasil', 'Japão', 'México']  # Corrigido "Japao" para "Japão" e "Mexico" para "México"
+            Pais_origem.objects.bulk_create(
+                [Pais_origem(nome=pais) for pais in paises]
+            )
+        
+@receiver(post_migrate)
+def cria_registro_Deficiencia_Aluno(sender, **kwargs):
+    if sender.name == 'gestao_escolar':  # Verifica se o sender é o app 'gestao_escolar'
+        if not Deficiencia_aluno.objects.exists():
+            deficiencias = ['Física', 'Mental', 'Auditiva', 'Visual', 'Nenhuma']
+            Deficiencia_aluno.objects.bulk_create(
+                [Deficiencia_aluno(nome=deficiencia) for deficiencia in deficiencias]
+            )
+        
+@receiver(post_migrate)
+def create_register_Disciplina(sender, **kwargs):
+    if sender.name == 'gestao_escolar':  # Certifique-se de que o nome do app está correto
+        if not Disciplina.objects.exists():
+            disciplinas = [
+                ('Língua Portuguesa', 1),
+                ('Língua Inglesa', 2),
+                ('Matemática', 3),
+                ('Ciências', 4),
+                ('Geografia', 5),
+                ('História', 6),
+                ('Educação Ambiental', 7),
+                ('Educação Artística', 8),
+                ('Educação Física', 9),
+            ]
+            Disciplina.objects.bulk_create(
+                [Disciplina(nome=nome, ordem_historico=ordem) for nome, ordem in disciplinas]
+            )
+        
+@receiver(post_migrate)
+def cria_registro_CompatibilidadeEducaCenso(sender, **kwargs):
+    if sender.name == 'gestao_escolar':
+        if not Compatibilidade_EducaCenso.objects.exists():
+            areas = [
+                'Ensino Fundamental de 9 anos - 1ºano',
+                'Ensino Fundamental de 9 anos - 2ºano',
+                'Ensino Fundamental de 9 anos - 3ºano',
+                'Ensino Fundamental de 9 anos - 4ºano',
+                'Ensino Fundamental de 9 anos - 5ºano',
+                'Ensino Fundamental de 9 anos - 6ºano',
+                'Ensino Fundamental de 9 anos - 7ºano',
+                'Ensino Fundamental de 9 anos - 8ºano',
+                'Ensino Fundamental de 9 anos - 9ºano',
+                'EJA - Ensino Fundamental - Anos Iniciais',
+                'EJA - Ensino Fundamental - Anos Finais',
+                'Educação Infantil'
+            ]
+            Compatibilidade_EducaCenso.objects.bulk_create(
+                [Compatibilidade_EducaCenso(nome=area) for area in areas]
+            )
+
+@receiver(post_migrate, sender='gestao_escolar')
+def cria_registro_GrauEscolar(sender, **kwargs):
+    if sender.name == 'gestao_escolar':
+        graus = ['Ensino Fundamental', 'Ensino Infantil']
+        if not GrauEscolar.objects.exists():
+            GrauEscolar.objects.bulk_create(
+                [GrauEscolar(nome=grau) for grau in graus]
+            )
+            

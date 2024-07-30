@@ -9,29 +9,39 @@ class Config_plataforma(models.Model):
     rh_Ativo = models.BooleanField(default=False)
 
     @receiver(post_migrate)
-    def cria_registro(sender, *args, **kwargs):
-        if not Config_plataforma.objects.exists():
-            Config_plataforma.objects.create(
-                rh_Ativo = False
-            )
+    def cria_registro(sender, **kwargs):
+        # Verifica se o sender é o modelo Config_plataforma
+        if sender == Config_plataforma._meta.model:
+            if not Config_plataforma.objects.exists():
+                Config_plataforma.objects.create(
+                    rh_Ativo=False
+                )
 
+from django.db import models
+from django.db.models.signals import post_migrate
+from django.dispatch import receiver
 
 class Uf_Unidade_Federativa(models.Model):
     sigla = models.CharField(max_length=2)
     estado = models.CharField(max_length=10)
 
-    @receiver(post_migrate)
-    def criar_registro(sender, *args, **kwargs):
+    def __str__(self):
+        return f'{self.estado}/{self.sigla}'
+
+# Função para criar o registro inicial
+@receiver(post_migrate)
+def criar_registro(sender, **kwargs):
+    if sender.name == 'seu_app':  # Substitua 'seu_app' pelo nome do seu app
         if not Uf_Unidade_Federativa.objects.exists():
             uf_estados = [
                 ('AC', 'Acre'),
-                ('AL', 'Alagoras'),
+                ('AL', 'Alagoas'),
                 ('AM', 'Amazonas'),
                 ('AP', 'Amapá'),
                 ('BA', 'Bahia'),
                 ('CE', 'Ceará'),
                 ('DF', 'Distrito Federal'),
-                ('ES', 'Espírito Santos'),
+                ('ES', 'Espírito Santo'),
                 ('GO', 'Goiás'),
                 ('MA', 'Maranhão'),
                 ('MG', 'Minas Gerais'),
@@ -50,83 +60,108 @@ class Uf_Unidade_Federativa(models.Model):
                 ('SC', 'Santa Catarina'),
                 ('SE', 'Sergipe'),
                 ('SP', 'São Paulo'),
-                ('TO', 'Tocatins'),
+                ('TO', 'Tocantins'),
             ]
             Uf_Unidade_Federativa.objects.bulk_create(
-                [Uf_Unidade_Federativa(sigla = s, estado = e) for s, e in uf_estados]
+                [Uf_Unidade_Federativa(sigla=s, estado=e) for s, e in uf_estados]
             )
 
-       
-
-    def __str__(self):
-        return f'{self.estado}/{self.sigla}'
     
 class Cidade(models.Model):
     nome_estado = models.ForeignKey(Uf_Unidade_Federativa, on_delete=models.CASCADE)
     nome_cidade = models.CharField(max_length=30)
+
     def __str__(self) -> str:
         return self.nome_cidade
-    
+
+    @staticmethod
     @receiver(post_migrate)
     def create_register(sender, **kwargs):
-        if not Cidade.objects.exists():
-            Cidade.objects.create(
-                nome_estado = Uf_Unidade_Federativa.objects.get(id = 5),
-                nome_cidade = "Vera Cuz",
-            )
+        # Verifica se o sender é o app correto, para evitar a execução de sinal em outros apps
+        if sender.name == 'seu_app':  # Substitua 'seu_app' pelo nome do seu app
+            if not Cidade.objects.exists():
+                try:
+                    # Tente obter um registro existente de Uf_Unidade_Federativa
+                    uf_unidade_federativa = Uf_Unidade_Federativa.objects.get(id=5)  # Ajuste o ID conforme necessário
+                    Cidade.objects.create(
+                        nome_estado=uf_unidade_federativa,
+                        nome_cidade="Vera Cruz",
+                    )
+                except Uf_Unidade_Federativa.DoesNotExist:
+                    print("UF Unidade Federativa com ID 5 não encontrada.")
 
 
 class Bairro(models.Model):    
     nome_cidade = models.ForeignKey(Cidade, on_delete=models.CASCADE)
     nome_bairro = models.CharField(max_length=50)
+
     def __str__(self) -> str:
         return f'{self.nome_bairro}, {self.nome_cidade}'
 
+    @staticmethod
     @receiver(post_migrate)
     def create_register(sender, **kwargs):
-        if not Bairro.objects.exists():
-            Bairro.objects.create(
-                nome_cidade = Cidade.objects.get(id = 1),
-                nome_bairro = "Coroa",
-            )
+        if sender.name == 'seu_app':  # Substitua 'seu_app' pelo nome do seu app
+            if not Bairro.objects.exists():
+                try:
+                    cidade = Cidade.objects.get(id=1)  # Ajuste o ID conforme necessário
+                    Bairro.objects.create(
+                        nome_cidade=cidade,
+                        nome_bairro="Coroa"
+                    )
+                except Cidade.DoesNotExist:
+                    print("Cidade com ID 1 não encontrada.")
 
-class Prefeitura (models.Model):
+
+class Prefeitura(models.Model):
     prefeitura_nome = models.CharField(max_length=50, null=False, default='Prefeitura')
     instituto = models.CharField(max_length=50, null=False, default='Nome da Instituição')
-    cidade = models.CharField(max_length=30, null=False, default='')
-    estado = models.ForeignKey(Uf_Unidade_Federativa, on_delete=models.CASCADE, null=True, blank=True)
+    cidade = models.ForeignKey(Cidade, on_delete=models.CASCADE, related_name="prefeitura_cidade_related", null=True, blank=True)
+    estado = models.ForeignKey(Uf_Unidade_Federativa, related_name="prefeitura_estado_related", on_delete=models.CASCADE, null=True, blank=True)
     endereco = models.CharField(max_length=50, null=True, default='')
     pessoa_publica = models.CharField(max_length=30, null=False, default='')
 
-    @receiver(post_migrate)
-    def cria_registro(sender, *args, **kwargs):
-        if not Prefeitura.objects.exists():
-            Prefeitura.objects.create(
-                prefeitura_nome = 'Prefeitura Municipal de Algum Lugar',
-                instituto = 'Secretaria Municipal da Educação',
-                cidade = "Terra dos Sonhos",
-                estado = Uf_Unidade_Federativa.objects.get(pk=1),
-                endereco = 'Av. Te encontro lá',
-                pessoa_publica = 'Petepan'
-            )
-   
-
     def __str__(self):
         return self.instituto
+
+    @staticmethod
+    def cria_registro():
+        if not Prefeitura.objects.exists():
+            try:
+                cidade = Cidade.objects.get(pk=1)
+                estado = Uf_Unidade_Federativa.objects.get(pk=1)
+                Prefeitura.objects.create(
+                    prefeitura_nome='Prefeitura Municipal de Algum Lugar',
+                    instituto='Secretaria Municipal da Educação',
+                    cidade=cidade,
+                    estado=estado,
+                    endereco='Av. Te encontro lá',
+                    pessoa_publica='Petepan'
+                )
+            except Cidade.DoesNotExist:
+                print("Cidade com PK 1 não encontrada.")
+            except Uf_Unidade_Federativa.DoesNotExist:
+                print("UF Unidade Federativa com PK 1 não encontrada.")
+
+@receiver(post_migrate)
+def run_create_prefeitura(sender, **kwargs):
+    if sender.name == 'rh':  # Substitua 'rh' pelo nome do seu app
+        Prefeitura.cria_registro()
 
 
 class Ano(models.Model):
     ano = models.CharField(max_length=4, null=False, verbose_name='Ano', default='2023')
 
-    @receiver(post_migrate)
-    def creat_register(sender, *args, **kwargs):
-        if not Ano.objects.exists():
-            Ano.objects.create(
-                ano = '2023'
-            )
-
     def __str__(self):
-        return self.ano   
+        return self.ano
+
+    @staticmethod
+    @receiver(post_migrate)
+    def create_register(sender, **kwargs):
+        # Verifica se a aplicação é a correta e se a tabela foi criada
+        if sender.name == 'rh':
+            if not Ano.objects.exists():
+                Ano.objects.create(ano='2023')
 
 
 class Profissao(models.Model):
@@ -135,25 +170,24 @@ class Profissao(models.Model):
 
     @receiver(post_migrate)
     def preenche_model(sender, **kwargs):
+        # Verifica se o sender é o app 'rh'
+        if sender.name == 'rh':
+            # Condição que verifica se existem registros no model Profissao, senão existir, ele cria
+            if not Profissao.objects.exists():
+                nome_descreve = [
+                    ('Diretor Escolar', 'Profissional encarregado da administração e gestão de uma escola.'),
+                    ('Professor', 'Profissional dedicado à educação e ao ensino, desempenhando um papel fundamental na transmissão de conhecimentos, habilidades e valores para os alunos. Professores trabalham em diferentes níveis de ensino, desde a educação infantil até o ensino superior, em uma variedade de disciplinas e áreas de especialização.' ),
+                    ('Coordenador Escolar', 'Profissional que supervisiona as operações e as atividades educacionais de uma escola. Eles coordenam currículos, apoiam professores, lidam com questões disciplinares e interagem com pais e administração para garantir um ambiente de aprendizado eficaz e harmonioso, contribuindo para o funcionamento geral da instituição.'),
+                    ('Merendeira', 'Funcionária responsável pela preparação e distribuição das refeições escolares, garantindo uma alimentação saudável e adequada aos alunos. Elas mantêm a higiene da cozinha, seguem padrões nutricionais e contribuem para o bem-estar dos estudantes durante o dia escolar'),
+                    ('Técnica em alimentação escolar', 'Profissional especializada em planejar, preparar e supervisionar refeições nutritivas e balanceadas para alunos em ambiente escolar. '),
+                    ('Porteiro escolar','Profissional encarregado de monitorar e controlar o acesso à escola, garantindo a segurança dos alunos, funcionários e visitantes. Eles recebem e orientam pessoas que entram nas instalações, controlam a entrada e saída de alunos, ajudam a manter a ordem e auxiliam em situações de emergência, contribuindo para um ambiente escolar seguro e organizado.'),
+                    ('Secretária escolar', 'Profissional responsável por tarefas administrativas e organizacionais dentro de uma instituição de ensino. Elas lidam com matrículas, registros de alunos, comunicados, agendamento, documentação e atendimento aos pais e alunos.'),
+                    ("Auxiliar Administrativo Escolar",'Profissional que oferece suporte em atividades administrativas dentro de uma instituição educacional. Suas responsabilidades podem incluir a organização de documentos, registros de alunos, atendimento telefônico, auxílio em tarefas contábeis e financeiras, agendamento e colaboração com a equipe administrativa para manter o funcionamento eficiente da escola.' )
+                ]
+                Profissao.objects.bulk_create(
+                    [Profissao(nome_profissao=nome, descricao=descricao) for nome, descricao in nome_descreve]
+                )
 
-        nome_descreve =[
-            ('Diretor Escolar', 'Profissional encarregado da administração e gestão de uma escola.'),
-            ('Professor', 'Profissional dedicado à educação e ao ensino, desempenhando um papel fundamental na transmissão de conhecimentos, habilidades e valores para os alunos. Professores trabalham em diferentes níveis de ensino, desde a educação infantil até o ensino superior, em uma variedade de disciplinas e áreas de especialização.' ),
-            ('Coordenador Escolar', 'Profissional que supervisiona as operações e as atividades educacionais de uma escola. Eles coordenam currículos, apoiam professores, lidam com questões disciplinares e interagem com pais e administração para garantir um ambiente de aprendizado eficaz e harmonioso, contribuindo para o funcionamento geral da instituição.'),
-            ('Merendeira', 'Funcionária responsável pela preparação e distribuição das refeições escolares, garantindo uma alimentação saudável e adequada aos alunos. Elas mantêm a higiene da cozinha, seguem padrões nutricionais e contribuem para o bem-estar dos estudantes durante o dia escolar'),
-            ('Técnica em alimentação escolar', 'Profissional especializada em planejar, preparar e supervisionar refeições nutritivas e balanceadas para alunos em ambiente escolar. '),
-            ('Porteiro escolar','Profissional encarregado de monitorar e controlar o acesso à escola, garantindo a segurança dos alunos, funcionários e visitantes. Eles recebem e orientam pessoas que entram nas instalações, controlam a entrada e saída de alunos, ajudam a manter a ordem e auxiliam em situações de emergência, contribuindo para um ambiente escolar seguro e organizado.'),
-            ('Secretária escolar', 'Profissional responsável por tarefas administrativas e organizacionais dentro de uma instituição de ensino. Elas lidam com matrículas, registros de alunos, comunicados, agendamento, documentação e atendimento aos pais e alunos.'),
-            ( "Auxiliar Administrativo Escolar",'Profissional que oferece suporte em atividades administrativas dentro de uma instituição educacional. Suas responsabilidades podem incluir a organização de documentos, registros de alunos, atendimento telefônico, auxílio em tarefas contábeis e financeiras, agendamento e colaboração com a equipe administrativa para manter o funcionamento eficiente da escola.' )
-        ]
-        # Condição que verifica se existe registros no model Profissão, senão existir, ele roda o bulk_create
-        if not Profissao.objects.exists():
-            # o bulk_create cria várias instâncias de uma só vez, sendo mais eficiente que o objects.create que cria uma a uma
-            Profissao.objects.bulk_create(
-                [Profissao(nome_profissao = nome, descricao = descreve) for nome, descreve in nome_descreve]
-            )                 
-                    
-         
     def __str__(self):
         return self.nome_profissao
     
@@ -171,20 +205,24 @@ class Salario(models.Model):
 class Sexo(models.Model):
     nome = models.CharField(max_length=30)
 
-    @receiver(post_migrate)
-    def cria_registro(sender, *args, **kwargs):
+    @classmethod
+    def cria_registro(cls, *args, **kwargs):
         sexos = ['Masculino', 'Feminino']
-        if not Sexo.objects.exists():            
-            Sexo.objects.bulk_create(
-            [Sexo(nome = sexo) for sexo in sexos]
+        if not cls.objects.exists():
+            cls.objects.bulk_create(
+                [cls(nome=sexo) for sexo in sexos]
             )
 
     def __str__(self):
         return self.nome
+    
+@receiver(post_migrate)
+def create_initial_sexos(sender, **kwargs):
+    if sender.name == 'rh':  # Nome do seu app
+        Sexo.cria_registro()
+
 
 from gestao_escolar.models import Bairro, Cidade
-
-
 class Pessoas(models.Model):
     nome = models.CharField(max_length=30, null=False, verbose_name='Nome')
     sobrenome = models.CharField(max_length=30, null=False, verbose_name='Sobrenome')    

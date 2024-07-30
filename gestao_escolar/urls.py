@@ -115,22 +115,27 @@ urlpatterns = [
     path('gestao_escolar/Criar_Qrcode/', Create_QrCode, name="GE_QrCode"),     
 ]
 
-""" CRIA PROFESSORES - Aqui condiciona o acesso aos models pessoa, contrato e encaminhamento do app RH.
-Caso o módulo RH não esteja ativo, o app Gestão_Escolar tem acesso à criação de registros de pessoas e seus segmentos.
-"""
+
+
 from django.db import connection
+from django.urls import path
+from .views import Create_Pessoa_Professores
 
-def config_plataforma_table_exists():
-    return 'config_plataforma' in connection.introspection.table_names()
+try:
+    def config_plataforma_table_exists():
+        return 'rh_config_plataforma' in connection.introspection.table_names()
 
-if config_plataforma_table_exists():
-    if Config_plataforma.objects.exists():
-        config = Config_plataforma.objects.first()
-        if config.rh_Ativo:
-            urlpatterns.append(path('gestao_escolar/Pessoas/Criar/', Create_Pessoa_Professores.as_view(), name="GE_Create_Professores"))
+    if config_plataforma_table_exists():
+        if Config_plataforma.objects.exists():
+            config = Config_plataforma.objects.first()
+            if config.rh_Ativo:
+                urlpatterns.append(path('gestao_escolar/Pessoas/Criar/', Create_Pessoa_Professores.as_view(), name="GE_Create_Professores"))
+            else:
+                urlpatterns.append(path('gestao_escolar/Pessoas/Criar/', Create_Pessoa_Professores.as_view(), name="GE_Create_Professores"))
         else:
             urlpatterns.append(path('gestao_escolar/Pessoas/Criar/', Create_Pessoa_Professores.as_view(), name="GE_Create_Professores"))
     else:
         urlpatterns.append(path('gestao_escolar/Pessoas/Criar/', Create_Pessoa_Professores.as_view(), name="GE_Create_Professores"))
-else:
+except Exception as e:
     urlpatterns.append(path('gestao_escolar/Pessoas/Criar/', Create_Pessoa_Professores.as_view(), name="GE_Create_Professores"))
+    print(f"An error occurred: {e}")
